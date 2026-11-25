@@ -5194,10 +5194,13 @@ function pwaCard(){
     '<div class="small muted" style="margin-top:6px">ลิงก์ระบบ: ' + esc(I.url || '-') + '<br>คนที่กดลิงก์เชิญจะเชื่อมต่อให้อัตโนมัติ แล้วกด "ติดตั้งแอป" ได้เลย • อย่าส่งลิงก์เชิญนอกกลุ่ม</div>';
   return h + '</div>';
 }
-var PWA_CH = { pwInv: function(t){ var v = t.value.trim(), i = v.indexOf('#'); if (i < 0) return; var q = new URLSearchParams(v.slice(i + 1)); if (q.get('u')) { document.getElementById('pwU').value = q.get('u'); document.getElementById('pwK').value = q.get('k') || ''; ACT.pwaSave(); } } };
+function pwaParseInv(v){ var u = /[#&?]u=([^&\s]+)/.exec(v || ''), k = /[#&]k=([^&\s]+)/.exec(v || ''); if (!u) return null; try { return { u: decodeURIComponent(u[1]), k: k ? decodeURIComponent(k[1]) : '' }; } catch (e) { return null; } }
+var PWA_CH = { pwInv: function(t){ var P = pwaParseInv(t.value); if (!P) return; document.getElementById('pwU').value = P.u; document.getElementById('pwK').value = P.k; ACT.pwaSave(); } };
+document.addEventListener('input', function(e){ if (e.target && e.target.id === 'pwInv' && pwaParseInv(e.target.value)) PWA_CH.pwInv(e.target); });
 var PWA_ACT = {
   pwaSave: function(){
-    var u = document.getElementById('pwU').value.trim(), k = document.getElementById('pwK').value.trim();
+    var u = document.getElementById('pwU').value.trim(), k = document.getElementById('pwK').value.trim(), P = pwaParseInv((document.getElementById('pwInv') || {}).value);
+    if (P && !u) { u = P.u; k = k || P.k; }
     if (!/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec/.test(u)) { pwaConnect('ลิงก์ระบบไม่ถูกต้อง ต้องขึ้นต้น https://script.google.com/macros/s/ และลงท้าย /exec'); return; }
     try { localStorage.setItem('dutyPwa', JSON.stringify({ u: u, k: k })); } catch (e) {}
     location.reload();
