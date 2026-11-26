@@ -1190,7 +1190,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.26-2308';
+var APP_VER = '2569.11.26-2317';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -5609,7 +5609,7 @@ var CHAT_ACT = {
     C.msgs.push({ me: 1, t: q, imgs: IM.map(function(x){ return x.thumb; }), docs: DC.map(function(x){ return x.name; }) }); C.imgs = []; C.docs = []; C.busy = true; C.draft = ''; if (i) i.value = ''; chatRender();
     var imgs = IM.map(function(x){ return { mime: 'image/jpeg', data: x.data }; }).concat(DC.filter(function(x){ return x.pdf; }).map(function(x){ return { mime: 'application/pdf', data: x.pdf }; }));
     var tryAsk = function(n){ return sapi('aiWrite', { prompt: prompt, images: imgs }).catch(function(e){ if (n > 0 && /ไม่พบรุ่น|ขัดข้อง|ไม่ได้ตอบ|50\d/.test(e.message)) return new Promise(function(r){ setTimeout(r, 2000); }).then(function(){ return tryAsk(n - 1); }); throw e; }); };
-    tryAsk(2).then(function(j){ C.busy = false; var A = agParse(j.text), txt = j.text.replace(/<<ACTION>>[\s\S]*?<<END>>/, '').trim(); C.msgs.push({ t: txt || 'รับทราบขอรับ', plan: A ? (A.bad ? A : agPlan(A)) : null }); chatRender(); kvSay(txt); })
+    tryAsk(2).then(function(j){ C.busy = false; var A = agParse(j.text) || agLocal(q), txt = j.text.replace(/<<ACTION>>[\s\S]*?<<END>>/, '').trim(); C.msgs.push({ t: txt || 'รับทราบขอรับ', plan: A ? (A.bad ? A : agPlan(A)) : null }); chatRender(); kvSay(txt); })
       .catch(function(e){ C.busy = false; var m = e.message; if (/ไม่พบรุ่น|ขัดข้อง/.test(m)) m = 'AI ของ Google ไม่ว่างชั่วคราว ลองถามใหม่อีกครั้งในอีกสักครู่ (' + m + ')'; C.msgs.push({ t: '⚠️ ' + m, err: 1 }); chatRender(); });
   }
 };
@@ -5655,6 +5655,7 @@ var AGENT_HELP = 'กระผมดูแลและจัดการระ�
   '{"type":"rule","key":"passEnabled|passConfirm|buffer|rotateTop|absentBottom|thaiDigits|autoRotate","value":true}\n' +
   '{"type":"rotate","dir":1}  (วนรายชื่อทุกกลุ่มวน 1 รอบ, dir -1 = ย้อนการวน)\n' +
   '{"type":"undo","n":1}  /  {"type":"redo","n":1}  /  {"type":"prevMonth"}\n' +
+  'เมื่อผู้ใช้สั่งงาน ต้องใส่บล็อกคำสั่งทุกครั้ง ห้ามตอบเพียงว่ารับทราบ เช่น ผู้ใช้พิมพ์ "ล้างการบันทึกการแก้ไข" ให้ตอบ <<ACTION>>[{"type":"clearLog","scope":"month"}]<<END>> ' +
   'สั่งหลายอย่างพร้อมกันได้ ใส่หลาย object ในอาร์เรย์ ' +
   'ถ้าข้อมูลไม่พอ (ไม่รู้ชื่อ/วันที่/บัญชี) ให้ถามกลับก่อน ห้ามเดา ถ้าผู้ใช้แค่ถาม ไม่ได้สั่ง ห้ามใส่บล็อกคำสั่ง';
 function agFindPeople(q){
@@ -5823,6 +5824,19 @@ function agPlan(A){
     out.push(it);
   });
   return out;
+}
+function agLocal(q){
+  // สำรอง: AI ตอบโดยไม่ใส่บล็อกคำสั่ง แต่ผู้ใช้สั่งชัดเจน → ระบบเสนอคำสั่งเอง
+  q = String(q || '').replace(/\s+/g, ''); if (/\?|ไหม|มั้ย|อย่างไร|ยังไง|ได้ไหม|คืออะไร/.test(q) && !/^(ช่วย)?(ล้าง|ลบ|ย้อน|ไป|เปิด)/.test(q)) return null;
+  var n = (/(\d+)ขั้น/.exec(q) || [])[1];
+  if (/(ล้าง|ลบ|เคลียร์).*(บันทึก|ประวัติ).*(แก้|log)/i.test(q)) return [{ type: 'clearLog', scope: /ทั้งหมด|ทุกเดือน/.test(q) ? 'all' : 'month' }];
+  if (/^(ช่วย)?(ย้อนกลับ|undo)/i.test(q)) return [{ type: 'undo', n: +n || 1 }];
+  if (/^(ช่วย)?(ทำซ้ำ|redo)/i.test(q)) return [{ type: 'redo', n: +n || 1 }];
+  if (/(ไป|จัด).*เดือน(ถัดไป|หน้า)/.test(q)) return [{ type: 'nextMonth' }];
+  if (/(ย้อน|กลับ)(ไป)?เดือน(ก่อน|ที่แล้ว)/.test(q)) return [{ type: 'prevMonth' }];
+  var m = /^(ช่วย)?(เปิด|ไป)(หน้า)?(.+)$/.exec(q);
+  if (m) { var t = TABS.find(function(x){ return m[4].indexOf(DE.norm(x[1]).replace(/\s/g, '').slice(0, 4)) >= 0; }); if (t) return [{ type: 'tab', tab: t[0] }]; }
+  return null;
 }
 function agSet(l, d, p){
   var k = ym();
