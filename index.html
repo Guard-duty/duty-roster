@@ -590,6 +590,7 @@ table.t tr.dim td{opacity:.5}
 .chbi{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}.chbi img{max-height:90px;max-width:140px;border-radius:8px;border:2px solid rgba(255,255,255,.6)}
 .chdoc{display:inline-flex!important;align-items:center;gap:4px;background:#fff;border:1px solid #ddd5f0;border-radius:8px;padding:6px 26px 6px 8px;font-size:12.5px;height:40px}.chbd{display:flex;flex-direction:column;gap:3px;margin-bottom:6px}.chbd span{background:rgba(255,255,255,.18);border-radius:6px;padding:2px 8px;font-size:12.5px}
 .chmic{width:38px;border:1.5px solid #ddd5f0;border-radius:10px;cursor:pointer;font-size:17px;background:#fff}.chmic:hover{background:#f4f0fd}.chmic.on{background:#c0392b;border-color:#c0392b;color:#fff;animation:mic 1s infinite}@keyframes mic{50%{box-shadow:0 0 0 6px rgba(192,57,43,.25)}}
+.kvm{border:1px solid #ddd5f0;background:#fff;border-radius:999px;padding:1px 8px;font:inherit;font-size:11px;color:#5b3fb0;cursor:pointer;margin-right:4px}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#2c3016">
@@ -1182,7 +1183,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.26-2209';
+var APP_VER = '2569.11.26-2216';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -4647,7 +4648,7 @@ var OWN_KEY = 'dutyOwner.v1', OWN_HRS = 8;
 // ส่วนตั้งค่าระบบ — ต้องเป็นเจ้าของเสมอ
 var OWN_SYS = { act: 'lcolReset miOk mRank mRankAll esSavePad esClearPad esDel esMv rotDlg rotFix rotSkip rotOrder rotGAdd rotGDel sortSeed resetHol resetAll addList delList addSigner delSigner copyGs showGs goSetup updGo updRevert updUseIndex ghSave updCopyCode pwaTeam pwaInvite aiKeySave aiKeyDel stoDlg stoGo stoCheck stoBack stoClean stoCleanRun bakRestore logRestore restoreVer delVer forceSave purgeEx ownMode ownCode', ch: 'lcol esOn esH esFile masterFile rule hol sg rotMember wmode isg il ifolder drv importJson stoD' };
 // ดูได้อย่างเดียว (เมื่อล็อกทั้งระบบ) — คำสั่งที่ไม่เปลี่ยนข้อมูล
-var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic chImgDel chDocDel chatOpen chatClose chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
+var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode chImgDel chDocDel chatOpen chatClose chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
 (function(){ ['act', 'ch'].forEach(function(k){ var o = {}; OWN_SYS[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_SYS[k] = o; o = {}; OWN_VIEW[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_VIEW[k] = o; }); })();
 function ownSess(){ try { var o = JSON.parse(sessionStorage.getItem(OWN_KEY) || 'null'); if (o && o.until > Date.now()) return o; } catch (e) {} return null; }
 function isOwner(){ return !!ownSess(); }
@@ -5517,7 +5518,7 @@ function chatCtx(q){
 }
 function chatPrompt(q){
   var C = UI.chat, hist = C.msgs.slice(-6).map(function(m){ return (m.me ? 'ผู้ใช้: ' : 'ผู้ช่วย: ') + m.t.slice(0, 600); }).join('\n');
-  var p = 'คุณชื่อ ' + BOT_NAME + ' (ส.ท.เคโรโระ) เป็นผู้ช่วยประจำแผนกธุรการและกำลังพล ' + S.unit + ' แนะนำตัวด้วยชื่อนี้เมื่อถูกถามชื่อ แทนตัวเองว่า กระผม และลงท้ายด้วย ขอรับ (แต่ข้อความที่ร่างให้ผู้ใช้นำไปส่งต่อ ให้ใช้ ครับ ตามปกติ) ตอบเป็นภาษาไทย สุภาพแบบทหาร กระชับ ตรงประเด็น ใช้ข้อมูลที่ให้เมื่อเกี่ยวข้อง ข้อมูลที่ระบุว่า คาดการณ์ล่วงหน้า คือผลที่ระบบคำนวณไว้แล้ว ใช้ตอบได้เลยแต่ให้บอกว่าเป็นร่างคาดการณ์ที่อาจเปลี่ยนได้ ห้ามแต่งรายชื่อหรือวันที่ที่ไม่มีในข้อมูล\n';
+  var p = 'คุณชื่อ ' + BOT_NAME + ' (ส.ท.เคโรโระ) เป็นผู้ช่วยประจำแผนกธุรการและกำลังพล ' + S.unit + ' แนะนำตัวด้วยชื่อนี้เมื่อถูกถามชื่อ บุคลิกร่าเริง กระตือรือร้น มั่นใจ แทนตัวเองว่า กระผม และลงท้ายด้วย ขอรับ บางครั้ง (ไม่บ่อย) หัวเราะว่า เกโระ เกโระ เมื่อทำงานสำเร็จ (แต่ข้อความที่ร่างให้ผู้ใช้นำไปส่งต่อ ให้ใช้ ครับ ตามปกติ) ตอบเป็นภาษาไทย สุภาพแบบทหาร กระชับ ตรงประเด็น ใช้ข้อมูลที่ให้เมื่อเกี่ยวข้อง ข้อมูลที่ระบุว่า คาดการณ์ล่วงหน้า คือผลที่ระบบคำนวณไว้แล้ว ใช้ตอบได้เลยแต่ให้บอกว่าเป็นร่างคาดการณ์ที่อาจเปลี่ยนได้ ห้ามแต่งรายชื่อหรือวันที่ที่ไม่มีในข้อมูล\n';
   p += '\n' + AGENT_HELP + '\nบัญชีเวรที่มี: ' + S.lists.map(function(l){ return l.short; }).join(', ') + '\nเดือนที่กำลังจัด: ' + DE.MONTHS_L[S.m - 1] + ' ' + be(S.y) + ' (ค.ศ. ' + S.y + ')\n';
   if (C.ctx) p += '\n' + chatCtx(q) + '\n';
   if (hist) p += '\nบทสนทนาก่อนหน้า:\n' + hist + '\n';
@@ -5543,14 +5544,14 @@ function chatRender(){
   w.innerHTML = '<div class="chp"><div class="chh"><img class="chav" src="' + BOT_SMALL + '" alt=""><div class="chnm"><b>' + BOT_NAME + '</b><small>' + (C.busy ? 'กำลังพิมพ์…' : 'ผู้ช่วยธุรการ • ออนไลน์') + '</small></div><label class="chx"><input type="checkbox" data-ch="chatCtx"' + (C.ctx ? ' checked' : '') + '> ใช้ข้อมูลเวร</label><button class="chi" data-act="kvToggle" title="' + (kvOn() ? 'ปิดเสียง' : 'เปิดเสียง') + '">' + (kvOn() ? '🔊' : '🔇') + '</button><button class="chi" data-act="chatClear" title="เริ่มใหม่">🗑</button><button class="chi" data-act="chatClose" title="ปิด">✕</button></div>' +
     '<div class="chl" id="chatList">' + chatBody() + '</div>' +
     ((C.imgs && C.imgs.length) || (C.docs && C.docs.length) ? '<div class="chth">' + (C.imgs || []).map(function(x, k){ return '<span><img src="' + x.thumb + '" alt=""><button data-act="chImgDel" data-v="' + k + '" title="เอาออก">✕</button></span>'; }).join('') + (C.docs || []).map(function(x, k){ return '<span class="chdoc">' + (x.pdf ? '📕' : /\.xlsx?$|\.csv$/i.test(x.name) ? '📊' : '📄') + ' ' + esc(x.name.length > 22 ? x.name.slice(0, 20) + '…' : x.name) + '<button data-act="chDocDel" data-v="' + k + '" title="เอาออก">✕</button></span>'; }).join('') + '</div>' : '') + '<div class="chf"><button class="chmic' + (C.mic ? ' on' : '') + '" data-act="kvMic" title="กดแล้วพูดสั่งงาน (ภาษาไทย)">' + (C.mic ? '⏺' : '🎤') + '</button><label class="chatt" title="แนบรูปหรือไฟล์ (PDF, Word, Excel, CSV, TXT) — หรือลากมาวาง / Ctrl+V">📎<input type="file" accept="image/*,.pdf,.doc,.docx,.xlsx,.csv,.txt" multiple data-ch="chImg" hidden></label><textarea id="chatIn" rows="2" placeholder="' + (C.mic ? 'กำลังฟัง… พูดได้เลยขอรับ' : 'พิมพ์ / กด 🎤 พูด / ลากรูป-ไฟล์มาวาง') + '">' + esc(draft) + '</textarea><button class="btn pri" data-act="chatSend"' + (C.busy ? ' disabled' : '') + '>ส่ง</button></div>' +
-    '<div class="chnote">' + (C.ctx ? 'ข้อมูลเวรเดือนนี้ (ชื่อ/วันที่) จะถูกส่งให้ AI ของ Google เพื่อใช้ตอบ • ' : '') + 'ตรวจคำตอบก่อนนำไปใช้</div></div>';
+    '<div class="chnote"><button class="kvm" data-act="kvMode" title="สลับแบบเสียง">🎙 เสียง: ' + (kvMode() === 'ai' ? 'ธรรมชาติ (AI)' : 'ในเครื่อง') + '</button> ' + (C.ctx ? 'ข้อมูลเวรเดือนนี้ (ชื่อ/วันที่) จะถูกส่งให้ AI ของ Google เพื่อใช้ตอบ • ' : '') + 'ตรวจคำตอบก่อนนำไปใช้</div></div>';
   try { chBind(); } catch (e) {}
   var l = document.getElementById('chatList'); if (l) l.scrollTop = l.scrollHeight;
   var i = document.getElementById('chatIn'); if (i) { i.onkeydown = function(e){ if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ACT.chatSend(); } }; if (!C.busy) i.focus(); }
 }
 var CHAT_ACT = {
   chatOpen: function(){ UI.chat.open = true; chatRender(); if (!UI.chat.greeted || !UI.chat.msgs.length) { UI.chat.greeted = 1; kvSay(KV.greet); } },
-  chatClose: function(){ try { speechSynthesis.cancel(); } catch (e) {} UI.chat.draft = (document.getElementById('chatIn') || {}).value || ''; UI.chat.open = false; chatRender(); },
+  chatClose: function(){ kvStop(); UI.chat.draft = (document.getElementById('chatIn') || {}).value || ''; UI.chat.open = false; chatRender(); },
   chatClear: function(){ UI.chat.msgs = []; chatRender(); },
   chatSug: function(t){ var i = document.getElementById('chatIn'); if (i) i.value = t.dataset.v; ACT.chatSend(); },
   chatCopy: function(t){ var m = UI.chat.msgs[+t.dataset.v]; if (m) copyTxt(m.t, 'คัดลอกคำตอบแล้ว'); },
@@ -5693,8 +5694,9 @@ function agCard(msg, i){
 }
 var AG_ACT = {
   chImgDel: function(t){ UI.chat.imgs.splice(+t.dataset.v, 1); chatRender(); },
-  kvToggle: function(){ var on = !kvOn(); try { localStorage.setItem('keroVoice', on ? '1' : '0'); } catch (e) {} if (!on) { try { speechSynthesis.cancel(); } catch (e) {} } chatRender(); if (on) kvSay('เปิดเสียงแล้วขอรับ'); },
+  kvToggle: function(){ var on = !kvOn(); try { localStorage.setItem('keroVoice', on ? '1' : '0'); } catch (e) {} if (!on) kvStop(); chatRender(); if (on) kvSay('เปิดเสียงแล้วขอรับ'); },
   kvMic: function(){ kvListen(); },
+  kvMode: function(){ var m = kvMode() === 'ai' ? 'device' : 'ai'; try { localStorage.setItem('keroVoiceMode', m); } catch (e) {} UI.ttsOff = 0; chatRender(); kvSay(m === 'ai' ? 'ใช้เสียงธรรมชาติแล้วขอรับ' : 'ใช้เสียงในเครื่องแล้วขอรับ'); },
   chDocDel: function(t){ UI.chat.docs.splice(+t.dataset.v, 1); chatRender(); },
   agYes: function(t){
     var m = UI.chat.msgs[+t.dataset.v]; if (!m || !m.plan || m.done) return;
@@ -5746,17 +5748,51 @@ function chBind(){
 
 
 /* ---------- เสียงของ ส.ท.เคโรโระ (อ่านออกเสียง + พูดสั่งงาน) ---------- */
-var KV = { greet: 'กระผม สิบโท เคโรโระ มีอะไรให้กระผมรับใช้ขอรับ' };
+var KV = { greet: 'เกโระ เกโระ เกโระ! กระผม สิบโท เคโรโระ มีอะไรให้กระผมรับใช้ขอรับ!',
+  style: 'อ่านเป็นภาษาไทยด้วยเสียงตัวการ์ตูนกบต่างดาวตัวเล็กที่เป็นทหาร: เสียงแหลมสูง สดใส กระตือรือร้นมาก ขี้เล่น มั่นใจในตัวเองเกินเหตุ พูดจังหวะเร็วนิด ๆ เน้นท้ายประโยคแบบตื่นเต้น ถ้ามีคำว่า เกโระ ให้หัวเราะแบบเจ้าเล่ห์ ออกเสียงคำภาษาไทยให้ชัด',
+  voice: 'Fenrir' };
 function kvOn(){ try { return localStorage.getItem('keroVoice') !== '0'; } catch (e) { return true; } }
-function kvVoice(){ var V = (window.speechSynthesis && speechSynthesis.getVoices()) || []; return V.find(function(v){ return /^th/i.test(v.lang) && /google|premium|enhanced|natural/i.test(v.name); }) || V.find(function(v){ return /^th/i.test(v.lang); }) || null; }
+function kvMode(){ try { return localStorage.getItem('keroVoiceMode') || 'ai'; } catch (e) { return 'ai'; } } // ai = เสียงธรรมชาติจาก Google AI, device = เสียงในเครื่อง
+function kvVoice(){
+  var V = (window.speechSynthesis && speechSynthesis.getVoices()) || [], th = V.filter(function(v){ return /^th/i.test(v.lang); });
+  var rank = function(v){ var n = v.name; return /natural|online|neural/i.test(n) ? 0 : /premwadee|niwat/i.test(n) ? 1 : /google/i.test(n) ? 2 : /enhanced|premium|kanya|narisa/i.test(n) ? 3 : 5; };
+  th.sort(function(a, b){ return rank(a) - rank(b); });
+  return th[0] || null;
+}
+var KV_AU = null;
+function kvStop(){ try { speechSynthesis.cancel(); } catch (e) {} if (KV_AU) { try { KV_AU.pause(); } catch (e) {} KV_AU = null; } }
+function kvClean(t){ return String(t || '').replace(/<<ACTION>>[\s\S]*?<<END>>/g, '').replace(/https?:\/\/\S+/g, '').replace(/[*#`>_~|]/g, '').replace(/\s*\n+\s*/g, '. ').replace(/\s+/g, ' ').trim(); }
+// เสียงในเครื่อง: แบ่งเป็นประโยค อ่านต่อเนื่อง ไม่ติดขัด
+function kvDevice(s){
+  if (!window.speechSynthesis) return;
+  var parts = s.split(/(?<=[.!?…])\s+|(?<=ขอรับ)\s+|(?<=ครับ)\s+/).reduce(function(o, x){ if (!x) return o; if (o.length && (o[o.length - 1] + x).length < 140) o[o.length - 1] += ' ' + x; else o.push(x); return o; }, []);
+  var v = kvVoice();
+  parts.forEach(function(x){ var u = new SpeechSynthesisUtterance(x); u.lang = 'th-TH'; if (v) u.voice = v; u.rate = 1.08; u.pitch = 1.55; u.volume = 1; speechSynthesis.speak(u); });
+}
+function kvWav(b64, rate){
+  var bin = atob(b64), n = bin.length, buf = new ArrayBuffer(44 + n), dv = new DataView(buf), w = function(o, s){ for (var i = 0; i < s.length; i++) dv.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, 'RIFF'); dv.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+  dv.setUint32(24, rate, true); dv.setUint32(28, rate * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); w(36, 'data'); dv.setUint32(40, n, true);
+  for (var i = 0; i < n; i++) dv.setUint8(44 + i, bin.charCodeAt(i));
+  return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+}
+function kvPlay(j){
+  var url = /wav|mp3|mpeg|ogg/i.test(j.mime) ? 'data:' + j.mime + ';base64,' + j.data : kvWav(j.data, +((/rate=(\d+)/.exec(j.mime) || [])[1] || 24000));
+  KV_AU = new Audio(url); KV_AU.play().catch(function(){});
+}
 function kvSay(t){
-  if (!kvOn() || !window.speechSynthesis) return;
-  try {
-    speechSynthesis.cancel();
-    var s = String(t || '').replace(/<<ACTION>>[\s\S]*?<<END>>/g, '').replace(/[*#`>_~]/g, '').replace(/\s+/g, ' ').trim().slice(0, 600); if (!s) return;
-    var u = new SpeechSynthesisUtterance(s), v = kvVoice(); u.lang = 'th-TH'; if (v) u.voice = v; u.rate = 1.05; u.pitch = 1.35;
-    speechSynthesis.speak(u);
-  } catch (e) {}
+  if (!kvOn()) return;
+  var s = kvClean(t).slice(0, 500); if (!s) return;
+  kvStop();
+  if (kvMode() === 'ai' && stoOn() && UI.aiSt && UI.aiSt.has && !UI.ttsOff) {
+    var ck = 'keroTTS:' + s.length + ':' + s.slice(0, 40);
+    try { var c = sessionStorage.getItem(ck) || (s === KV.greet ? localStorage.getItem('keroGreetTTS2') : null); if (c) { kvPlay(JSON.parse(c)); return; } } catch (e) {}
+    UI.ttsBusy = 1;
+    sapi('aiSpeak', { text: s, voice: KV.voice, style: KV.style }).then(function(j){ UI.ttsBusy = 0; try { var js = JSON.stringify({ mime: j.mime, data: j.data }); if (js.length < 2e6) sessionStorage.setItem(ck, js); if (s === KV.greet) localStorage.setItem('keroGreetTTS2', js); } catch (e) {} kvPlay(j); })
+      .catch(function(e){ UI.ttsBusy = 0; if (/ไม่รองรับคำสั่ง|aiSpeak|not a function|ไม่พบรุ่น/.test(e.message)) UI.ttsOff = 1; kvDevice(s); });
+    return;
+  }
+  kvDevice(s);
 }
 if (window.speechSynthesis) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = function(){}; } catch (e) {} }
 var KV_REC = null;
@@ -5764,7 +5800,7 @@ function kvListen(){
   var R = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!R) { toast('เบราว์เซอร์นี้ยังพูดสั่งไม่ได้ — ใช้ Chrome หรือพิมพ์แทนขอรับ'); return; }
   if (KV_REC) { try { KV_REC.stop(); } catch (e) {} return; }
-  try { speechSynthesis.cancel(); } catch (e) {}
+  kvStop();
   var r = new R(); r.lang = 'th-TH'; r.interimResults = true; r.continuous = false; KV_REC = r; UI.chat.mic = true; chatRender();
   var fin = '';
   r.onresult = function(e){ var t = ''; for (var i = 0; i < e.results.length; i++) { t += e.results[i][0].transcript; if (e.results[i].isFinal) fin = t; } var inp = document.getElementById('chatIn'); if (inp) inp.value = t; };
