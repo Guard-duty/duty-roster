@@ -567,8 +567,15 @@ table.t tr.dim td{opacity:.5}
 .chav{height:52px;width:auto;margin:-10px 0 -6px -2px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}.chnm{margin-right:auto;line-height:1.2}.chnm b{display:block;font-size:15px}.chnm small{font-size:11.5px;opacity:.85}
 .chmav{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none;border:1px solid #e2dcf3;background:#fff}
 .chhero{height:200px;margin-bottom:6px;filter:drop-shadow(0 6px 8px rgba(0,0,0,.18))}
-.agc{margin-top:8px;border:1.5px solid #c9b8f0;border-radius:10px;background:#faf8ff;padding:8px 10px;font-size:13px}.agc.done{border-color:#9fd0a8;background:#f1faf2}.agc.cancel{opacity:.6}.agc.bad{border-color:#f0b9b1;background:#fff5f3}
-.agh{font-weight:800;color:#5b3fb0;margin-bottom:4px}.agi{padding:3px 0;border-top:1px dashed #e3dcf5}.agi:first-of-type{border-top:none}.agi.err{color:#b3261e}.agb{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}.ags{margin-top:6px;font-weight:700;color:#2f8a4a}.agc.cancel .ags{color:#888}
+.kcmd{margin-top:8px;border:1.5px solid #c9b8f0;border-radius:10px;background:#faf8ff;padding:8px 10px;font-size:13px}.kcmd.done{border-color:#9fd0a8;background:#f1faf2}.kcmd.cancel{opacity:.6}.kcmd.bad{border-color:#f0b9b1;background:#fff5f3}
+.agh{font-weight:800;color:#5b3fb0;margin-bottom:4px}.agi{padding:3px 0;border-top:1px dashed #e3dcf5}.agi:first-of-type{border-top:none}.agi.err{color:#b3261e}.agb{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}.ags{margin-top:6px;font-weight:700;color:#2f8a4a}.kcmd.cancel .ags{color:#888}
+.rmenu{margin-top:14px;border-top:1px dashed #d8d2bd;padding-top:10px;display:flex;flex-direction:column;gap:6px}.rmt{font-size:12px;font-weight:700;color:#7a7158;letter-spacing:.3px}
+.rmenu button{display:flex;justify-content:space-between;align-items:center;gap:6px;text-align:left;border:1px solid #e2dcc6;background:#fbfaf5;border-radius:10px;padding:8px 10px;font:inherit;font-size:13.5px;cursor:pointer;color:#33402a}.rmenu button:hover{background:#f1eedf;border-color:#c9bf98}.rmenu small{background:#3b4a24;color:#fff;border-radius:8px;padding:1px 7px;font-size:11px}
+.rvcard{padding:12px 14px}.rvh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.rvh b{font-size:15px;color:#3b4a24}.rvh .btn{margin-left:auto}
+.rvg{margin-top:6px;border:1px solid #ece7d6;border-radius:10px;padding:6px 8px;background:#fdfcf8}.rvgt{font-size:11.5px;font-weight:700;color:#8a7f5c;margin-bottom:3px}
+.rvr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 6px;border-radius:8px}.rvr.on{background:#fff4d6}.rva{font-size:12.5px;color:#6b6450}.rvl{font-size:12px;color:#8a8470;margin-left:auto}
+.rvc{display:inline-block;border:1.5px solid var(--c,#999);color:var(--c,#555);background:#fff;border-radius:8px;padding:2px 9px;font-weight:700;font-size:13px}.rvc.hl{background:var(--c);color:#fff}
+.rvhist{margin-top:10px;font-size:12.5px;color:#5d584a;display:flex;flex-direction:column;gap:2px}
 .hundo{background:transparent!important;border:none!important;padding:0!important;gap:8px!important}
 .hundo button{position:relative;height:40px;border-radius:999px!important;padding:0 16px 0 6px!important;gap:8px!important;font-weight:700;letter-spacing:.2px;transition:all .18s ease}
 .hundo button .ic{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none;transition:transform .25s ease}
@@ -1183,7 +1190,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.26-2216';
+var APP_VER = '2569.11.26-2308';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -1508,12 +1515,14 @@ function viewRoster(){
   var r = CACHE.res[l.id], hol = CACHE.hol, k = ym();
   var ov = (S.overrides[k] || {})[l.id] || {};
   var h = '<div class="grid2"><div class="card side"><h2>บัญชีเวร</h2>' + sideLists('pickList') +
-    '<div class="small muted" style="margin-top:8px">คลิกเลือกบัญชีเพื่อดู/แก้ไข</div></div><div>';
+    '<div class="small muted" style="margin-top:8px">คลิกเลือกบัญชีเพื่อดู/แก้ไข</div>' +
+    '<div class="rmenu"><div class="rmt">เมนูจัดเวร</div><button data-act="rotView">🔄 ระบบวน / ภาพรวมการวน' + (rotAny() ? '<small>' + rotGroupsAll().filter(function(g){ return g.length > 1; }).length + ' กลุ่ม</small>' : '') + '</button><button data-act="tab" data-v="exempt">⛔ งดเวร</button><button data-act="nextMonth">📅 เดือนถัดไป</button><button data-act="tab" data-v="print">🖨️ พิมพ์ส่งเซ็น</button></div></div><div>';
+  if (rotAny()) h += '<div class="card rvcard">' + rotOverview(l.id, false) + '</div>';
   // summary
   var exThisMonth = S.exemptions.filter(exActive).length;
   h += '<div class="card" style="border-top:5px solid ' + lcol(l) + '"><div class="row" style="justify-content:space-between"><div><h2 style="margin:0"><span class="lbadge" style="background:' + lcol(l) + '">' + esc(l.annex.replace('ผนวก ', '')) + '</span>' + esc(l.annex) + ' ' + esc(l.title) + ' <small>ประจำเดือน ' + esc(monthShort(S.y, S.m)) + '</small></h2></div>' +
     '<div class="row"><button class="btn" data-act="tab" data-v="exempt">+ เพิ่มคนงดเวร</button><button class="btn red" data-act="printOne" data-v="' + l.id + '">🖨️ พิมพ์</button></div></div>';
-  if (rotGroupOf(l.id) >= 0 && rotGroupsAll()[rotGroupOf(l.id)].length > 1) h += '<div class="notice" style="margin-top:10px">🔄 บัญชีนี้อยู่ในกลุ่มวนสถานที่: <b>' + esc(rotPath()) + '</b> <span class="pill ' + (S.rules.autoRotate ? 'ok' : 'warn') + '">' + (S.rules.autoRotate ? 'วนอัตโนมัติเมื่อกดเดือนถัดไป' : 'ปิดการวนอัตโนมัติ') + '</span> <button class="btn sm" data-act="rotDlg">⚙ แก้ไขระบบวน</button></div>';
+  if (rotGroupOf(l.id) >= 0 && rotGroupsAll()[rotGroupOf(l.id)].length > 1) h += '<div class="notice" style="margin-top:10px">🔄 บัญชีนี้อยู่ในกลุ่มวนสถานที่: <b>' + esc(rotPath(rotGroupsAll()[rotGroupOf(l.id)])) + '</b> <span class="pill ' + (S.rules.autoRotate ? 'ok' : 'warn') + '">' + (S.rules.autoRotate ? 'วนอัตโนมัติเมื่อกดเดือนถัดไป' : 'ปิดการวนอัตโนมัติ') + '</span> <button class="btn sm" data-act="rotDlg">⚙ แก้ไขระบบวน</button></div>';
   if (l.active === false) h += '<div class="warnbox" style="margin-top:10px">บัญชีนี้ปิดใช้งานอยู่ (ไม่จัดเวรเดือนนี้) — เปิดได้ที่ <b>รายชื่อ & ตั้งค่า</b> <button class="btn sm" data-act="toggleActive" data-v="' + l.id + '">เปิดใช้งานเลย</button></div>';
   // controls
   var nDuty = Object.keys(r.byDay).length, nPeople = l.people.length, nEx = l.people.filter(function(p){ var k2 = DE.personKey(p); return S.exemptions.some(function(e){ return e.key === k2 && exActive(e); }); }).length;
@@ -3075,7 +3084,7 @@ function rotateGroup(grp, dir){
   var snap = ids.map(function(id){ var l = list(id), n0 = l.people.length, si = l.startIdx || 0, sp = null;
     for (var q = 0; q < n0; q++) { var cp = l.people[(si + q) % n0]; if (!cp.helper) { sp = cp; break; } }
     return { core: l.people.filter(function(p){ return !p.helper; }), helpers: l.people.filter(function(p){ return p.helper; }), startId: sp ? sp.id : null }; });
-  var map = {};
+  var map = {}, moves = ids.map(function(id, i){ var sp = snap[i].core.find(function(p){ return p.id === snap[i].startId; }); return { from: id, to: ids[(i + dir + n) % n], n: snap[i].core.length, lead: sp ? pLabel(sp) : '' }; });
   ids.forEach(function(id, i){ var to = ids[(i + dir + n) % n], T = list(to), j = ids.indexOf(to);
     T.people = snap[i].core.concat(snap[j].helpers);
     var si = snap[i].startId ? T.people.findIndex(function(p){ return p.id === snap[i].startId; }) : 0; T.startIdx = si < 0 ? 0 : si; map[id] = to; });
@@ -3084,14 +3093,19 @@ function rotateGroup(grp, dir){
   S.lists.forEach(function(l){ l.people.forEach(function(p){ if (p.helper && map[p.helper.from]) p.helper.from = map[p.helper.from]; }); });
   var k = ym();
   ids.forEach(function(id){ if (S.overrides[k]) delete S.overrides[k][id]; if (S.edits[k]) delete S.edits[k][id]; });
-  return 1;
+  return moves;
 }
 function rotGroupsAll(){ S.rotExtra = (S.rotExtra || []).filter(function(g){ return Array.isArray(g); }); return [S.rotGroup || []].concat(S.rotExtra); }
 function rotAny(){ return rotGroupsAll().some(function(g){ return g.filter(function(id){ return !!list(id); }).length > 1; }); }
 function rotGroupOf(id){ var G = rotGroupsAll(); for (var i = 0; i < G.length; i++) if (G[i].indexOf(id) >= 0) return i; return -1; }
 function rotatePosts(dir, silent){
-  var n = 0; rotGroupsAll().forEach(function(g){ n += rotateGroup(g, dir); });
+  var n = 0, ent = { ym: ym(), at: Date.now(), dir: dir, groups: [] };
+  rotGroupsAll().forEach(function(g){ var mv = rotateGroup(g, dir); if (mv) { n++; ent.groups.push(mv); } });
   if (!n) return;
+  S.rotLog = S.rotLog || [];
+  var li = -1; S.rotLog.forEach(function(e, i){ if (e.ym === ent.ym && e.dir === -dir) li = i; });
+  if (li >= 0) S.rotLog.splice(li, 1); else S.rotLog.push(ent);
+  if (S.rotLog.length > 36) S.rotLog.splice(0, S.rotLog.length - 36);
   save(); render(); if (!silent) toast('วนสถานที่เข้าเวรแล้ว: ' + rotGroupsAll().filter(function(g){ return g.length > 1; }).map(function(g){ return rotPath(g); }).join(' | '));
 }
 
@@ -4127,10 +4141,39 @@ function rotEditor(compact){
   if (rotAny()) h += '<div class="row" style="margin-top:10px;border-top:1px dashed #ddd;padding-top:10px"><span class="small">แก้รายชื่อเดือนนี้ (ทุกกลุ่ม):</span><button class="btn sm khaki" data-act="rotate" data-v="1">🔄 วนไปอีก 1 รอบ</button><button class="btn sm" data-act="rotate" data-v="-1">↩ ย้อนการวน 1 รอบ</button></div>';
   return h;
 }
-function rotSettingsHtml(){ return '<div class="rotdlg">' + rotEditor(true) + '</div>'; }
-function rotDlg(){
-  document.getElementById('modal').innerHTML = '<div class="modal"><div class="box" style="max-width:640px"><div class="hx"><h2 style="margin:0;font-size:17px">⚙ แก้ไขระบบวนรายชื่อ</h2><button class="btn sm" data-act="closeModal">ปิด ✕</button></div>' + rotSettingsHtml() + '</div></div>';
+/* ภาพรวมการวน: ชุดรายชื่อย้ายจากบัญชีไหนไปบัญชีไหน */
+function rotLbl(id){ var l = list(id); return l ? l.annex.replace('ผนวก ', '').trim() + ' ' + l.short : '(ไม่มีบัญชีแล้ว)'; }
+function rotChip(id, hl){ var l = list(id); if (!l) return '<span class="rvc">?</span>'; return '<span class="rvc' + (hl ? ' hl' : '') + '" style="--c:' + lcol(l) + '">' + esc(rotLbl(id)) + '</span>'; }
+function rotOverview(curId, full){
+  var G = rotGroupsAll().filter(function(g){ return g.filter(function(id){ return !!list(id); }).length > 1; });
+  var k = ym(), L = S.rotLog || [], E = L.filter(function(e){ return e.ym === k; }), net = E.reduce(function(s, e){ return s + e.dir; }, 0), last = E[E.length - 1];
+  var h = '<div class="rvw"><div class="rvh"><b>🔄 ภาพรวมการวนสถานที่เข้าเวร</b><span class="pill ' + (last ? 'ok' : '') + '">' + (last ? 'เดือน ' + esc(monthShort(S.y, S.m)) + ' วนแล้ว' + (net > 1 ? ' ' + net + ' รอบ' : '') : 'เดือนนี้ยังไม่ได้วน') + '</span>' +
+    (full ? '' : '<button class="btn sm" data-act="rotView">ดูทั้งหมด / แก้ไข ›</button>') + '</div>';
+  if (!G.length) return h + '<div class="muted small" style="padding:6px 2px">ยังไม่ได้ตั้งกลุ่มวน — กด ⚙ ระบบวน เพื่อเลือกบัญชีที่วนรายชื่อกัน</div></div>';
+  if (last) {
+    h += '<div class="small muted" style="margin:4px 0 6px">วนเมื่อ ' + esc(tsTh(last.at)) + ' — ชุดรายชื่อแต่ละบัญชีย้ายไปดังนี้ (ลำดับคนเริ่มเวรติดไปด้วย)</div>';
+    last.groups.forEach(function(mv, gi){
+      h += '<div class="rvg"><div class="rvgt">กลุ่ม ' + (gi + 1) + '</div>' + mv.map(function(m){ var hl = curId && m.to === curId;
+        return '<div class="rvr' + (hl ? ' on' : '') + '">' + rotChip(m.from) + '<span class="rva">ชุดเดิม ' + m.n + ' นาย ➜</span>' + rotChip(m.to, hl) + '<span class="rvl">' + (m.lead ? 'เริ่มเวรที่ ' + esc(m.lead) : '') + '</span></div>'; }).join('') + '</div>';
+    });
+  } else {
+    h += '<div class="small muted" style="margin:4px 0 6px">' + (S.rules.autoRotate ? 'เมื่อกด "เดือนถัดไป" ระบบจะวนให้อัตโนมัติ ดังนี้' : 'ปิดการวนอัตโนมัติอยู่ — ถ้ากดวน รายชื่อจะย้ายดังนี้') + '</div>';
+    G.forEach(function(g, gi){ var ids = g.filter(function(id){ return !!list(id); });
+      h += '<div class="rvg"><div class="rvgt">กลุ่ม ' + (gi + 1) + '</div>' + ids.map(function(id, i){ var to = ids[(i + 1) % ids.length], hl = curId && to === curId, l = list(id), core = l.people.filter(function(p){ return !p.helper; }).length;
+        return '<div class="rvr nx' + (hl ? ' on' : '') + '">' + rotChip(id) + '<span class="rva">ชุดนี้ ' + core + ' นาย จะไป ➜</span>' + rotChip(to, hl) + '</div>'; }).join('') + '</div>';
+    });
+  }
+  if (full) {
+    var past = L.filter(function(e){ return e.ym !== k && e.dir > 0; }).slice(-4).reverse();
+    if (past.length) h += '<div class="rvhist"><div class="rvgt">ประวัติการวนเดือนก่อน</div>' + past.map(function(e){ var p = e.ym.split('-'); return '<div><b>' + esc(monthShort(+p[0], +p[1])) + '</b> — ' + e.groups.map(function(mv){ return mv.map(function(m){ return esc(rotLbl(m.from).split(' ')[0]) + '→' + esc(rotLbl(m.to).split(' ')[0]); }).join(', '); }).join(' | ') + '</div>'; }).join('') + '</div>';
+  }
+  return h + '</div>';
 }
+function rotViewDlg(){
+  modal('<div class="hx"><h2 style="margin:0;font-size:17px">🔄 ระบบวน & ภาพรวมการวน</h2><button class="btn sm" data-act="closeModal">ปิด ✕</button></div><div class="rvdlg">' + rotOverview(UI.listId, true) + '</div><div class="stol" style="margin-top:14px">⚙ ตั้งค่ากลุ่มวน</div><div class="rotdlg">' + rotEditor(true) + '</div>', 720);
+}
+function rotSettingsHtml(){ return '<div class="rotdlg">' + rotEditor(true) + '</div>'; }
+function rotDlg(){ rotViewDlg(); }
 
 /* ===================== ภาพรวมการงดเวร (หน้า งดเวร) ===================== */
 var EXCAT = [
@@ -5071,7 +5114,7 @@ function subsMonthCard(){
   return '<div class="card"><div class="hx"><h2 style="margin:0">🔁 จ้างเวร / เข้าแทน เดือนนี้<small>' + L.length + ' ครั้ง</small></h2></div>' +
     L.slice(-8).map(function(x){ var o = AP.map[x.k]; return '<div class="rsr"><span class="rsd">' + esc(thd(DE.iso(S.y, S.m, x.d), 1)) + '</span><div><b>' + esc(x.s.who) + '</b><small>เข้าแทน ' + esc(o ? o.label : '-') + '</small></div></div>'; }).join('') + '</div>';
 }
-function rotRefreshDlg(){ var d = document.querySelector('#modal .rotdlg'); if (d) d.innerHTML = rotEditor(true); }
+function rotRefreshDlg(){ var d = document.querySelector('#modal .rotdlg'); if (d) d.innerHTML = rotEditor(true); var v = document.querySelector('#modal .rvdlg'); if (v) v.innerHTML = rotOverview(UI.listId, true); }
 var ROT_ACT = {
   rotGSel: function(t){ UI.rotG = +t.dataset.v; render(); rotRefreshDlg(); },
   rotGAdd: function(){ S.rotExtra = S.rotExtra || []; S.rotExtra.push([]); UI.rotG = rotGroupsAll().length - 1; save(); render(); rotRefreshDlg(); toast('เพิ่มกลุ่มวนใหม่แล้ว — ติ๊กเลือกบัญชีที่จะวนกัน'); },
@@ -5520,6 +5563,7 @@ function chatPrompt(q){
   var C = UI.chat, hist = C.msgs.slice(-6).map(function(m){ return (m.me ? 'ผู้ใช้: ' : 'ผู้ช่วย: ') + m.t.slice(0, 600); }).join('\n');
   var p = 'คุณชื่อ ' + BOT_NAME + ' (ส.ท.เคโรโระ) เป็นผู้ช่วยประจำแผนกธุรการและกำลังพล ' + S.unit + ' แนะนำตัวด้วยชื่อนี้เมื่อถูกถามชื่อ บุคลิกร่าเริง กระตือรือร้น มั่นใจ แทนตัวเองว่า กระผม และลงท้ายด้วย ขอรับ บางครั้ง (ไม่บ่อย) หัวเราะว่า เกโระ เกโระ เมื่อทำงานสำเร็จ (แต่ข้อความที่ร่างให้ผู้ใช้นำไปส่งต่อ ให้ใช้ ครับ ตามปกติ) ตอบเป็นภาษาไทย สุภาพแบบทหาร กระชับ ตรงประเด็น ใช้ข้อมูลที่ให้เมื่อเกี่ยวข้อง ข้อมูลที่ระบุว่า คาดการณ์ล่วงหน้า คือผลที่ระบบคำนวณไว้แล้ว ใช้ตอบได้เลยแต่ให้บอกว่าเป็นร่างคาดการณ์ที่อาจเปลี่ยนได้ ห้ามแต่งรายชื่อหรือวันที่ที่ไม่มีในข้อมูล\n';
   p += '\n' + AGENT_HELP + '\nบัญชีเวรที่มี: ' + S.lists.map(function(l){ return l.short; }).join(', ') + '\nเดือนที่กำลังจัด: ' + DE.MONTHS_L[S.m - 1] + ' ' + be(S.y) + ' (ค.ศ. ' + S.y + ')\n';
+  try { var km = ym(), hl = holidays(); p += 'สถานะระบบ: หน้าที่เปิดอยู่ ' + ((TABS.find(function(x){ return x[0] === UI.tab; }) || [])[1] || '') + ' • บันทึกการแก้ไขเดือนนี้ ' + (S.changelog || []).filter(function(c){ return c.ym === km; }).length + ' รายการ (ทั้งหมด ' + (S.changelog || []).length + ') • ย้อนกลับได้ ' + UNDO.length + ' ขั้น • วันหยุดเดือนนี้: ' + Object.keys(hl).map(function(d){ return d + ' ' + hl[d]; }).join(', ') + ' • ตั้งค่า: ' + Object.keys(S.rules).filter(function(k){ return typeof S.rules[k] === 'boolean'; }).map(function(k){ return k + '=' + (S.rules[k] ? 'เปิด' : 'ปิด'); }).join(', ') + ' • ผู้ใช้' + (isOwner() ? 'เป็นเจ้าของระบบ' : 'ทั่วไป (คำสั่งตั้งค่าระบบต้องใส่รหัส)') + '\n'; } catch (e) {}
   if (C.ctx) p += '\n' + chatCtx(q) + '\n';
   if (hist) p += '\nบทสนทนาก่อนหน้า:\n' + hist + '\n';
   p += '\nคำถาม: ' + q;
@@ -5587,7 +5631,7 @@ function rankSyncRun(quiet){
 }
 
 /* ---------- สั่งงาน ส.ท.เคโรโระ: AI เสนอคำสั่ง → ผู้ใช้ยืนยัน → ระบบทำให้ ---------- */
-var AGENT_HELP = 'ถ้าผู้ใช้ "สั่งให้ทำ" (เช่น ใส่งดเวร ลบงดเวร สลับเวร เปลี่ยนคนเข้าเวรวันหนึ่ง บันทึกจ้างเวร/เข้าแทน บันทึกเบอร์โทร ไปเดือนถัดไป) ให้ตอบสั้น ๆ ว่าจะทำอะไร แล้วต่อท้ายด้วยบล็อกคำสั่งรูปแบบนี้เท่านั้น:\n' +
+var AGENT_HELP = 'กระผมดูแลและจัดการระบบได้จริงผ่านบล็อกคำสั่ง ห้ามตอบว่าทำไม่ได้หรือไม่มีคำสั่ง ถ้ามีชนิดคำสั่งที่ตรงด้านล่าง ถ้าผู้ใช้ "สั่งให้ทำ" (เช่น ใส่งดเวร ลบงดเวร สลับเวร เปลี่ยนคนเข้าเวรวันหนึ่ง บันทึกจ้างเวร/เข้าแทน บันทึกเบอร์โทร ไปเดือนถัดไป ล้างบันทึกการแก้ไข เพิ่ม/ลดคน แก้ยศ วันหยุด ตั้งค่า วนรายชื่อ ย้อนกลับ เปิดหน้า) ให้ตอบสั้น ๆ ว่าจะทำอะไร แล้วต่อท้ายด้วยบล็อกคำสั่งรูปแบบนี้เท่านั้น:\n' +
   '<<ACTION>>[ {...}, {...} ]<<END>>\n' +
   'ชนิดคำสั่ง (ใช้ชื่อบัญชีเวรตามข้อมูล เช่น "น.เวร", วันที่เป็นตัวเลขวันของเดือนปัจจุบัน หรือ yyyy-mm-dd ปี ค.ศ.):\n' +
   '{"type":"exempt","name":"ยศ ชื่อ สกุล","from":"yyyy-mm-dd","to":"yyyy-mm-dd หรือ null","reason":"เหตุ"}\n' +
@@ -5597,6 +5641,21 @@ var AGENT_HELP = 'ถ้าผู้ใช้ "สั่งให้ทำ" (เ
   '{"type":"sub","list":"น.เวร","day":5,"who":"ยศ ชื่อ สกุล ผู้เข้าแทน","phone":"08xxxxxxxx"}\n' +
   '{"type":"phone","name":"ชื่อ","phone":"08xxxxxxxx"}\n' +
   '{"type":"nextMonth"}\n' +
+  '— คำสั่งดูแลระบบ —\n' +
+  '{"type":"clearLog","scope":"month หรือ all"}  (ล้างบันทึกการแก้ไข: month=เฉพาะเดือนนี้, all=ทั้งหมด)\n' +
+  '{"type":"tab","tab":"home|roster|exempt|docs|claim|pay|print|archive|setup|install"}  (เปิดหน้า)\n' +
+  '{"type":"addPerson","list":"น.เวร","name":"ยศ ชื่อ สกุล","pos":"end หรือ ลำดับที่ (1,2,..)","start":"yyyy-mm-dd หรือ null"}\n' +
+  '{"type":"removePerson","list":"น.เวร","name":"ชื่อ","mode":"stop หรือ del","from":"yyyy-mm-dd","reason":"เหตุ"}  (stop=พ้นหน้าที่ตั้งแต่วันที่, del=ลบออกจากบัญชี)\n' +
+  '{"type":"start","list":"น.เวร","name":"ชื่อ"}  (ให้คนนี้เป็นคนเริ่มเวรวันที่ 1 ของเดือนนี้)\n' +
+  '{"type":"rank","name":"ชื่อ","rank":"ส.อ."}  (แก้ยศ)\n' +
+  '{"type":"note","name":"ชื่อ","note":"ข้อความหมายเหตุ หรือ ว่าง"}\n' +
+  '{"type":"resetDay","list":"น.เวร","day":5}  (คืนวันนั้นให้ระบบจัดเอง)\n' +
+  '{"type":"resetMonth","list":"น.เวร หรือ all"}  (ล้างการแก้มือทั้งเดือน ให้ระบบจัดใหม่)\n' +
+  '{"type":"holiday","day":5,"name":"ชื่อวันหยุด"}  /  {"type":"unholiday","day":5}\n' +
+  '{"type":"rule","key":"passEnabled|passConfirm|buffer|rotateTop|absentBottom|thaiDigits|autoRotate","value":true}\n' +
+  '{"type":"rotate","dir":1}  (วนรายชื่อทุกกลุ่มวน 1 รอบ, dir -1 = ย้อนการวน)\n' +
+  '{"type":"undo","n":1}  /  {"type":"redo","n":1}  /  {"type":"prevMonth"}\n' +
+  'สั่งหลายอย่างพร้อมกันได้ ใส่หลาย object ในอาร์เรย์ ' +
   'ถ้าข้อมูลไม่พอ (ไม่รู้ชื่อ/วันที่/บัญชี) ให้ถามกลับก่อน ห้ามเดา ถ้าผู้ใช้แค่ถาม ไม่ได้สั่ง ห้ามใส่บล็อกคำสั่ง';
 function agFindPeople(q){
   var t = DE.norm(String(q || '').replace(/^(พล\.?[อทต]\.?|พ\.[อทต]\.|ร\.[อทต]\.|จ\.ส\.[อทต]\.|ส\.[อทต]\.|พลทหาร|ว่าที่\s*ร\.ต\.)(หญิง)?\s*/, ''));
@@ -5666,6 +5725,98 @@ function agPlan(A){
           it.txt = '📞 บันทึกเบอร์ ' + pShort(P[0]) + ' ' + pv; it.run = function(){ setPhone(DE.personKey(P[0]), pv); }; it.ok = true; break;
         case 'nextMonth':
           var nx = nextYM(S.y, S.m); it.txt = '📅 ไปจัดเวรเดือน ' + DE.MONTHS_L[nx[1] - 1] + ' ' + be(nx[0]) + ' (วนต่อจากเดือนนี้)'; it.run = function(){ nextMonth(); }; it.last = true; it.ok = true; break;
+        case 'clearLog':
+          var all = a.scope === 'all', km = ym(), CL = (S.changelog || []).filter(function(c){ return all || c.ym === km; });
+          if (!CL.length) { it.err = 'ไม่มีบันทึกการแก้ไข' + (all ? '' : 'ของเดือนนี้'); break; }
+          it.txt = '🧹 ล้างบันทึกการแก้ไข' + (all ? 'ทั้งหมด' : 'เดือน ' + monthLabel()) + ' (' + CL.length + ' รายการ)'; it.sys = true;
+          it.run = function(){ var ids = CL.map(function(c){ return c.id; }); S.changelog = (S.changelog || []).filter(function(c){ return ids.indexOf(c.id) < 0; }); cpDel(ids); LOGBASE = null; _logKeep = S.changelog; }; it.ok = true; break;
+        case 'tab':
+          var tb = TABS.find(function(x){ return x[0] === a.tab || x[1] === a.tab || String(a.tab || '').indexOf(x[1]) >= 0; });
+          if (!tb) { it.err = 'ไม่รู้จักหน้า "' + a.tab + '"'; break; }
+          it.txt = '📂 เปิดหน้า ' + tb[1]; it.nolog = true; it.run = function(){ UI.tab = tb[0]; }; it.ok = true; break;
+        case 'addPerson':
+          l = agList(a.list); if (!l) { it.err = 'ไม่พบบัญชี "' + a.list + '"'; break; }
+          var sp = DE.splitRank(String(a.name || '').trim()), nm = sp.rest.trim().split(/\s+/), np = { id: uid('p'), rank: sp.rank || '', name: nm[0] || '', surname: nm.slice(1).join(' '), note: '' };
+          if (!np.name || !np.surname) { it.err = 'ต้องมีชื่อและสกุล'; break; }
+          if (l.people.some(function(x){ return DE.personKey(x) === DE.personKey(np); })) { it.err = pLabel(np) + ' มีในบัญชี ' + l.short + ' แล้ว'; break; }
+          var ps = +a.pos >= 1 ? Math.min(+a.pos, l.people.length + 1) - 1 : -1, st = agDate(a.start);
+          it.txt = '➕ เพิ่ม ' + pLabel(np) + ' เข้าบัญชี ' + l.short + (ps >= 0 ? ' ลำดับที่ ' + (ps + 1) : ' ต่อท้าย') + (st && st > DE.iso(S.y, S.m, 1) ? ' เริ่มเข้าเวร ' + thd(st) : '');
+          it.run = function(){
+            if (ps < 0 || ps >= l.people.length) l.people.push(np); else { l.people.splice(ps, 0, np); if ((l.startIdx || 0) >= ps && l.people.length > 1) l.startIdx = (l.startIdx || 0) + 1; }
+            var first = DE.iso(S.y, S.m, 1); if (st && st > first) { var dd = new Date(st + 'T00:00:00'); dd.setDate(dd.getDate() - 1);
+              S.exemptions.push({ id: uid('e'), key: DE.personKey(np), label: pLabel(np), from: first, to: dd.getFullYear() + '-' + pad(dd.getMonth() + 1) + '-' + pad(dd.getDate()), reason: 'บรรจุใหม่ เริ่มเข้าเวร ' + DE.thDate(st) }); }
+          }; it.ok = true; break;
+        case 'removePerson':
+          l = agList(a.list); if (!l) { it.err = 'ไม่พบบัญชี "' + a.list + '"'; break; }
+          P = agFindPeople(a.name); var rp = l.people.find(function(x){ return P.some(function(p){ return DE.personKey(p) === DE.personKey(x); }); });
+          if (!rp) { it.err = 'ไม่พบ "' + a.name + '" ในบัญชี ' + l.short; break; }
+          if (a.mode === 'del') {
+            it.txt = '➖ ลบ ' + pLabel(rp) + ' ออกจากบัญชี ' + l.short;
+            it.run = function(){ var i = l.people.indexOf(rp); if (i < 0) return; l.people.splice(i, 1); if ((l.startIdx || 0) > i) l.startIdx--; if (l.startIdx >= l.people.length) l.startIdx = 0; };
+          } else {
+            var rf = agDate(a.from) || DE.iso(S.y, S.m, 1);
+            it.txt = '➖ ' + pLabel(rp) + ' พ้นหน้าที่ ' + l.short + ' ตั้งแต่ ' + thd(rf) + (a.reason ? ' (' + a.reason + ')' : '');
+            it.run = function(){ S.exemptions.push({ id: uid('e'), key: DE.personKey(rp), label: pLabel(rp), from: rf, to: null, reason: a.reason || 'ย้ายออก' }); };
+          }
+          it.ok = true; break;
+        case 'start':
+          l = agList(a.list); if (!l) { it.err = 'ไม่พบบัญชี "' + a.list + '"'; break; }
+          P = agFindPeople(a.name); var si = l.people.findIndex(function(x){ return P.some(function(p){ return DE.personKey(p) === DE.personKey(x); }); });
+          if (si < 0) { it.err = 'ไม่พบ "' + a.name + '" ในบัญชี ' + l.short; break; }
+          it.txt = '▶️ ' + l.short + ': เริ่มเวรเดือนนี้ที่ ' + (si + 1) + '. ' + pLabel(l.people[si]); it.run = function(){ l.startIdx = si; }; it.ok = true; break;
+        case 'rank':
+          P = agFindPeople(a.name); var nr = String(a.rank || '').trim();
+          if (P.length !== 1) { it.err = P.length ? 'ชื่อตรงหลายคน' : 'ไม่พบชื่อ "' + a.name + '"'; break; } if (!nr) { it.err = 'ไม่ได้ระบุยศ'; break; }
+          var rk = DE.personKey(P[0]);
+          it.txt = '🎖 แก้ยศ ' + pLabel(P[0]) + ' → ' + nr + ' ' + P[0].name + ' ' + P[0].surname;
+          it.run = function(){ S.lists.forEach(function(x){ x.people.forEach(function(p){ if (DE.personKey(p) === rk) p.rank = nr; }); }); S.exemptions.forEach(function(e){ if (e.key === rk) e.label = nr + ' ' + P[0].name + ' ' + P[0].surname; }); }; it.ok = true; break;
+        case 'note':
+          P = agFindPeople(a.name); if (P.length !== 1) { it.err = P.length ? 'ชื่อตรงหลายคน' : 'ไม่พบชื่อ "' + a.name + '"'; break; }
+          var nk = DE.personKey(P[0]), nt = String(a.note || '').trim();
+          it.txt = '📝 หมายเหตุ ' + pShort(P[0]) + ': ' + (nt || '(ล้าง)');
+          it.run = function(){ S.lists.forEach(function(x){ x.people.forEach(function(p){ if (DE.personKey(p) === nk) p.note = nt; }); }); }; it.ok = true; break;
+        case 'resetDay':
+          l = agList(a.list); d = agDay(a.day); if (!l || !d) { it.err = 'ต้องระบุบัญชีและวันที่'; break; }
+          var k1 = ym(), ov = ((S.overrides[k1] || {})[l.id] || {}), fx = (((S.fixed || {})[k1] || {})[l.id] || {});
+          if (ov[d] == null) { it.err = fx[d] != null ? l.short + ' เดือนนี้ล็อกตามไฟล์ — ใช้คำสั่งเปลี่ยนคนเข้าเวรแทน' : l.short + ' วันที่ ' + d + ' ไม่ได้แก้มือไว้'; break; }
+          it.txt = '↺ ' + l.short + ' วันที่ ' + d + ': คืนให้ระบบจัดเอง';
+          it.run = function(){ delete ov[d]; compute(); }; it.ok = true; break;
+        case 'resetMonth':
+          var k2 = ym(), LL = a.list && a.list !== 'all' ? [agList(a.list)] : S.lists.slice();
+          if (LL[0] == null) { it.err = 'ไม่พบบัญชี "' + a.list + '"'; break; }
+          var cnt = LL.reduce(function(s, x){ return s + Object.keys((S.overrides[k2] || {})[x.id] || {}).length; }, 0);
+          if (!cnt) { it.err = 'เดือนนี้ไม่มีการแก้มือ' + (LL.length === 1 ? 'ใน ' + LL[0].short : ''); break; }
+          it.txt = '↺ ล้างการแก้มือ ' + cnt + ' วัน ' + (LL.length === 1 ? 'ใน ' + LL[0].short : 'ทุกบัญชี') + ' ให้ระบบจัดใหม่';
+          it.run = function(){ LL.forEach(function(x){ if (S.overrides[k2]) delete S.overrides[k2][x.id]; }); compute(); }; it.ok = true; break;
+        case 'holiday':
+          d = agDay(a.day); if (!d) { it.err = 'วันที่ไม่ถูกต้อง'; break; }
+          var hn = String(a.name || 'วันหยุดราชการ').trim();
+          it.txt = '🎌 เพิ่มวันหยุด ' + d + ' ' + DE.MONTHS_S[S.m - 1] + ' — ' + hn; it.sys = true;
+          it.run = function(){ var o = Object.assign({}, holidays()); o[d] = hn; S.holidays[ym()] = o; compute(); }; it.ok = true; break;
+        case 'unholiday':
+          d = agDay(a.day); if (!d || !holidays()[d]) { it.err = 'วันที่ ' + a.day + ' ไม่ใช่วันหยุด'; break; }
+          it.txt = '🗓 ยกเลิกวันหยุด ' + d + ' ' + DE.MONTHS_S[S.m - 1] + ' (' + holidays()[d] + ')'; it.sys = true;
+          it.run = function(){ var o = Object.assign({}, holidays()); delete o[d]; S.holidays[ym()] = o; compute(); }; it.ok = true; break;
+        case 'rule':
+          var RL = { passEnabled: 'สิทธิ์พาสเวรวันหยุด', passConfirm: 'ยืนยันก่อนงดเวรวันหยุด', buffer: 'งดเวรก่อน/หลังฝึกศึกษา (ข้อ ๔.๖)', rotateTop: 'พิมพ์ให้คนเริ่มเวรอยู่บรรทัดแรก', absentBottom: 'พิมพ์ย้ายคนงดทั้งเดือนไปท้าย', thaiDigits: 'ใช้เลขไทย', autoRotate: 'วนผนวกอัตโนมัติ' };
+          if (!RL[a.key]) { it.err = 'ไม่รู้จักการตั้งค่า "' + a.key + '"'; break; }
+          var rv = a.value === true || a.value === 'true' || a.value === 1 || a.value === 'on';
+          it.txt = '⚙ ' + RL[a.key] + ': ' + (rv ? 'เปิด' : 'ปิด'); it.sys = true;
+          it.run = function(){ S.rules[a.key] = rv; compute(); }; it.ok = true; break;
+        case 'rotate':
+          if (!rotAny()) { it.err = 'ยังไม่ได้ตั้งกลุ่มวน'; break; }
+          var rd = +a.dir < 0 ? -1 : 1;
+          it.txt = (rd > 0 ? '🔄 วนรายชื่อ 1 รอบ: ' : '↩ ย้อนการวน 1 รอบ: ') + rotGroupsAll().filter(function(g){ return g.length > 1; }).map(function(g){ return rotPath(g); }).join(' | ');
+          it.run = function(){ rotatePosts(rd, true); }; it.ok = true; break;
+        case 'undo': case 'redo':
+          var nn = Math.max(1, Math.min(20, +a.n || 1)), stk = a.type === 'undo' ? UNDO : REDO;
+          if (!stk.length) { it.err = 'ไม่มีรายการให้' + (a.type === 'undo' ? 'ย้อนกลับ' : 'ทำซ้ำ'); break; }
+          nn = Math.min(nn, stk.length);
+          it.txt = (a.type === 'undo' ? '↶ ย้อนกลับ ' : '↷ ทำซ้ำ ') + nn + ' ขั้น'; it.last = true;
+          it.run = function(){ for (var q = 0; q < nn; q++) (a.type === 'undo' ? undo : redo)(); }; it.ok = true; break;
+        case 'prevMonth':
+          var pv2 = prevYM(S.y, S.m); it.txt = '📅 ย้อนกลับไปเดือน ' + DE.MONTHS_L[pv2[1] - 1] + ' ' + be(pv2[0]); it.last = true;
+          it.run = function(){ prevMonth(); }; it.ok = true; break;
         default: it.err = 'ไม่รู้จักคำสั่ง ' + a.type;
       }
     } catch (e) { it.err = e.message; }
@@ -5686,9 +5837,9 @@ function agParse(text){
 }
 function agCard(msg, i){
   var P = msg.plan; if (!P) return '';
-  if (P.bad) return '<div class="agc bad">อ่านคำสั่งไม่ได้ — ลองสั่งใหม่ให้ชัดขึ้น</div>';
+  if (P.bad) return '<div class="kcmd bad">อ่านคำสั่งไม่ได้ — ลองสั่งใหม่ให้ชัดขึ้น</div>';
   var ok = P.filter(function(x){ return x.ok; });
-  return '<div class="agc' + (msg.done ? ' done' : msg.cancel ? ' cancel' : '') + '"><div class="agh">📋 คำสั่งที่จะทำ</div>' + P.map(function(x){ return '<div class="agi' + (x.ok ? '' : ' err') + '">' + esc(x.ok ? x.txt : '⚠ ' + x.err) + '</div>'; }).join('') +
+  return '<div class="kcmd' + (msg.done ? ' done' : msg.cancel ? ' cancel' : '') + '"><div class="agh">📋 คำสั่งที่จะทำ</div>' + P.map(function(x){ return '<div class="agi' + (x.ok ? '' : ' err') + '">' + esc(x.ok ? x.txt : '⚠ ' + x.err) + (x.ok && x.sys ? ' <span class="ksys">🔐 เจ้าของระบบ</span>' : '') + '</div>'; }).join('') +
     (msg.done ? '<div class="ags">✅ ทำเรียบร้อย ' + msg.done + ' รายการ — กด ↶ ย้อนกลับด้านบนได้ถ้าผิด</div>' : msg.cancel ? '<div class="ags">ยกเลิกแล้ว</div>' :
       ok.length ? '<div class="agb"><button class="btn sm" data-act="agNo" data-v="' + i + '">ยกเลิก</button><button class="btn sm pri" data-act="agYes" data-v="' + i + '">✅ ยืนยัน ทำ ' + ok.length + ' รายการ</button></div>' : '') + '</div>';
 }
@@ -5700,9 +5851,9 @@ var AG_ACT = {
   chDocDel: function(t){ UI.chat.docs.splice(+t.dataset.v, 1); chatRender(); },
   agYes: function(t){
     var m = UI.chat.msgs[+t.dataset.v]; if (!m || !m.plan || m.done) return;
-    if (ownMode() === 'all' && !isOwner()) { ownAsk('ระบบล็อกให้ดูได้อย่างเดียว'); return; }
-    var ok = m.plan.filter(function(x){ return x.ok; }), n = 0, last = null;
-    ok.forEach(function(x){ if (x.last) { last = x; return; } try { x.run(); n++; } catch (e) {} });
+    var ok = m.plan.filter(function(x){ return x.ok; }), n = 0, last = null, iv = t.dataset.v;
+    if (!isOwner() && (ownMode() === 'all' || ok.some(function(x){ return x.sys; }))) { UI.ownRetry = function(){ ACT.agYes({ dataset: { v: iv } }); }; ownAsk(ownMode() === 'all' ? 'ระบบล็อกให้ดูได้อย่างเดียว' : 'คำสั่งนี้เป็นการตั้งค่าระบบ'); return; }
+    ok.forEach(function(x){ if (x.last) { last = x; return; } try { x.run(); n++; } catch (e) { console.error(e); } });
     if (n) { save(); render(); }
     if (last) { try { last.run(); n++; } catch (e) {} }
     m.done = n || -1; chatRender(); toast('✅ ส.ท.เคโรโระ ดำเนินการแล้ว ' + n + ' รายการ');
@@ -5837,6 +5988,7 @@ var ACT = {
   cmpAll: function(){ UI.cmpAll = !UI.cmpAll; render(); },
   cmpMode: function(t){ UI.cmpMode = t.dataset.v; render(); },
   rotDlg: function(){ rotDlg(); },
+  rotView: function(){ rotViewDlg(); },
   esSavePad: function(){ var c = document.getElementById('esPad'); if (!c || !c._dirty) { toast('เซ็นในกรอบก่อน'); return; } var cp = document.createElement('canvas'); cp.width = c.width; cp.height = c.height; cp.getContext('2d').drawImage(c, 0, 0); var u = trimCanvas(cp, false); if (u) esSet(u); },
   esClearPad: function(){ var c = document.getElementById('esPad'); if (c) { c.getContext('2d').clearRect(0, 0, c.width, c.height); c._dirty = 0; } },
   esDel: function(){ showConfirm('ลบลายเซ็นอิเล็กทรอนิกส์?', function(){ var E = esg(); E.img = ''; E.on = false; save(); render(); }); },
