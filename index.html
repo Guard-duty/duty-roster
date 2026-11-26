@@ -546,6 +546,20 @@ table.t tr.dim td{opacity:.5}
 .updlock{text-align:center;padding:18px;background:#f6f5ee;border-radius:12px;margin-top:8px}.updlock div{font-size:34px}.updlock b{display:block;font-size:16px;color:var(--olive)}.updlock span{display:block;font-size:13px;color:#777;margin:2px 0 10px}
 .updft{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}.updft span{font-size:12px;background:#fff;border:1px solid #e6e2d2;border-radius:999px;padding:2px 10px;color:#666}
 .updcode{background:#fff8e8;border:1px solid #f0d49a;border-radius:10px;padding:8px 12px}.updcode ol{margin:6px 0 0;padding-left:20px;line-height:2.1}
+.chfab{position:fixed;right:18px;bottom:18px;z-index:70;display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#6b4fbb,#8a6ad8);color:#fff;border:none;border-radius:999px;padding:11px 16px 11px 13px;font:inherit;font-weight:700;font-size:14.5px;box-shadow:0 6px 18px rgba(80,50,160,.35);cursor:pointer}.chfab:hover{transform:translateY(-1px)}
+.pwainst{bottom:76px!important}
+.chp{position:fixed;right:18px;bottom:18px;z-index:80;width:400px;max-width:calc(100vw - 24px);height:min(620px,calc(100vh - 40px));background:#fff;border-radius:18px;box-shadow:0 14px 44px rgba(0,0,0,.28);display:flex;flex-direction:column;overflow:hidden;border:1px solid #e2dcf3}
+.chh{display:flex;align-items:center;gap:8px;padding:11px 12px;background:linear-gradient(135deg,#6b4fbb,#8a6ad8);color:#fff}.chh b{font-size:15px;margin-right:auto}.chx{display:flex;align-items:center;gap:4px;font-size:12px;cursor:pointer}.chx input{margin:0}.chi{border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:8px;width:30px;height:28px;cursor:pointer;font-size:13px}
+.chl{flex:1;overflow:auto;padding:12px;background:#f8f7fc;display:flex;flex-direction:column;gap:8px}
+.chm{display:flex;align-items:flex-end;gap:4px;max-width:88%}.chm.me{align-self:flex-end;flex-direction:row-reverse}.chb{padding:8px 12px;border-radius:14px;font-size:14px;line-height:1.6;white-space:normal;word-break:break-word}.chm.me .chb{background:#6b4fbb;color:#fff;border-bottom-right-radius:4px}.chm.ai .chb{background:#fff;border:1px solid #e6e1f4;border-bottom-left-radius:4px}.chm.err .chb{background:#fdecea;border-color:#f3c2bb;color:#8a1f15}
+.chcp{border:none;background:none;cursor:pointer;opacity:.45;font-size:13px}.chcp:hover{opacity:1}
+.chdots{display:flex;gap:4px;padding:12px 14px}.chdots i{width:7px;height:7px;border-radius:50%;background:#a796d8;animation:chd 1s infinite}.chdots i:nth-child(2){animation-delay:.15s}.chdots i:nth-child(3){animation-delay:.3s}@keyframes chd{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.chf{display:flex;gap:6px;padding:10px;border-top:1px solid #eee}.chf textarea{flex:1;resize:none;border:1.5px solid #ddd5f0;border-radius:10px;padding:8px 10px;font:inherit;font-size:14px}.chf .btn{align-self:stretch}
+.chnote{font-size:11px;color:#999;padding:0 12px 8px}
+.chempty{margin:auto;text-align:center;color:#777;font-size:13.5px}.chempty b{display:block;font-size:16px;color:#5b3fb0}.chempty span{display:block;margin:2px 0 10px}
+.chsug{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.chsug button{border:1px solid #ddd5f0;background:#fff;border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer;color:#5b3fb0}.chsug button:hover{background:#f1ecfb}
+@media print{.chfab,.chp{display:none!important}}
+@media(max-width:760px){.chfab span{display:none}.chp{right:6px;bottom:6px;height:calc(100vh - 20px)}}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#2c3016">
@@ -1138,7 +1152,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.26-1817';
+var APP_VER = '2569.11.26-2113';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -4384,6 +4398,7 @@ var TABI = { home: ['🏠', '#3b4a24'], roster: ['📅', '#2f6b2a'], exempt: ['�
 
 /* ===================== แถบหัว: ย้อนกลับ/ทำซ้ำ ===================== */
 function hdrUndo(){
+  try { if (!document.getElementById('chatWrap') || (UI.chat && !UI.chat.open)) chatRender(); } catch (e) {}
   try { swapNotify(); } catch (e) {}
   try { var ho = document.getElementById('hOwn'); if (ho) ho.innerHTML = ownBadge(); document.body.classList.toggle('ro', !isOwner() && ownMode() === 'all'); } catch (e) {}
   var u = document.getElementById('hUndo'), r = document.getElementById('hRedo'); if (!u) return;
@@ -4576,7 +4591,7 @@ var OWN_KEY = 'dutyOwner.v1', OWN_HRS = 8;
 // ส่วนตั้งค่าระบบ — ต้องเป็นเจ้าของเสมอ
 var OWN_SYS = { act: 'lcolReset miOk mRank mRankAll esSavePad esClearPad esDel esMv rotDlg rotFix rotSkip rotOrder sortSeed resetHol resetAll addList delList addSigner delSigner copyGs showGs goSetup updGo updRevert updUseIndex ghSave updCopyCode pwaTeam pwaInvite aiKeySave aiKeyDel stoDlg stoGo stoCheck stoBack stoClean stoCleanRun bakRestore logRestore restoreVer delVer forceSave purgeEx ownMode ownCode', ch: 'lcol esOn esH esFile masterFile rule hol sg rotMember wmode isg il ifolder drv importJson stoD' };
 // ดูได้อย่างเดียว (เมื่อล็อกทั้งระบบ) — คำสั่งที่ไม่เปลี่ยนข้อมูล
-var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv ownPw annF annPick hrWho annAiTxt' };
+var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel chatOpen chatClose chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx ownPw annF annPick hrWho annAiTxt' };
 (function(){ ['act', 'ch'].forEach(function(k){ var o = {}; OWN_SYS[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_SYS[k] = o; o = {}; OWN_VIEW[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_VIEW[k] = o; }); })();
 function ownSess(){ try { var o = JSON.parse(sessionStorage.getItem(OWN_KEY) || 'null'); if (o && o.until > Date.now()) return o; } catch (e) {} return null; }
 function isOwner(){ return !!ownSess(); }
@@ -5034,13 +5049,13 @@ function aiCard(){
   var on = stoOn(); if (on) aiCheck();
   var st = UI.aiSt, h = '<div class="card" id="aiCard"><div class="hx"><h2 style="margin:0">🤖 AI ในระบบ<small>ช่วยแต่งข้อความประกาศ ตอบในระบบได้เลย</small></h2>' + (st && st.has ? '<span class="pill ok">เชื่อมแล้ว' + (st.model ? ' • ' + esc(st.model) : '') + '</span>' : '<span class="pill">ยังไม่เชื่อม</span>') + '</div>';
   if (!on) return h + '<div class="muted">ใช้ได้เมื่อเปิดระบบผ่านลิงก์ Google (ติดตั้งขั้นที่ ๓ ก่อน)</div></div>';
-  h += '<ol class="small" style="line-height:1.9;margin:8px 0 0;padding-left:20px"><li>เปิด <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>Google AI Studio → API keys</b></a> ด้วยบัญชี Google (ฟรี)</li><li>กด <b>Create API key</b> แล้วคัดลอกรหัส (ขึ้นต้น AIza…)</li><li>วางในช่องด้านล่าง กดบันทึก — ระบบจะทดสอบให้ทันที</li></ol>' +
+  h += '<ol class="small" style="line-height:1.9;margin:8px 0 0;padding-left:20px"><li>เปิด <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>Google AI Studio → API keys</b></a> ด้วยบัญชี Google (ฟรี)</li><li>กด <b>Create API key</b> แล้วคัดลอกรหัส (ขึ้นต้น AIza… หรือ AQ.…)</li><li>วางในช่องด้านล่าง กดบันทึก — ระบบจะทดสอบให้ทันที</li></ol>' +
     '<div class="row" style="margin-top:8px;flex-wrap:wrap"><input type="password" id="aiKey" placeholder="' + (st && st.has ? 'ตั้งค่าแล้ว — วางรหัสใหม่ถ้าต้องการเปลี่ยน' : 'วาง API key ที่นี่') + '" style="flex:1;min-width:240px" autocomplete="off"><button class="btn pri" data-act="aiKeySave">💾 บันทึกและทดสอบ</button>' + (st && st.has ? '<button class="btn red sm" data-act="aiKeyDel">ยกเลิกการเชื่อม</button>' : '') + '</div>' +
     '<div class="small muted" style="margin-top:6px">รหัสเก็บในสคริปต์ฝั่ง Google (ไม่อยู่ในไฟล์ข้อมูล ไม่มีใครเห็น) • ทุกคนในกลุ่มใช้ปุ่ม "ให้ AI แต่งเลย" ได้ แต่ตั้งค่าได้เฉพาะเจ้าของระบบ • โควตาฟรีพอสำหรับงานประกาศ</div>';
   return h + '</div>';
 }
 var AI_ACT = {
-  aiSetup: function(){ document.getElementById('modal').innerHTML = ''; UI.tab = 'install'; render(); setTimeout(function(){ var c = document.getElementById('aiCard'); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60); },
+  aiSetup: function(){ if (UI.chat) { UI.chat.open = false; chatRender(); } document.getElementById('modal').innerHTML = ''; UI.tab = 'install'; render(); setTimeout(function(){ var c = document.getElementById('aiCard'); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60); },
   aiWrite: function(){
     var A = annState().A; if (UI.aiBusy) return; UI.aiBusy = 1; annDlg();
     sapi('aiWrite', { prompt: annAiPrompt() }).then(function(j){ UI.aiBusy = 0; A.aiText = j.text.replace(/^-{3,}\s*|\s*-{3,}$/g, '').trim(); A.style = 'ai'; A.touched = 1; annDlg(); toast('✨ AI แต่งข้อความแล้ว — ตรวจทานก่อนส่งนะครับ'); })
@@ -5405,6 +5420,64 @@ function eyeAll(root){
 }
 new MutationObserver(function(){ eyeAll(); }).observe(document.documentElement, { childList: true, subtree: true });
 
+/* ---------- ผู้ช่วย AI: ถาม–ตอบได้ทุกเรื่อง (รู้ข้อมูลเวรเดือนนี้) ---------- */
+function chatCtx(){
+  var L = ['ข้อมูลระบบเวรรักษาการณ์ ' + S.unit + ' เดือน ' + DE.MONTHS_L[S.m - 1] + ' ' + be(S.y) + ' (วันนี้ ' + thd(todayIso(), 1) + ')'];
+  var sh = function(p){ return p ? (p.rank || '') + p.name : '-'; };
+  S.lists.forEach(function(l){ if (l.active === false) return; var r = CACHE.res[l.id]; if (!r) return;
+    L.push(l.annex + ' ' + l.short + ': ' + r.days.map(function(d){ var i = r.byDay[d]; return d + ' ' + (i == null ? '-' : sh(l.people[i])); }).join(', ')); });
+  var ex = effEx().filter(function(e){ var mr = monthRange(); return e.from <= mr[1] && (!e.to || e.to >= mr[0]); });
+  var AP = allPeople();
+  if (ex.length) L.push('งดเวร: ' + ex.map(function(e){ var p = AP.map[e.key]; return (p ? p.label : e.label) + ' ' + e.from.slice(5) + (e.to ? '–' + e.to.slice(5) : '–') + ' (' + String(e.reason || '').slice(0, 40) + ')'; }).join('; '));
+  var s = L.join('\n'); return s.length > 10000 ? s.slice(0, 10000) + '…' : s;
+}
+function chatPrompt(q){
+  var C = UI.chat, hist = C.msgs.slice(-6).map(function(m){ return (m.me ? 'ผู้ใช้: ' : 'ผู้ช่วย: ') + m.t.slice(0, 600); }).join('\n');
+  var p = 'คุณคือผู้ช่วยของแผนกธุรการและกำลังพล ' + S.unit + ' ตอบเป็นภาษาไทย สุภาพแบบทหาร กระชับ ตรงประเด็น ใช้ข้อมูลที่ให้เมื่อเกี่ยวข้อง ถ้าไม่แน่ใจให้บอกตรง ๆ ห้ามแต่งข้อมูลรายชื่อหรือวันที่เอง\n';
+  if (C.ctx) p += '\n' + chatCtx() + '\n';
+  if (hist) p += '\nบทสนทนาก่อนหน้า:\n' + hist + '\n';
+  p += '\nคำถาม: ' + q;
+  if (p.length > 11900) { var hd = p.indexOf('\nบทสนทนาก่อนหน้า:'); p = (hd > 0 ? p.slice(0, hd) + '\n\nคำถาม: ' + q : p).slice(0, 11900); }
+  return p;
+}
+function chatBody(){
+  var C = UI.chat;
+  if (!stoOn()) return '<div class="chempty">ผู้ช่วย AI ใช้ได้เมื่อเปิดผ่านลิงก์ Google หรือแอป</div>';
+  aiCheck();
+  if (UI.aiSt && !UI.aiSt.has) return '<div class="chempty">🤖 ยังไม่ได้เชื่อม AI<br><button class="btn sm pri" data-act="aiSetup" style="margin-top:8px">ไปตั้งค่า ›</button></div>';
+  if (!C.msgs.length) return '<div class="chempty"><div style="font-size:34px">🤖</div><b>ถามอะไรก็ได้</b><span>เรื่องเวร งานธุรการ ร่างหนังสือ หรือเรื่องทั่วไป</span><div class="chsug">' +
+    ['ใครเข้าเวร น.เวร พรุ่งนี้', 'ตอนนี้ใครงดเวรอยู่บ้าง', 'สรุปเวรเดือนนี้ให้หน่อย', 'ร่างข้อความขอสลับเวร', 'วิธีคิดค่าเวรวันหยุด'].map(function(s){ return '<button data-act="chatSug" data-v="' + esc(s) + '">' + esc(s) + '</button>'; }).join('') + '</div></div>';
+  return C.msgs.map(function(m, i){ return '<div class="chm ' + (m.me ? 'me' : 'ai') + (m.err ? ' err' : '') + '"><div class="chb">' + esc(m.t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>') + '</div>' + (!m.me && !m.err ? '<button class="chcp" data-act="chatCopy" data-v="' + i + '" title="คัดลอก">📋</button>' : '') + '</div>'; }).join('') +
+    (C.busy ? '<div class="chm ai"><div class="chb chdots"><i></i><i></i><i></i></div></div>' : '');
+}
+function chatRender(){
+  var w = document.getElementById('chatWrap'); if (!w) { w = document.createElement('div'); w.id = 'chatWrap'; document.body.appendChild(w); }
+  var C = UI.chat || (UI.chat = { open: false, msgs: [], ctx: true, busy: false });
+  if (!C.open) { w.innerHTML = stoOn() ? '<button class="chfab" data-act="chatOpen" title="ถาม AI">💬<span>ถาม AI</span></button>' : ''; return; }
+  var draft = (document.getElementById('chatIn') || {}).value || C.draft || '';
+  w.innerHTML = '<div class="chp"><div class="chh"><b>🤖 ผู้ช่วย AI</b><label class="chx"><input type="checkbox" data-ch="chatCtx"' + (C.ctx ? ' checked' : '') + '> ใช้ข้อมูลเวรเดือนนี้</label><button class="chi" data-act="chatClear" title="เริ่มใหม่">🗑</button><button class="chi" data-act="chatClose" title="ปิด">✕</button></div>' +
+    '<div class="chl" id="chatList">' + chatBody() + '</div>' +
+    '<div class="chf"><textarea id="chatIn" rows="2" placeholder="พิมพ์คำถาม… (Enter ส่ง, Shift+Enter ขึ้นบรรทัด)">' + esc(draft) + '</textarea><button class="btn pri" data-act="chatSend"' + (C.busy ? ' disabled' : '') + '>ส่ง</button></div>' +
+    '<div class="chnote">' + (C.ctx ? 'ข้อมูลเวรเดือนนี้ (ชื่อ/วันที่) จะถูกส่งให้ AI ของ Google เพื่อใช้ตอบ • ' : '') + 'ตรวจคำตอบก่อนนำไปใช้</div></div>';
+  var l = document.getElementById('chatList'); if (l) l.scrollTop = l.scrollHeight;
+  var i = document.getElementById('chatIn'); if (i) { i.onkeydown = function(e){ if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ACT.chatSend(); } }; if (!C.busy) i.focus(); }
+}
+var CHAT_ACT = {
+  chatOpen: function(){ UI.chat.open = true; chatRender(); },
+  chatClose: function(){ UI.chat.draft = (document.getElementById('chatIn') || {}).value || ''; UI.chat.open = false; chatRender(); },
+  chatClear: function(){ UI.chat.msgs = []; chatRender(); },
+  chatSug: function(t){ var i = document.getElementById('chatIn'); if (i) i.value = t.dataset.v; ACT.chatSend(); },
+  chatCopy: function(t){ var m = UI.chat.msgs[+t.dataset.v]; if (m) copyTxt(m.t, 'คัดลอกคำตอบแล้ว'); },
+  chatSend: function(){
+    var C = UI.chat, i = document.getElementById('chatIn'), q = i ? i.value.trim() : ''; if (!q || C.busy) return;
+    var prompt = chatPrompt(q);
+    C.msgs.push({ me: 1, t: q }); C.busy = true; C.draft = ''; if (i) i.value = ''; chatRender();
+    sapi('aiWrite', { prompt: prompt }).then(function(j){ C.busy = false; C.msgs.push({ t: j.text }); chatRender(); })
+      .catch(function(e){ C.busy = false; C.msgs.push({ t: '⚠️ ' + e.message, err: 1 }); chatRender(); });
+  }
+};
+var CHAT_CH = { chatCtx: function(t){ UI.chat.ctx = t.checked; } };
+
 /* ---------- actions ---------- */
 var ACT = {
   agDone: function(t){ var T = taskStore(); T[t.dataset.v] = { done: true, ts: Date.now() }; save(); render(); toast('ทำเครื่องหมายเสร็จแล้ว — กด ↶ ย้อนกลับได้'); },
@@ -5691,7 +5764,7 @@ document.addEventListener('focusout', function(e){
 document.addEventListener('keydown', function(e){
   if (e.key === 'Escape' && UI.asst) { UI.asst = false; renderAsst(); return; }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.ed) { e.preventDefault(); e.target.blur(); return; } if (e.key === 'Escape' && UI.editDay != null) { UI.editDay = null; render(); } });
-Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ST_ACT, PWA_ACT, UPD_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH);
+Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ST_ACT, PWA_ACT, UPD_ACT, CHAT_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH, CHAT_CH);
 setTimeout(function(){ try { statPing(); } catch (e) {} }, 2500);
 init();
 })();
