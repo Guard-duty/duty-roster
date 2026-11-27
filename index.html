@@ -669,6 +669,7 @@ table.t tr.dim td{opacity:.5}
 .dlvr{display:flex;align-items:center;gap:8px;padding:5px 2px;border-bottom:1px dashed #ece6d3;font-size:13px;flex-wrap:wrap}.dlvr small{color:#8a8470;flex:1}
 .dtl{display:flex;flex-direction:column;gap:6px;margin-top:8px}.dti2{display:flex;align-items:center;gap:10px;border:1px solid #ece6d3;border-radius:12px;padding:8px 10px;background:#fff;cursor:pointer}.dti2 input{width:18px;height:18px}.dti2 .dd2{display:flex;flex-direction:column;align-items:center;min-width:38px;font-weight:800;font-size:16px;color:#4b5a2a;line-height:1}.dti2 .dd2 small{font-size:10px;font-weight:400;color:#8a8470}.dti2 .tx2{flex:1;display:flex;flex-direction:column;font-size:14px}.dti2 .tx2 small{font-size:11.5px}
 .dti2.ok{background:#f1f8ee;border-color:#cde3c4}.dti2.ok .tx2{color:#5a7a4a;text-decoration:line-through}.dti2.ok .tx2 small{text-decoration:none;display:block}.dti2.late{background:#fdecea;border-color:#f3c1bb}.dti2.late small{color:#b3261e}.dti2.soon{background:#fff8e6;border-color:#f0d9a0}.dti2.soon small{color:#9a6a00}
+.ppc{display:inline-flex;align-items:center;gap:4px;background:#f8f6ef;border:1px solid #e6e0cc;border-radius:10px;padding:2px 6px;font-size:13px}.ppc .dsel{font-size:12.5px;max-width:190px}.ppc .seg button{font-size:12px!important;padding:3px 8px!important}
 .dph{padding:14px 16px}.dphh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.dpi{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:linear-gradient(135deg,#a0703a,#6b4a1f);box-shadow:0 3px 8px rgba(107,74,31,.25)}
 .dphh>div:nth-child(2){display:flex;flex-direction:column}.dphh b{font-size:16px}.dphh small{font-size:12px;color:#8a8470}
 .dpl{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}.dpl span{font-size:12.5px;border-radius:999px;padding:3px 10px;background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 30%,#fff)}.dpl b{font-size:14px}
@@ -1485,7 +1486,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1935';
+var APP_VER = '2569.11.27-1955';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -2424,7 +2425,7 @@ function pageOut(p){ var e = pageEd()[p.key]; return e != null ? e : p.html; }
 function viewer(pages, opts){
   opts = opts || {}; var E = pageEd(), n = pages.filter(function(p){ return E[p.key] != null; }).length;
   var h = '<div class="vbar"><span class="muted small">' + pages.length + ' หน้า' + (n ? ' • แก้ด้วยมือ ' + n + ' หน้า' : '') + '</span><div class="row">' +
-    (opts.extra || '') + (opts.ro ? '<span class="pill">สำเนา (อ่านอย่างเดียว)</span>' : '<button class="btn sm ' + (UI.pageEdit ? 'khaki' : '') + '" data-act="pageEdit">✏️ ' + (UI.pageEdit ? 'เสร็จสิ้นการแก้ไข' : 'แก้ไขเอกสาร') + '</button>') + '</div></div>';
+    paperCtl() + (opts.extra || '') + (opts.ro ? '<span class="pill">สำเนา (อ่านอย่างเดียว)</span>' : '<button class="btn sm ' + (UI.pageEdit ? 'khaki' : '') + '" data-act="pageEdit">✏️ ' + (UI.pageEdit ? 'เสร็จสิ้นการแก้ไข' : 'แก้ไขเอกสาร') + '</button>') + '</div></div>';
   if (UI.pageEdit && !opts.ro) h += '<div class="notice" style="margin-top:8px">คลิกที่ตัวอักษรใดก็ได้ในเอกสารแล้วพิมพ์แก้ได้ทันที — ใช้กับการพิมพ์ทุกครั้งของเดือนนี้ • หน้าที่แก้แล้วจะไม่อัปเดตตามข้อมูลใหม่ จนกว่าจะกด ↺ คืนค่าอัตโนมัติ</div>';
   h += '<div class="paperwrap">' + pages.map(function(p){
     var ed = !opts.ro && E[p.key] != null;
@@ -4677,7 +4678,7 @@ function docCss(){
 function pageToCanvas(paper, scale){
   scale = scale || 2;
   var cl = paper.cloneNode(true); cl.style.zoom = ''; cl.querySelectorAll('tr[class^="xc-"]').forEach(function(e){ e.removeAttribute('class'); }); cl.querySelectorAll('[contenteditable]').forEach(function(e){ e.removeAttribute('contenteditable'); }); cl.querySelectorAll('.tick').forEach(function(e){ e.remove(); }); cl.querySelectorAll('.chg').forEach(function(e){ e.classList.remove('chg'); });
-  var w = paper.offsetWidth / (parseFloat(paper.style.zoom) || 1), hgt = paper.offsetHeight / (parseFloat(paper.style.zoom) || 1);
+  var z0 = paper.style.zoom; paper.style.zoom = ''; var w = paper.offsetWidth, hgt = paper.offsetHeight; paper.style.zoom = z0;
   var wrap = document.createElement('div'); wrap.className = 'pimg'; wrap.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml'); wrap.appendChild(cl);
   var st = document.createElement('style'); st.textContent = docCss(); wrap.insertBefore(st, cl);
   var xhtml = new XMLSerializer().serializeToString(wrap);
@@ -4690,7 +4691,7 @@ function pageToCanvas(paper, scale){
 }
 function fitA4(c, land){
   // วางหน้าเอกสารลงกระดาษ A4 เต็มแผ่น (สัดส่วน 1:√2) ถ้าเนื้อหายาวเกินให้ย่อพอดีแผ่น
-  var r = Math.SQRT2, W = c.width, H = land ? Math.round(W / r) : Math.round(W * r);
+  var pd = (typeof paperDims === 'function') ? paperDims(land) : (land ? [297, 210] : [210, 297]), W = c.width, H = Math.round(W * pd[1] / pd[0]);
   if (Math.abs(c.height - H) < 3) return c;
   var o = document.createElement('canvas'); o.width = W; o.height = H;
   var x = o.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, W, H);
@@ -5405,7 +5406,7 @@ var OWN_KEY = 'dutyOwner.v1', OWN_HRS = 8;
 // ส่วนตั้งค่าระบบ — ต้องเป็นเจ้าของเสมอ
 var OWN_SYS = { act: 'lcolReset miOk mRank mRankAll esSavePad esClearPad esDel esMv rotDlg rotFix rotSkip rotOrder rotGAdd rotGDel sortSeed ordPrev resetHol resetAll addList delList addSigner delSigner copyGs showGs goSetup updGo updRevert updUseIndex ghSave updCopyCode pwaTeam pwaInvite aiKeySave aiKeyDel stoDlg stoGo stoCheck stoBack stoClean stoCleanRun bakRestore logRestore restoreVer delVer forceSave purgeEx ownMode ownCode', ch: 'lcol esOn esH esFile masterFile rule hol sg rotMember wmode isg il ifolder drv importJson stoD' };
 // ดูได้อย่างเดียว (เมื่อล็อกทั้งระบบ) — คำสั่งที่ไม่เปลี่ยนข้อมูล
-var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone dSub dCleanCopy dCleanPrint dListCopy dListPrint dActCopy dDoc dDocPrint dDocImg dDocSave dDocTxt dAll dAllAll dAllPrint dAllImg dAllTxt dGrpEd stagDlg stPrint stImg stKindB boardDlg archOff stTh dDayTxt dRegF dRegRemind layEdit layFold layHide layUp layDown layW layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
+var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone dSub dCleanCopy dCleanPrint dListCopy dListPrint dActCopy dDoc dDocPrint dDocImg dDocSave dDocTxt dAll dAllAll dAllPrint dAllImg dAllTxt dGrpEd stagDlg stPrint stImg stKindB boardDlg archOff stTh dDayTxt dRegF dRegRemind paperO ddFitT ddEditT ddEdReset layEdit layFold layHide layUp layDown layW layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
 (function(){ ['act', 'ch'].forEach(function(k){ var o = {}; OWN_SYS[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_SYS[k] = o; o = {}; OWN_VIEW[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_VIEW[k] = o; }); })();
 function ownSess(){ try { var o = JSON.parse(sessionStorage.getItem(OWN_KEY) || 'null'); if (o && o.until > Date.now()) return o; } catch (e) {} return null; }
 function isOwner(){ return !!ownSess(); }
@@ -7049,7 +7050,7 @@ function dPersonDlg(p){
 }
 function dPrintHtml(title, body){
   var w = window.open('', '_blank'); if (!w) { toast('เบราว์เซอร์บล็อกหน้าต่างพิมพ์'); return; }
-  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>@page{size:A4;margin:14mm}body{font-family:"TH SarabunPSK","Sarabun",sans-serif;font-size:16pt;color:#000}h1{font-size:18pt;text-align:center;margin:0 0 2px}h2{font-size:15pt;text-align:center;font-weight:400;margin:0 0 10px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:2px 6px;font-size:14.5pt;vertical-align:top}th{font-weight:700;background:#fff}.c{text-align:center}.sig{margin-top:28px;text-align:right;padding-right:40px;line-height:1.6}</style></head><body>' + body + '<script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>');
+  w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>@page{size:' + paperAt(false) + ';margin:14mm}body{font-family:"TH SarabunPSK","Sarabun",sans-serif;font-size:16pt;color:#000}h1{font-size:18pt;text-align:center;margin:0 0 2px}h2{font-size:15pt;text-align:center;font-weight:400;margin:0 0 10px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #000;padding:2px 6px;font-size:14.5pt;vertical-align:top}th{font-weight:700;background:#fff}.c{text-align:center}.sig{margin-top:28px;text-align:right;padding-right:40px;line-height:1.6}</style></head><body>' + body + '<script>window.onload=function(){setTimeout(function(){window.print()},300)}<\/script></body></html>');
   w.document.close();
 }
 var DEPT_ACT = {
@@ -7185,15 +7186,23 @@ function dDocOpen(k, id){
     '<div class="ddsg"><span>✍️ ผู้ลงนามท้ายเอกสาร</span>' + dSel('dSgP', s.pid || '', [['', '— พิมพ์เอง —']].concat(P.map(function(p){ return [p.id, pLabel(p)]; }))) +
     '<input data-ch="dSgF" data-f="head" value="' + esc(s.head || '') + '" placeholder="ตรวจถูกต้อง" style="width:110px"><input data-ch="dSgF" data-f="rank" value="' + esc(s.rank || '') + '" placeholder="ยศ" style="width:70px"><input data-ch="dSgF" data-f="name" value="' + esc(s.name || '') + '" placeholder="ชื่อ สกุล" style="width:170px">' +
     '<textarea data-ch="dSgF" data-f="position" rows="1" placeholder="ตำแหน่ง" style="width:220px">' + esc(s.position || '') + '</textarea><input data-ch="dSgF" data-f="date" value="' + esc(s.date || '') + '" placeholder="วันที่ (ว่าง = เขียนเอง)" style="width:150px"></div>' +
-    '<div class="ddbar"><button class="btn pri" data-act="dDocPrint">🖨 พิมพ์ A4</button><button class="btn" data-act="dDocImg">🖼 คัดลอกรูปส่ง LINE</button><button class="btn" data-act="dDocSave">💾 บันทึกรูป</button><button class="btn" data-act="dDocTxt">📋 คัดลอกข้อความส่ง LINE</button></div>' +
-    '<div class="ddpv"><div class="paper" id="ddPaper"><div class="pbody">' + dDocBody(k, id) + '</div></div></div></div>', 900);
-  setTimeout(function(){ var pp = document.getElementById('ddPaper'); if (!pp) return; var w = pp.parentNode.clientWidth - 4, z = Math.min(1, w / pp.offsetWidth); pp.style.zoom = z < 1 ? z.toFixed(3) : ''; }, 30);
+    '<div class="ddbar">' + paperCtl() + '<button class="btn sm' + (ddFitOn() ? ' khaki' : '') + '" data-act="ddFitT" title="ไม่ตัดชื่อ-สกุลขึ้นบรรทัดใหม่ ย่อตารางให้พอดีกระดาษอัตโนมัติ">🔤 ชื่อไม่ตัดบรรทัด: ' + (ddFitOn() ? 'เปิด' : 'ปิด') + '</button><button class="btn sm' + (UI.ddEdit ? ' khaki' : '') + '" data-act="ddEditT">✏️ ' + (UI.ddEdit ? 'เสร็จสิ้นการแก้ไข' : 'แก้ไขข้อความ') + '</button>' + (ddEdGet() != null ? '<button class="btn sm" data-act="ddEdReset">↺ คืนค่าอัตโนมัติ</button>' : '') + '</div>' +
+    '<div class="ddbar"><button class="btn pri" data-act="dDocPrint">🖨 พิมพ์</button><button class="btn" data-act="dDocImg">🖼 คัดลอกรูปส่ง LINE</button><button class="btn" data-act="dDocSave">💾 บันทึกรูป</button><button class="btn" data-act="dDocTxt">📋 คัดลอกข้อความส่ง LINE</button></div>' +
+    (UI.ddEdit ? '<div class="notice" style="margin-bottom:8px">คลิกที่ตัวอักษรในเอกสารแล้วพิมพ์แก้ได้เลย — ใช้กับการพิมพ์/รูป/ส่งครั้งนี้และครั้งต่อไปของเอกสารเดือนนี้ (กด ↺ เพื่อกลับเป็นค่าที่ระบบสร้าง)</div>' : '') + '<div class="ddpv"><div class="paper' + (paperGet().o === 'landscape' ? ' land' : '') + (ddEdGet() != null ? ' edited' : '') + '" id="ddPaper"><div class="pbody"' + (UI.ddEdit ? ' contenteditable="true" spellcheck="false"' : '') + '>' + (ddEdGet() != null ? ddEdGet() : dDocBody(k, id)) + '</div></div></div></div>', 900);
+  setTimeout(function(){ var pp = document.getElementById('ddPaper'); if (!pp) return; pp.style.zoom = ''; ddFit(pp.querySelector('.ddoc')); var w = pp.parentNode.clientWidth - 4, z = Math.min(1, w / pp.offsetWidth); pp.style.zoom = z < 1 ? z.toFixed(3) : '';
+    var pb = pp.querySelector('.pbody[contenteditable]'); if (pb) pb.addEventListener('input', function(){ ddEdSet(pb.innerHTML); var pe = document.getElementById('ddPaper'); if (pe) pe.classList.add('edited'); }); }, 30);
 }
+function ddEdKey(){ var d = UI.ddoc || {}; return d.k + ':' + (d.id || '') + ':' + ym(); }
+function ddEdGet(){ var E = (S.dept && S.dept.docEd) || {}; return E[ddEdKey()] != null ? E[ddEdKey()] : null; }
+function ddEdSet(h){ deptInit(); S.dept.docEd = S.dept.docEd || {}; if (h == null) delete S.dept.docEd[ddEdKey()]; else S.dept.docEd[ddEdKey()] = h; clearTimeout(UI._ddEdT); UI._ddEdT = setTimeout(save, 600); }
 function dDocRe(){ var d = UI.ddoc; if (!d) return; var sc = document.querySelector('.modal .box'); var st = sc ? sc.scrollTop : 0; dDocOpen(d.k, d.id); var b = document.querySelector('.modal .box'); if (b) b.scrollTop = st; }
 function dDocName(){ var d = UI.ddoc || {}, nm = { clean: 'เวรทำความสะอาด', list: 'รายชื่อผธก', acts: 'กิจกรรมผธก', line: 'รายชื่อสาย' + (d.id === '-' ? 'ไม่ระบุ' : d.id) }[d.k] || 'กิจกรรม'; return nm + '_' + DE.MONTHS_S[S.m - 1].replace(/\./g, '') + String(be(S.y)).slice(2) + '.png'; }
 Object.assign(DEPT_ACT, {
   dDoc: function(t){ dDocOpen(t.dataset.v, t.dataset.id); },
-  dDocPrint: function(){ var d = UI.ddoc; dPrintHtml(dDocTitle(d.k, d.id)[0], '<style>:root{--pf:"TH SarabunPSK","TH Sarabun New","Sarabun",sans-serif}' + DDOC_CSS + '</style>' + dDocBody(d.k, d.id)); },
+  dDocPrint: function(){ var d = UI.ddoc, pb = document.querySelector('#ddPaper .pbody'), body = pb ? pb.innerHTML.replace(/ contenteditable="true"/g, '') : dDocBody(d.k, d.id); dPrintHtml(dDocTitle(d.k, d.id)[0], '<style>:root{--pf:"TH SarabunPSK","TH Sarabun New","Sarabun",sans-serif}' + DDOC_CSS + '</style>' + body); },
+  ddFitT: function(){ try { localStorage.setItem('ddFit', ddFitOn() ? '0' : '1'); } catch (e) {} dDocRe(); },
+  ddEditT: function(){ UI.ddEdit = !UI.ddEdit; dDocRe(); if (!UI.ddEdit && ddEdGet() != null) toast('บันทึกข้อความที่แก้แล้ว'); },
+  ddEdReset: function(){ showConfirm('คืนค่าเอกสารนี้เป็นแบบที่ระบบสร้าง (ข้อความที่แก้จะหายไป)?', function(){ ddEdSet(null); UI.ddEdit = false; dDocRe(); }); },
   dDocImg: function(){ var p = document.getElementById('ddPaper'); if (!p) return; toast('กำลังสร้างรูป…');
     pageToCanvas(p).then(canvasBlob).then(function(b){ if (navigator.clipboard && window.ClipboardItem) return navigator.clipboard.write([new ClipboardItem({ 'image/png': b })]).then(function(){ toast('คัดลอกรูปแล้ว — ไปที่กลุ่ม LINE กด Ctrl+V (มือถือ: กดค้างแล้ววาง)'); }, function(){ dlBlob(b, dDocName()); toast('เบราว์เซอร์ไม่ให้คัดลอกรูป — ดาวน์โหลดแทนแล้ว ส่งไฟล์รูปใน LINE ได้'); }); dlBlob(b, dDocName()); toast('ดาวน์โหลดรูปแล้ว'); }).catch(function(){ toast('สร้างรูปไม่สำเร็จ — ใช้พิมพ์เป็น PDF แทน'); }); },
   dDocSave: function(){ var p = document.getElementById('ddPaper'); if (!p) return; toast('กำลังสร้างรูป…'); pageToCanvas(p).then(canvasBlob).then(function(b){ dlBlob(b, dDocName()); toast('บันทึกรูปแล้ว'); }).catch(function(){ toast('สร้างรูปไม่สำเร็จ'); }); },
@@ -7302,7 +7311,7 @@ function dAllOpen(){
   modal('<div class="ddm"><div class="ddmh"><b>📑 ใบทุกส่วนของแผนกธุรการและกำลังพล — ' + esc(monthLabel()) + '</b><button class="ib" data-act="closeModal" title="ปิด">✕</button></div>' +
     '<div class="small muted" style="margin-bottom:8px">ติ๊กเลือกใบที่ต้องการ แล้วพิมพ์รวมทีเดียว หรือดาวน์โหลดรูปทุกใบส่ง LINE • ทุกใบมีช่องลงนามของหัวหน้าแผนก (' + esc((dSigner().rank || '') + ' ' + (dSigner().name || '')) + ')</div>' +
     '<div class="dall">' + L.map(function(s){ return '<label class="dali"><input type="checkbox" data-ch="dAllTk" data-v="' + esc(s.key) + '"' + (sel[s.key] !== false ? ' checked' : '') + '><span class="ic">' + s.ic + '</span><span class="t">' + esc(s.t) + '</span><button class="btn xs" data-act="dDoc" data-v="' + s.k + '" data-id="' + esc(s.id) + '">เปิดดู / ส่งทีละใบ</button></label>'; }).join('') + '</div>' +
-    '<div class="ddbar" style="margin-top:12px"><button class="btn xs" data-act="dAllAll" data-v="1">เลือกทั้งหมด</button><button class="btn xs" data-act="dAllAll" data-v="0">ไม่เลือก</button><span style="flex:1"></span>' +
+    '<div class="ddbar" style="margin-top:12px">' + paperCtl() + '<button class="btn xs" data-act="dAllAll" data-v="1">เลือกทั้งหมด</button><button class="btn xs" data-act="dAllAll" data-v="0">ไม่เลือก</button><span style="flex:1"></span>' +
     '<button class="btn pri" data-act="dAllPrint"' + (n ? '' : ' disabled') + '>🖨 พิมพ์ที่เลือก (' + n + ' ใบ)</button><button class="btn" data-act="dAllImg"' + (n ? '' : ' disabled') + '>🖼 ดาวน์โหลดรูป (.zip)</button><button class="btn" data-act="dAllTxt"' + (n ? '' : ' disabled') + '>📋 คัดลอกข้อความ</button></div></div>', 760);
 }
 Object.assign(DEPT_ACT, {
@@ -7492,7 +7501,7 @@ function stagDlg(){
       : '<label>ข้อความ' + dSel('stTxt', o.txt, STAG_TXT.map(function(x){ return [x, x]; }).concat([['_', '✏️ พิมพ์เอง…']])) + '</label>' + (o.txt === '_' ? '<label>ข้อความเอง<input data-ch="stCus" value="' + esc(o.custom) + '" placeholder="เช่น ลงนามด่วนภายในวันนี้"></label>' : '') +
         (o.kind === 'corner' ? '<label style="flex:1;min-width:260px">ชื่อเรื่อง (พิมพ์บรรทัดละ 1 เรื่อง — เว้นว่างไว้เขียนมือ)<textarea data-ch="stCT" rows="3" placeholder="เช่น\nคำสั่งเวรรักษาการณ์ ธ.ค. 69\nขออนุมัติเบิกค่าตอบแทน">' + esc(o.cTitles || '') + '</textarea></label><label>หน่วย<input data-ch="stUnit" value="' + esc(o.unit) + '"></label><label class="ck"><input type="checkbox" data-ch="stCS"' + (o.cStat !== false ? ' checked' : '') + '> ช่อง ที่ / ลว.</label>' : o.kind === 'strip' ? '<label>ชื่อย่อหน่วย<input data-ch="stSU" value="' + esc(o.sUnit) + '" style="width:90px"></label><label class="ck"><input type="checkbox" data-ch="stSD"' + (o.sDbl ? ' checked' : '') + '> พิมพ์สองหน้า (อ่านได้ทั้งหน้า-หลัง)</label><label class="ck"><input type="checkbox" data-ch="stSS"' + (o.sSeal ? ' checked' : '') + '> ใส่ตรา</label>' : '<label>หน่วย<input data-ch="stUnit" value="' + esc(o.unit) + '"></label>') + (o.kind === 'card' ? '<label class="ck"><input type="checkbox" data-ch="stFld"' + (o.fields ? ' checked' : '') + '> ช่องเรียน / เรื่อง</label>' : '')) +
     '<label class="ck"><input type="checkbox" data-ch="stCol"' + (o.col ? ' checked' : '') + '> พิมพ์สี</label></div>' +
-    '<div class="ddbar"><button class="btn pri" data-act="stPrint">🖨 พิมพ์ A4</button><button class="btn" data-act="stImg">💾 บันทึกรูป</button>' + (B ? '<span class="small muted">เดือนตามที่เลือกอยู่: ' + esc(monthLabel()) + '</span>' : '') + '</div>' +
+    '<div class="ddbar">' + paperCtl() + '<button class="btn pri" data-act="stPrint">🖨 พิมพ์</button><button class="btn" data-act="stImg">💾 บันทึกรูป</button>' + (B ? '<span class="small muted">เดือนตามที่เลือกอยู่: ' + esc(monthLabel()) + '</span>' : '') + '</div>' +
     '<div class="ddpv"><div class="paper stpaper" id="stPaper"><div class="pbody">' + stagSheet() + '</div></div></div></div>', 900);
   setTimeout(function(){ var pp = document.getElementById('stPaper'); if (!pp) return; var z = Math.min(1, (pp.parentNode.clientWidth - 4) / pp.offsetWidth); pp.style.zoom = z < 1 ? z.toFixed(3) : ''; }, 30);
 }
@@ -7503,7 +7512,7 @@ var STAG_ACT = {
   stTh: function(t){ var o = stagOpt(); o.th = o.th || { tag: 0, corner: 0, board: 0 }; o.th[sthGroup(o.kind)] = +t.dataset.v; stagRe(); },
   boardDlg: function(){ stagOpt().kind = 'board'; stagDlg(); },
   stPrint: function(){ var w = window.open('', '_blank'); if (!w) { toast('เบราว์เซอร์บล็อกหน้าต่างพิมพ์'); return; }
-    w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>ป้ายกรุณาลงนาม</title><style>@page{size:A4;margin:' + (stagOpt().kind === 'board' ? '12mm 14mm' : '9mm') + '}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}:root{--pf:"TH SarabunPSK","TH Sarabun New","Sarabun",sans-serif}' + STAG_CSS + '</style></head><body>' + stagSheet() + '<script>window.onload=function(){setTimeout(function(){window.print()},400)}<\/script></body></html>'); w.document.close(); },
+    w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>ป้ายกรุณาลงนาม</title><style>@page{size:' + paperAt(false) + ';margin:' + (stagOpt().kind === 'board' ? '12mm 14mm' : '9mm') + '}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}:root{--pf:"TH SarabunPSK","TH Sarabun New","Sarabun",sans-serif}' + STAG_CSS + '</style></head><body>' + stagSheet() + '<script>window.onload=function(){setTimeout(function(){window.print()},400)}<\/script></body></html>'); w.document.close(); },
   stImg: function(){ var p = document.getElementById('stPaper'); if (!p) return; toast('กำลังสร้างรูป…'); pageToCanvas(p).then(canvasBlob).then(function(b){ dlBlob(b, 'ป้ายกรุณาลงนาม.png'); toast('บันทึกรูปแล้ว'); }).catch(function(){ toast('สร้างรูปไม่สำเร็จ — ใช้พิมพ์แทน'); }); }
 };
 var STAG_CH = {
@@ -7653,6 +7662,34 @@ var DADM_CH = {
   dFY: function(t){ UI.dFY = +t.value; render(); },
   dTaskTk: function(t){ var k = ym(), D = S.dept; D.taskDone[k] = D.taskDone[k] || {}; if (t.checked) D.taskDone[k][t.dataset.v] = Date.now(); else delete D.taskDone[k][t.dataset.v]; save(); render(); }
 };
+
+/* ---------- ขนาดกระดาษ + แนวตั้ง/แนวนอน (ใช้ทุกเมนูก่อนพิมพ์/ส่ง) ---------- */
+var PAPERS = { A4: [210, 297, 'A4 (21×29.7 ซม.)'], F4: [216, 330, 'F4 / ฟุลสแก๊ป (8.5×13 นิ้ว)'], A5: [148, 210, 'A5 (ครึ่ง A4)'], Letter: [216, 279, 'Letter'], Legal: [216, 356, 'Legal'] };
+function paperGet(){ var o = { s: 'A4', o: 'auto' }; try { Object.assign(o, JSON.parse(localStorage.getItem('paper2') || '{}')); } catch (e) {} if (!PAPERS[o.s]) o.s = 'A4'; return o; }
+function paperSet(o){ try { localStorage.setItem('paper2', JSON.stringify(o)); } catch (e) {} paperApply(); }
+function paperDims(land){ var g = paperGet(), P = PAPERS[g.s], L = g.o === 'landscape' ? true : g.o === 'portrait' ? false : !!land; return L ? [P[1], P[0]] : [P[0], P[1]]; }
+function paperAt(land){ var d = paperDims(land); return d[0] + 'mm ' + d[1] + 'mm'; }
+function paperApply(){
+  var p = paperDims(false), l = paperDims(true), el = document.getElementById('paperCss');
+  if (!el) { el = document.createElement('style'); el.id = 'paperCss'; document.head.appendChild(el); }
+  el.textContent = '@page{size:' + p[0] + 'mm ' + p[1] + 'mm}@page land{size:' + l[0] + 'mm ' + l[1] + 'mm}.paper{width:' + p[0] + 'mm;min-height:' + p[1] + 'mm}.paper.land{width:' + l[0] + 'mm;min-height:' + l[1] + 'mm}.paper.a4{height:' + p[1] + 'mm;min-height:' + p[1] + 'mm}';
+}
+function paperCtl(){
+  var g = paperGet();
+  return '<span class="ppc" title="ขนาดกระดาษและแนวกระดาษ (ใช้กับการพิมพ์และบันทึกรูปทุกเมนู)">📄 ' + dSel('paperS', g.s, Object.keys(PAPERS).map(function(k){ return [k, PAPERS[k][2]]; })) +
+    '<span class="seg ppo">' + [['auto', 'ตามเอกสาร'], ['portrait', '▯ ตั้ง'], ['landscape', '▭ นอน']].map(function(x){ return '<button class="' + (g.o === x[0] ? 'on' : '') + '" data-act="paperO" data-v="' + x[0] + '">' + x[1] + '</button>'; }).join('') + '</span></span>';
+}
+try { paperApply(); } catch (e) {}
+var PAPER_ACT = { paperO: function(t){ var g = paperGet(); g.o = t.dataset.v; paperSet(g); paperRe(); toast('แนวกระดาษ: ' + t.textContent.trim()); } };
+var PAPER_CH = { paperS: function(t){ var g = paperGet(); g.s = t.value; paperSet(g); paperRe(); toast('ขนาดกระดาษ: ' + PAPERS[g.s][2]); } };
+function paperRe(){ if (document.getElementById('ddPaper') && UI.ddoc) dDocRe(); else if (document.getElementById('stPaper')) stagRe(); else if (document.querySelector('.dall')) dAllOpen(); else render(); }
+/* ---------- จัดชื่อไม่ให้ตัดบรรทัด: ห้ามตัดคำในตาราง แล้วย่อตารางให้พอดีกระดาษ ---------- */
+function ddFitOn(){ try { return localStorage.getItem('ddFit') !== '0'; } catch (e) { return true; } }
+function ddFit(root){
+  if (!root) return; var on = ddFitOn(); root.classList.toggle('fit', on);
+  root.querySelectorAll('td,th').forEach(function(c){ c.style.whiteSpace = on && c.textContent.trim().length <= 36 ? 'nowrap' : ''; });
+  root.querySelectorAll('table').forEach(function(tb){ tb.style.zoom = ''; tb.style.width = ''; if (!on) return; var W = root.clientWidth; tb.style.width = 'auto'; var w0 = tb.getBoundingClientRect().width / (parseFloat((document.getElementById('ddPaper') || {}).style ? document.getElementById('ddPaper').style.zoom : 1) || 1); tb.style.width = ''; if (w0 > W + 1) { if (w0 * .72 > W) { tb.querySelectorAll('td,th').forEach(function(c){ c.style.whiteSpace = ''; }); tb.style.zoom = '.86'; } else tb.style.zoom = Math.max(.72, (W / w0) - .005).toFixed(3); } });
+}
 
 /* ---------- actions ---------- */
 var ACT = {
@@ -7951,7 +7988,7 @@ document.addEventListener('focusout', function(e){
 document.addEventListener('keydown', function(e){
   if (e.key === 'Escape' && UI.asst) { UI.asst = false; renderAsst(); return; }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.ed) { e.preventDefault(); e.target.blur(); return; } if (e.key === 'Escape' && UI.editDay != null) { UI.editDay = null; render(); } });
-Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ROT_ACT, ST_ACT, PWA_ACT, UPD_ACT, CHAT_ACT, AG_ACT, EX2_ACT, BOT_ACT, UNIT_ACT, HEALTH_ACT, LAY_ACT, DEPT_ACT, STAG_ACT, DADM_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH, CHAT_CH, EX2_CH, DEPT_CH, STAG_CH, DADM_CH);
+Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ROT_ACT, ST_ACT, PWA_ACT, UPD_ACT, CHAT_ACT, AG_ACT, EX2_ACT, BOT_ACT, UNIT_ACT, HEALTH_ACT, LAY_ACT, DEPT_ACT, STAG_ACT, DADM_ACT, PAPER_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH, CHAT_CH, EX2_CH, DEPT_CH, STAG_CH, DADM_CH, PAPER_CH);
 setTimeout(function(){ try { statPing(); } catch (e) {} }, 2500);
 init();
 })();
