@@ -1026,8 +1026,12 @@ var DE = (function () {
           });
         }
       }
+      // จัดวันลงช่องตาม "รอบ" ของการไล่รายชื่อ (รอบแรก = ช่อง 1, วนรอบสอง = ช่อง 2) ให้อ่านเรียงลงมาได้ต่อเนื่อง
+      var RD = {}, rr = 0, prevI = -1, firstI = -1;
+      Object.keys(res.byDay).map(Number).sort(function (a, b) { return a - b; }).forEach(function (d) { var i = res.byDay[d]; if (firstI < 0) firstI = i; if (prevI >= 0 && i <= prevI) rr++; prevI = i; RD[d] = Math.max(0, rr - (i < firstI ? 1 : 0)); });
       list.people.forEach(function (pp, i) {
-        res.grid[i] = Object.keys(res.byDay).filter(function (d) { return res.byDay[d] === i; }).map(Number).sort(function (a, b) { return a - b; }).map(String);
+        res.grid[i] = [];
+        Object.keys(res.byDay).forEach(function (d) { if (res.byDay[d] !== i) return; var c = RD[d] || 0; while (res.grid[i].length <= c) res.grid[i].push(''); res.grid[i][c] = res.grid[i][c] ? res.grid[i][c] + ',' + d : String(d); });
         (ctx.exemptions || []).forEach(function (e) { if (e.key !== keys[i] || (e.listId && e.listId !== list.id)) return; if (e.from <= ml && (!e.to || e.to >= mf)) { addRemark(i, { ex: e }); if (!res.grid[i].length) res.grid[i] = ['-']; } });
       });
       res.swaps.forEach(function (w) { if (w.to >= 0 && !w.shift) addRemark(w.to, { text: 'เข้าเวรแทน ' + (list.people[w.from].rank || '') + ' ' + list.people[w.from].name + ' วันที่ ' + toTh(w.day) + ' ' + MONTHS_S[m - 1] }); });
@@ -1372,7 +1376,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1140';
+var APP_VER = '2569.11.27-1144';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -1953,7 +1957,7 @@ function annexModel(l){
   var r = CACHE.res[l.id], n = l.people.length, start = ((l.startIdx || 0) % (n || 1));
   var rows = l.people.map(function(p, i){
     var g = r.grid[i] || [];
-    if (S.rules.rotateTop && i < start) g = g.slice(1);
+    if (S.rules.rotateTop && i < start && !fixedFor(l, ym())) g = g.slice(1);
     var hasDuty = g.some(function(v){ return v && v !== '-'; });
     var openEnded = (r.remarks[i] || []).some(function(x){ return x.ex && !x.ex.to; });
     var rem = (r.remarks[i] || []).map(function(x){
