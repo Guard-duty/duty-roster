@@ -1456,7 +1456,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1603';
+var APP_VER = '2569.11.27-1738';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -6293,14 +6293,22 @@ function chatCtx(q){
 }
 function chatPrompt(q){
   var C = UI.chat, hist = C.msgs.slice(-6).map(function(m){ return (m.me ? 'ผู้ใช้: ' : 'ผู้ช่วย: ') + m.t.slice(0, 600); }).join('\n');
-  var p = 'คุณชื่อ ' + BOT_NAME + ' (' + BOT.role + ') เป็นผู้ช่วยประจำแผนกธุรการและกำลังพล ' + unitShow() + ' (ชื่อเต็มของหน่วย: ' + unitFullName() + ' ชื่อย่อ: ' + S.unit + ' เวลาพูดถึงหน่วยให้ใช้' + (unitIsFull() ? 'ชื่อเต็ม' : 'ชื่อย่อ') + ') แนะนำตัวด้วยชื่อนี้เมื่อถูกถามชื่อ ' + BOT.persona + ' แทนตัวเองว่า ' + BOT.me + ' และลงท้ายด้วย ' + BOT.end + ' (แต่ข้อความที่ร่างให้ผู้ใช้นำไปส่งต่อ ให้ใช้ ครับ ตามปกติ) ตอบเป็นภาษาไทย สุภาพแบบทหาร กระชับ ตรงประเด็น ใช้ข้อมูลที่ให้เมื่อเกี่ยวข้อง ข้อมูลที่ระบุว่า คาดการณ์ล่วงหน้า คือผลที่ระบบคำนวณไว้แล้ว ใช้ตอบได้เลยแต่ให้บอกว่าเป็นร่างคาดการณ์ที่อาจเปลี่ยนได้ ห้ามแต่งรายชื่อหรือวันที่ที่ไม่มีในข้อมูล\n';
-  p += '\n' + AGENT_HELP + '\nบัญชีเวรที่มี: ' + S.lists.map(function(l){ return l.short; }).join(', ') + '\nเดือนที่กำลังจัด: ' + DE.MONTHS_L[S.m - 1] + ' ' + be(S.y) + ' (ค.ศ. ' + S.y + ')\n';
+  var p = 'คุณชื่อ ' + BOT_NAME + ' (' + BOT.role + ') เป็นผู้ช่วยประจำแผนกธุรการและกำลังพล ' + unitShow() + ' (ชื่อเต็มของหน่วย: ' + unitFullName() + ' ชื่อย่อ: ' + S.unit + ' เวลาพูดถึงหน่วยให้ใช้' + (unitIsFull() ? 'ชื่อเต็ม' : 'ชื่อย่อ') + ') แนะนำตัวด้วยชื่อนี้เมื่อถูกถามชื่อ ' + BOT.persona + ' แทนตัวเองว่า ' + BOT.me + ' และลงท้ายด้วย ' + BOT.end + ' (แต่ข้อความที่ร่างให้ผู้ใช้นำไปส่งต่อ ให้ใช้ ครับ ตามปกติ) ตอบเป็นภาษาไทย สุภาพแบบทหาร ตรงประเด็น (เรื่องงานตอบกระชับ เรื่องความรู้/งานเขียนตอบละเอียดเท่าที่จำเป็น) ใช้ข้อมูลระบบเมื่อเกี่ยวข้อง ข้อมูลที่ระบุว่า คาดการณ์ล่วงหน้า คือผลที่ระบบคำนวณไว้แล้ว ใช้ตอบได้เลยแต่ให้บอกว่าเป็นร่างคาดการณ์ที่อาจเปลี่ยนได้ ห้ามแต่งรายชื่อหรือวันที่ที่ไม่มีในข้อมูล\n';
+  p += GENERAL_HELP + '\n' + AGENT_HELP + '\n' + AGENT_DEPT + 'บัญชีเวรที่มี: ' + S.lists.map(function(l){ return l.short; }).join(', ') + '\nเดือนที่กำลังจัด: ' + DE.MONTHS_L[S.m - 1] + ' ' + be(S.y) + ' (ค.ศ. ' + S.y + ')\n';
   try { var km = ym(), hl = holidays(); p += 'สถานะระบบ: หน้าที่เปิดอยู่ ' + ((TABS.find(function(x){ return x[0] === UI.tab; }) || [])[1] || '') + ' • บันทึกการแก้ไขเดือนนี้ ' + (S.changelog || []).filter(function(c){ return c.ym === km; }).length + ' รายการ (ทั้งหมด ' + (S.changelog || []).length + ') • ย้อนกลับได้ ' + UNDO.length + ' ขั้น • วันหยุดเดือนนี้: ' + Object.keys(hl).map(function(d){ return d + ' ' + hl[d]; }).join(', ') + ' • ตั้งค่า: ' + Object.keys(S.rules).filter(function(k){ return typeof S.rules[k] === 'boolean'; }).map(function(k){ return k + '=' + (S.rules[k] ? 'เปิด' : 'ปิด'); }).join(', ') + ' • ผู้ใช้' + (isOwner() ? 'เป็นเจ้าของระบบ' : 'ทั่วไป (คำสั่งตั้งค่าระบบต้องใส่รหัส)') + '\n'; } catch (e) {}
+  try { p += pageCtx(q) + '\n'; } catch (e) {}
   if (C.ctx) p += '\n' + chatCtx(q) + '\n';
   if (hist) p += '\nบทสนทนาก่อนหน้า:\n' + hist + '\n';
   p += '\nคำถาม: ' + q;
   if (p.length > 29500) { var hd = p.indexOf('\nบทสนทนาก่อนหน้า:'); p = (hd > 0 ? p.slice(0, hd) + '\n\nคำถาม: ' + q : p).slice(0, 29500); }
   return p;
+}
+function chatSugs(){
+  var T = { dept: ['วันนี้กลุ่มไหนทำความสะอาด ใครกำกับ', 'เพิ่ม นาย ... เข้าเวรทำความสะอาดวันพุธ', 'ย้าย ส.อ.ทศพล ไปกลุ่มวันศุกร์', 'จัดกิจกรรม Big Cleaning 5 ธ.ค. 6 นาย ให้ระบบเลือกคน', 'สรุปยอดกำลังพลแยกตามสาย'],
+    exempt: ['ตอนนี้ใครงดเวรอยู่บ้าง', 'งดเวร ร.อ.ยรรยง 1–5 ธ.ค. ไปราชการ', 'ใครกลับเข้าเวรได้สัปดาห์นี้', 'ร่างหนังสือขออนุมัติงดเวร'],
+    print: ['ตรวจบัญชีเวรเดือนนี้มีอะไรผิดไหม', 'ร่างข้อความแจ้งเวรลงกลุ่ม LINE', 'ใครเข้าเวร น.เวร พรุ่งนี้'],
+    install: ['วิธีอัปเดต Code.gs', 'เชื่อม AI ทำอย่างไร'] };
+  return (T[UI.tab] || ['ใครเข้าเวร น.เวร พรุ่งนี้', 'ตอนนี้ใครงดเวรอยู่บ้าง', 'สลับเวร น.เวร วันที่ 28 กับ 30', 'งดเวร ร.อ.ยรรยง 1–5 ธ.ค. ไปราชการ']).concat(['ร่างบันทึกข้อความขออนุมัติ…', 'อธิบายระเบียบงานสารบรรณเรื่องหนังสือภายใน']);
 }
 function chatBody(){
   var C = UI.chat;
@@ -6309,7 +6317,7 @@ function chatBody(){
   aiCheck();
   if (UI.aiSt && !UI.aiSt.has) return '<div class="chempty">🤖 ยังไม่ได้เชื่อม AI<br><button class="btn sm pri" data-act="aiSetup" style="margin-top:8px">ไปตั้งค่า ›</button></div>';
   if (!C.msgs.length) return '<div class="chempty"><img class="chhero" src="' + BOT_FULL + '" alt=""><b>' + BOT.me + ' ' + BOT_NAME + ' มีอะไรให้ช่วย' + BOT.end + '!</b><button class="btn sm chswap" data-act="botPick">🎭 เปลี่ยนตัวผู้ช่วย</button><span>ถามได้ทุกเรื่อง <b style="display:inline;font-size:inherit">สั่งงานได้</b> (งดเวร สลับเวร จ้างเวร บันทึกเบอร์) และ<b style="display:inline;font-size:inherit">ลากรูปหรือไฟล์มาวางถามได้</b> (PDF, Word, Excel) เช่น คำสั่งไปราชการ — ระบบให้ยืนยันก่อนทำทุกครั้ง</span><div class="chsug">' +
-    ['ใครเข้าเวร น.เวร พรุ่งนี้', 'ตอนนี้ใครงดเวรอยู่บ้าง', 'สลับเวร น.เวร วันที่ 28 กับ 30', 'งดเวร ร.อ.ยรรยง 1–5 ธ.ค. ไปราชการ', 'เดือนธันวาคม น.เวร มีใครบ้าง'].map(function(s){ return '<button data-act="chatSug" data-v="' + esc(s) + '">' + esc(s) + '</button>'; }).join('') + '</div></div>';
+    chatSugs().map(function(s){ return '<button data-act="chatSug" data-v="' + esc(s) + '">' + esc(s) + '</button>'; }).join('') + '</div></div>';
   return C.msgs.map(function(m, i){ return '<div class="chm ' + (m.me ? 'me' : 'ai') + (m.err ? ' err' : '') + '">' + (m.me ? '' : '<img class="chmav" src="' + BOT_AV + '" alt="">') + '<div class="chb">' + (m.docs && m.docs.length ? '<div class="chbd">' + m.docs.map(function(n){ return '<span>📎 ' + esc(n) + '</span>'; }).join('') + '</div>' : '') + (m.imgs && m.imgs.length ? '<div class="chbi">' + m.imgs.map(function(s){ return '<img src="' + s + '" alt="">'; }).join('') + '</div>' : '') + esc(m.t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>') + agCard(m, i) + '</div>' + (!m.me && !m.err ? '<button class="chcp" data-act="chatCopy" data-v="' + i + '" title="คัดลอก">📋</button>' : '') + '</div>'; }).join('') +
     (C.busy ? '<div class="chm ai"><img class="chmav" src="' + BOT_AV + '" alt=""><div class="chb chdots"><i></i><i></i><i></i></div></div>' : '');
 }
@@ -6349,8 +6357,8 @@ var CHAT_ACT = {
     if (DC.length) prompt += '\n(ถ้าไฟล์เป็นคำสั่ง/หนังสือที่มีรายชื่อไปราชการ ลา หรืองดเวร พร้อมวันที่ ให้สรุปและเสนอคำสั่ง exempt ตามรายชื่อในไฟล์)';
     C.msgs.push({ me: 1, t: q, imgs: IM.map(function(x){ return x.thumb; }), docs: DC.map(function(x){ return x.name; }) }); C.imgs = []; C.docs = []; C.busy = true; C.draft = ''; if (i) i.value = ''; chatRender();
     var imgs = IM.map(function(x){ return { mime: 'image/jpeg', data: x.data }; }).concat(DC.filter(function(x){ return x.pdf; }).map(function(x){ return { mime: 'application/pdf', data: x.pdf }; }));
-    var tryAsk = function(n){ return sapi('aiWrite', { prompt: prompt, images: imgs }).catch(function(e){ if (n > 0 && /ไม่พบรุ่น|ขัดข้อง|ไม่ได้ตอบ|50\d/.test(e.message)) return new Promise(function(r){ setTimeout(r, 2000); }).then(function(){ return tryAsk(n - 1); }); throw e; }); };
-    tryAsk(2).then(function(j){ C.busy = false; var A = agParse(j.text) || agLocal(q), txt = j.text.replace(/<<ACTION>>[\s\S]*?<<END>>/, '').trim(); C.msgs.push({ t: txt || 'รับทราบขอรับ', plan: A ? (A.bad ? A : agPlan(A)) : null }); chatRender(); kvSay(txt); })
+    var tryAsk = function(n){ return sapi('aiWrite', { prompt: prompt, images: imgs, web: !imgs.length }).catch(function(e){ if (n > 0 && /ไม่พบรุ่น|ขัดข้อง|ไม่ได้ตอบ|50\d/.test(e.message)) return new Promise(function(r){ setTimeout(r, 2000); }).then(function(){ return tryAsk(n - 1); }); throw e; }); };
+    tryAsk(2).then(function(j){ C.busy = false; var A = agParse(j.text) || agLocalDept(q) || agLocal(q), txt = j.text.replace(/<<ACTION>>[\s\S]*?<<END>>/, '').trim(); C.msgs.push({ t: txt || 'รับทราบขอรับ', plan: A ? (A.bad ? A : agPlan(A)) : null }); chatRender(); kvSay(txt); })
       .catch(function(e){ C.busy = false; var m = e.message; if (/ไม่พบรุ่น|ขัดข้อง/.test(m)) m = 'AI ของ Google ไม่ว่างชั่วคราว ลองถามใหม่อีกครั้งในอีกสักครู่ (' + m + ')'; C.msgs.push({ t: '⚠️ ' + m, err: 1 }); chatRender(); });
   }
 };
@@ -6371,6 +6379,98 @@ function rankSyncRun(quiet){
   save(); if (!quiet) setTimeout(function(){ toast('ปรับยศตามทะเบียนกำลังพลแล้ว ' + ch.length + ' นาย: ' + ch.slice(0, 3).join(', ') + (ch.length > 3 ? ' …' : '')); }, 600);
 }
 
+/* ---------- ผู้ช่วย AI: งานแผนก ผธก. + บริบทตามหน้าที่เปิด ---------- */
+var DRANK_RE = /^(พล\.?[อทต]\.?|พ\.[อทต]\.|ร\.[อทต]\.|จ\.ส\.[อทต]\.|ส\.[อทต]\.|พลฯ|พลทหาร|ว่าที่\s*ร\.ต\.|นางสาว|นาง|นาย|น\.ส\.)(หญิง)?\s*/;
+function dSplitName(s){
+  s = String(s || '').replace(/\s+/g, ' ').trim(); var m = DRANK_RE.exec(s), rank = '';
+  if (m) { rank = (m[1] + (m[2] || '')).replace(/\s+/g, ''); s = s.slice(m[0].length).trim(); }
+  var w = s.split(' '); return { rank: rank, name: w[0] || '', surname: w.slice(1).join(' ') };
+}
+function dFind(q){
+  var o = dSplitName(q), n = DE.norm(o.name), sn = DE.norm(o.surname); if (!n) return [];
+  return ((S.dept && S.dept.people) || []).filter(function(p){ var a = DE.norm(p.name), b = DE.norm(p.surname || ''); return a === n && (!sn || b === sn || b.indexOf(sn) === 0) || (!sn && DE.norm(p.name + p.surname).indexOf(n) >= 0); });
+}
+function dDayNo(v){ if (v == null || v === '') return 0; var n = +v; if (n >= 1 && n <= 5) return n; var s = String(v); for (var i = 0; i < 5; i++) if (s.indexOf(DGN[i].slice(0, 3)) >= 0 || s === DE.WD[i + 1]) return i + 1; return 0; }
+function agDeptCase(a, it){
+  deptInit(); var D = S.dept, P, d;
+  var one = function(nm){ var R = dFind(nm); if (R.length === 1) return R[0]; it.err = R.length ? 'ชื่อ "' + nm + '" ตรงหลายคนใน ผธก.: ' + R.map(pShort).join(', ') : 'ไม่พบ "' + nm + '" ในรายชื่อ ผธก.'; return null; };
+  switch (a.type) {
+    case 'deptAdd':
+      var nm = String(a.name || '').trim(); if (!nm) { it.err = 'ไม่มีชื่อ'; return true; }
+      var ex = dFind(nm), day = dDayNo(a.day), cl = a.clean !== false, sup = !!a.sup;
+      if (ex.length === 1) { P = ex[0];
+        it.txt = '🧹 ' + pLabel(P) + (cl ? ' เข้าเวรทำความสะอาด' : '') + (day ? ' กลุ่มวัน' + DGN[day - 1] : '') + (sup ? ' • ผู้กำกับดูแล' : '') + (a.phone ? ' • โทร ' + a.phone : '');
+        it.run = function(){ if (cl) P.clean = true; if (sup) P.sup = true; if (day) D.clean.grp[P.id] = day; if (a.phone) P.phone = String(a.phone); if (a.line) P.line = a.line; dGroups(); }; it.ok = true; return true; }
+      var o = dSplitName(nm), M = ((S.master && S.master.people) || []).find(function(m){ return DE.norm(m.name) === DE.norm(o.name) && (!o.surname || DE.norm(m.surname) === DE.norm(o.surname)); });
+      var np = { id: uid('d'), rank: o.rank || (M && M.rank) || '', name: o.name, surname: o.surname || (M && M.surname) || '', pos: a.pos || (M && M.pos) || '', line: a.line || '', phone: a.phone ? String(a.phone) : '', clean: cl, sup: sup };
+      it.txt = '➕ เพิ่ม ' + pLabel(np) + ' เข้า ผธก.' + (cl ? ' และเวรทำความสะอาด' + (day ? ' กลุ่มวัน' + DGN[day - 1] : ' (ระบบจัดกลุ่มวันที่คนน้อยสุดให้)') : '') + (np.line ? ' • สาย' + np.line : '');
+      it.run = function(){ var lv = rankLv(np.rank), at = lv < 0 ? -1 : D.people.findIndex(function(x){ return rankLv(x.rank) < lv; }); if (at < 0) D.people.push(np); else D.people.splice(at, 0, np); if (day) D.clean.grp[np.id] = day; dGroups(); }; it.ok = true; return true;
+    case 'deptRemove':
+      P = one(a.name); if (!P) return true;
+      it.txt = '➖ ลด ' + pLabel(P) + ' ออกจากรายชื่อ ผธก.';
+      it.run = function(){ D.people = D.people.filter(function(x){ return x !== P; }); D.acts.forEach(function(x){ x.ppl = x.ppl.filter(function(id){ return id !== P.id; }); }); }; it.ok = true; return true;
+    case 'deptClean':
+      P = one(a.name); if (!P) return true; var on = a.on !== false;
+      it.txt = (on ? '🧹 เพิ่ม ' : '🚫 เอา ') + pLabel(P) + (on ? ' เข้า' : ' ออกจาก') + 'เวรทำความสะอาด';
+      it.run = function(){ P.clean = on; dGroups(); }; it.ok = true; return true;
+    case 'deptGroup':
+      P = one(a.name); if (!P) return true; d = dDayNo(a.day); if (!d) { it.err = 'ไม่รู้วัน "' + a.day + '" (จันทร์–ศุกร์)'; return true; }
+      it.txt = '📅 ย้าย ' + pLabel(P) + ' ไปกลุ่มวัน' + DGN[d - 1];
+      it.run = function(){ P.clean = true; D.clean.grp[P.id] = d; }; it.ok = true; return true;
+    case 'deptSet':
+      P = one(a.name); if (!P) return true; var ch = [];
+      ['phone', 'line', 'pos', 'rank'].forEach(function(k){ if (a[k] != null && a[k] !== '') ch.push(k); }); if (a.sup != null) ch.push('sup');
+      if (!ch.length) { it.err = 'ไม่ได้บอกว่าจะแก้อะไร'; return true; }
+      it.txt = '✏️ ' + pLabel(P) + ': ' + ch.map(function(k){ return ({ phone: 'โทร ', line: 'สาย', pos: 'ตำแหน่ง ', rank: 'ยศ ', sup: 'ผู้กำกับ ' })[k] + (k === 'sup' ? (a.sup ? 'ใช่' : 'ไม่ใช่') : a[k]); }).join(' • ');
+      it.run = function(){ ch.forEach(function(k){ P[k] = k === 'sup' ? !!a.sup : String(a[k]); }); }; it.ok = true; return true;
+    case 'deptRegroup':
+      it.txt = '⚡ จัดกลุ่มเวรทำความสะอาดใหม่ทั้งหมด (คละยศ)'; it.run = function(){ dGrpAuto(); }; it.ok = true; return true;
+    case 'actAdd':
+      var nmA = String(a.name || '').trim(); if (!nmA) { it.err = 'ไม่มีชื่อกิจกรรม'; return true; }
+      var dt = a.date ? agDate(a.date) : '', ppl = [], miss = [];
+      (a.people || []).forEach(function(x){ var R = dFind(x); if (R.length === 1) ppl.push(R[0].id); else miss.push(x); });
+      if (miss.length) { it.err = 'ไม่พบใน ผธก.: ' + miss.join(', '); return true; }
+      var need = +a.need || ppl.length || 0;
+      it.txt = '🎯 เพิ่มกิจกรรม "' + nmA + '"' + (dt ? ' ' + thd(dt) : '') + (need ? ' ' + need + ' นาย' : '') + (ppl.length ? ' • ' + ppl.length + ' คนที่ระบุ' : '') + (a.auto && need > ppl.length ? ' • ระบบเลือกที่เหลือให้' : '');
+      it.run = function(){ var x = { id: uid('a'), name: nmA, date: dt || '', need: need, place: a.place || '', ppl: ppl.slice() }; D.acts.push(x); if (a.auto && need > x.ppl.length) { try { DEPT_ACT.dActAuto({ dataset: { v: x.id } }); } catch (e) {} } }; it.ok = true; return true;
+  }
+  return false;
+}
+function deptCtx(){
+  try { deptInit(); var D = S.dept, G = dGroups(), R = deptClean(S.y, S.m), cnt = dCount();
+    var L = ['ข้อมูลแผนก ผธก. (แท็บ "แผนก ผธก."): กำลังพล ' + D.people.length + ' นาย'];
+    L.push('รายชื่อ (ลำดับอาวุโส): ' + D.people.map(function(p){ return pLabel(p) + '[' + (p.line || 'ไม่ระบุสาย') + (p.clean ? ',ทำความสะอาด' : '') + (p.sup ? ',ผู้กำกับ' : '') + (p.phone ? ',โทร ' + p.phone : '') + (p.pos ? ',' + p.pos : '') + ']'; }).join('; '));
+    L.push('เวรทำความสะอาด ' + monthLabel() + ' (กลุ่มประจำวัน ทำทุกสัปดาห์): ' + G.map(function(g, i){ return DGN[i] + '=' + g.map(pShort).join(', '); }).join(' | '));
+    L.push('ผู้กำกับดูแลรายสัปดาห์: ' + R.weeks.map(function(wk, wi){ var r = R.rows.find(function(x){ return x.wi === wi; }); return 'สัปดาห์' + (wi + 1) + '(' + wk[0] + '-' + wk[wk.length - 1] + ')=' + (r && r.sup ? pShort(r.sup) : '-'); }).join(', '));
+    if (D.acts.length) L.push('กิจกรรมของส่วน: ' + D.acts.map(function(a){ return a.name + (a.date ? ' ' + a.date : '') + ' ' + a.ppl.length + (a.need ? '/' + a.need : '') + ' นาย'; }).join('; '));
+    return L.join('\n'); } catch (e) { return ''; }
+}
+var PAGE_HINT = { home: 'ภาพรวมระบบ ข่าววันหยุด สรุปเดือน', roster: 'ตารางเวร/ปฏิทินเวรของเดือน สลับเวร เปลี่ยนคน', exempt: 'การงดเวร (ไปราชการ ลา ศึกษา) อ่านหนังสือ/ไฟล์เพื่องดเวร', docs: 'เอกสาร/หนังสือ', claim: 'การจ้างเวร/เข้าแทน', pay: 'ค่าเวร', print: 'พิมพ์บัญชีเวร ผนวกต่าง ๆ', archive: 'คลังฉบับที่บันทึกไว้', dept: 'งานแผนก ผธก.: เวรทำความสะอาดแผนก กิจกรรมของส่วน รายชื่อ/เบอร์ติดตามงาน', setup: 'รายชื่อในบัญชีเวรและการตั้งค่า', install: 'ติดตั้ง/อัปเดตระบบ เชื่อม AI' };
+function pageCtx(q){
+  var tab = UI.tab, nm = ((TABS.find(function(x){ return x[0] === tab; }) || [])[1] || tab), s = '\nหน้าที่ผู้ใช้เปิดอยู่ตอนนี้: "' + nm + '" (' + (PAGE_HINT[tab] || '') + ') — ถ้าคำถามหรือคำสั่งกำกวม ให้ตีความว่าเกี่ยวกับหน้านี้ก่อน และเริ่มตอบจากเรื่องในหน้านี้';
+  if (tab === 'dept' || /ผธก|ทำความสะอาด|กิจกรรม|แผนก|เบอร์|ติดตามงาน|สาย(ธุรการ|กำลังพล|สวัสดิการ|บริการ|บริหาร)/.test(q || '')) s += '\n' + deptCtx();
+  return s;
+}
+var AGENT_DEPT = '— คำสั่งงานแผนก ผธก. (เวรทำความสะอาด/กิจกรรม/รายชื่อ) —\n' +
+  '{"type":"deptAdd","name":"ยศหรือคำนำหน้า ชื่อ สกุล","day":"จันทร์|อังคาร|พุธ|พฤหัสบดี|ศุกร์ หรือ null(ระบบจัดให้)","clean":true,"sup":false,"line":"บริหาร|ธุรการ|กำลังพล|สวัสดิการ|บริการ","phone":"","pos":""}  (เพิ่มคนเข้า ผธก./จัดเข้าเวรทำความสะอาด ถ้ามีอยู่แล้วจะติ๊กเข้าเวรให้)\n' +
+  '{"type":"deptRemove","name":"ชื่อ"}  (ลดคนออกจาก ผธก.)\n' +
+  '{"type":"deptClean","name":"ชื่อ","on":true|false}  (เอาเข้า/ออกจากเวรทำความสะอาด)\n' +
+  '{"type":"deptGroup","name":"ชื่อ","day":"อังคาร"}  (ย้ายกลุ่มวัน)\n' +
+  '{"type":"deptSet","name":"ชื่อ","phone":"","line":"","pos":"","rank":"","sup":true}  (แก้ข้อมูลรายชื่อ ผธก.)\n' +
+  '{"type":"deptRegroup"}  (จัดกลุ่มวันใหม่ทั้งหมดแบบคละยศ)\n' +
+  '{"type":"actAdd","name":"ชื่อกิจกรรม","date":"yyyy-mm-dd","need":5,"place":"","people":["ชื่อ",...],"auto":true}  (เพิ่มกิจกรรมของส่วน auto=ให้ระบบเลือกคนที่ไปน้อยสุดเติมให้ครบ)\n' +
+  'ผู้ใช้พิมพ์ชื่อหลายคนมาพร้อมคำว่า "จัดเข้า/เพิ่ม/ใส่ ... เวรทำความสะอาด" = ใช้ deptAdd ทีละคน (บุคคลพลเรือนใช้คำนำหน้า นาย/นาง/นางสาว เป็นยศได้)\n';
+var GENERAL_HELP = '\nนอกจากงานระบบ คุณเป็นผู้ช่วย AI ทั่วไปที่เก่งเหมือน ChatGPT / Gemini / Claude: ตอบคำถามความรู้ทั่วไปได้ทุกเรื่อง (ประวัติศาสตร์ วิทยาศาสตร์ กฎหมายเบื้องต้น ระเบียบงานสารบรรณ การทหาร สุขภาพเบื้องต้น ภาษา คณิต โค้ด เทคโนโลยี ข่าวสารที่รู้) เขียน/ร่างหนังสือราชการ บันทึกข้อความ คำสั่ง ข้อความ LINE แปลภาษา สรุปความ คิดคำนวณ วางแผนงาน ให้ตอบเต็มที่ ละเอียดตามที่ถาม ไม่ต้องปฏิเสธว่าไม่เกี่ยวกับเวร และไม่ต้องดึงเรื่องเวรเข้ามาถ้าไม่เกี่ยว ' +
+  'กฎเรื่องห้ามแต่งข้อมูลใช้กับข้อมูลในระบบ (รายชื่อ วันที่ เวร) เท่านั้น ถ้าไม่แน่ใจข้อเท็จจริงทั่วไปให้บอกตามจริง ' +
+  'ห้ามแนะนำตัวซ้ำทุกครั้ง แนะนำตัวเฉพาะเมื่อถูกทักทายหรือถามชื่อ ถ้าผู้ใช้สั่งงาน ให้ลงมือเสนอคำสั่งทันทีโดยไม่ต้องทักทาย\n';
+function agLocalDept(raw){
+  var q = String(raw || ''); if (!/ทำความสะอาด/.test(q) || !/(จัด|เพิ่ม|ใส่|เอา|ลง)/.test(q)) return null;
+  var lines = q.split(/\n|,|，|และ(?=\s*(นาย|นาง|ส\.|จ\.|ร\.|พ\.))/).map(function(s){ return (s || '').trim(); }).filter(Boolean);
+  var out = []; lines.forEach(function(s){ var x = s.replace(/^.*?(ทำความสะอาด\S*)\s*/, function(m){ return /ทำความสะอาด/.test(s.slice(0, 40)) ? '' : m; }).trim(); var o = dSplitName(x);
+    if (o.name && o.surname && !/ตาราง|เวร|แผนก|จัด/.test(x)) { var dm = /วัน(จันทร์|อังคาร|พุธ|พฤหัส\S*|ศุกร์)/.exec(x); out.push({ type: 'deptAdd', name: x.replace(/\s*วัน(จันทร์|อังคาร|พุธ|พฤหัส\S*|ศุกร์)\s*/, ''), day: dm ? dm[1] : null, clean: true }); } });
+  return out.length ? out : null;
+}
+
 /* ---------- สั่งงานผู้ช่วย AI: AI เสนอคำสั่ง → ผู้ใช้ยืนยัน → ระบบทำให้ ---------- */
 var AGENT_HELP = 'คุณดูแลและจัดการระบบได้จริงผ่านบล็อกคำสั่ง ห้ามตอบว่าทำไม่ได้หรือไม่มีคำสั่ง ถ้ามีชนิดคำสั่งที่ตรงด้านล่าง ถ้าผู้ใช้ "สั่งให้ทำ" (เช่น ใส่งดเวร ลบงดเวร สลับเวร เปลี่ยนคนเข้าเวรวันหนึ่ง บันทึกจ้างเวร/เข้าแทน บันทึกเบอร์โทร ไปเดือนถัดไป ล้างบันทึกการแก้ไข เพิ่ม/ลดคน แก้ยศ วันหยุด ตั้งค่า วนรายชื่อ ย้อนกลับ เปิดหน้า) ให้ตอบสั้น ๆ ว่าจะทำอะไร แล้วต่อท้ายด้วยบล็อกคำสั่งรูปแบบนี้เท่านั้น:\n' +
   '<<ACTION>>[ {...}, {...} ]<<END>>\n' +
@@ -6384,7 +6484,7 @@ var AGENT_HELP = 'คุณดูแลและจัดการระบบ�
   '{"type":"nextMonth"}\n' +
   '— คำสั่งดูแลระบบ —\n' +
   '{"type":"clearLog","scope":"month หรือ all"}  (ล้างบันทึกการแก้ไข: month=เฉพาะเดือนนี้, all=ทั้งหมด)\n' +
-  '{"type":"tab","tab":"home|roster|exempt|docs|claim|pay|print|archive|setup|install"}  (เปิดหน้า)\n' +
+  '{"type":"tab","tab":"home|roster|exempt|docs|claim|pay|print|archive|dept|setup|install"}  (เปิดหน้า)\n' +
   '{"type":"addPerson","list":"น.เวร","name":"ยศ ชื่อ สกุล","pos":"end หรือ ลำดับที่ (1,2,..)","start":"yyyy-mm-dd หรือ null"}\n' +
   '{"type":"removePerson","list":"น.เวร","name":"ชื่อ","mode":"stop หรือ del","from":"yyyy-mm-dd","reason":"เหตุ"}  (stop=พ้นหน้าที่ตั้งแต่วันที่, del=ลบออกจากบัญชี)\n' +
   '{"type":"start","list":"น.เวร","name":"ชื่อ"}  (ให้คนนี้เป็นคนเริ่มเวรวันที่ 1 ของเดือนนี้)\n' +
@@ -6559,7 +6659,7 @@ function agPlan(A){
         case 'prevMonth':
           var pv2 = prevYM(S.y, S.m); it.txt = '📅 ย้อนกลับไปเดือน ' + DE.MONTHS_L[pv2[1] - 1] + ' ' + be(pv2[0]); it.last = true;
           it.run = function(){ prevMonth(); }; it.ok = true; break;
-        default: it.err = 'ไม่รู้จักคำสั่ง ' + a.type;
+        default: if (!agDeptCase(a, it)) it.err = 'ไม่รู้จักคำสั่ง ' + a.type;
       }
     } catch (e) { it.err = e.message; }
     out.push(it);
