@@ -1485,7 +1485,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1900';
+var APP_VER = '2569.11.27-1935';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -7113,7 +7113,7 @@ var DEPT_CH = {
 /* ---------- เอกสาร ผธก. (พิมพ์ / รูปส่ง LINE / ข้อความ) + ผู้ลงนามหัวหน้าแผนก ---------- */
 var DDOC_CSS = '.ddoc{font-family:var(--pf,"TH SarabunPSK","Sarabun",sans-serif);color:#000;font-size:15pt;line-height:1.25}.ddoc h1{font-size:18pt;text-align:center;margin:0;font-weight:700}.ddoc h2{font-size:16pt;text-align:center;margin:0 0 10px;font-weight:400}' +
   '.ddoc table{width:100%;border-collapse:collapse;margin-top:4px}.ddoc th,.ddoc td{border:1px solid #000;padding:1px 6px;font-size:14.5pt;vertical-align:top;color:#000;background:#fff}.ddoc th{font-weight:700;text-align:center}.ddoc .c{text-align:center}.ddoc tr.g td{font-weight:700;background:#fff}' +
-  '.ddoc .dsub{font-weight:700;margin:10px 0 2px}.ddoc .dnote{font-size:14pt;margin-top:6px}.ddoc .dsigs{display:flex;justify-content:flex-end;margin-top:26px}.ddoc .dsig{min-width:280px;text-align:center}.ddoc .dsig .h{margin-bottom:18px}.ddoc .dsig .ln{text-align:center}.ddoc .esig{vertical-align:bottom}';
+  '.ddoc .dsub{font-weight:700;margin:10px 0 2px}.ddoc .sdcat{font-size:13.5pt;margin:1.5mm 0 0 1mm}.ddoc table.sdlist2 td,.ddoc table.sdlist2 th{font-size:14pt;padding:1px 6px;line-height:1.3}.ddoc table.sdlist2 tr.sg td{font-weight:700;padding-top:2px}.ddoc table.sdlist2 .nw,.ddoc table.sdlist2 .st{white-space:nowrap}.ddoc table.sdlist2 .rm{font-size:13pt;line-height:1.15}.ddoc .sdh{font-weight:700;font-size:15pt;margin:4mm 0 1mm}.ddoc table.sdrep td,.ddoc table.sdrep th{text-align:center;font-size:14.5pt;padding:1px 4px}.ddoc table.sdrep th{font-size:13.5pt;line-height:1.1}.ddoc table.sdrep td.l{text-align:left;padding-left:3mm;white-space:nowrap}.ddoc table.sdrep tr.tot td{font-weight:700;border-top:2px solid #000}.ddoc table.sdab td,.ddoc table.sdab th{font-size:14pt;padding:0 5px}.ddoc table.sdall td,.ddoc table.sdall th{font-size:13pt;padding:0 4px;line-height:1.25;white-space:nowrap}.ddoc table.sdall td.x{font-weight:700}.ddoc .sdseal{text-align:center;margin-bottom:1mm}.ddoc .sdseal img{height:20mm}.ddoc table.sdsum{width:100%;margin:2mm 0 4mm}.ddoc table.sdsum th{font-size:13pt;padding:1px 4px;background:#f0f0f0}.ddoc table.sdsum td{text-align:center;font-size:15pt;padding:1px 4px}.ddoc table.sdlist td,.ddoc table.sdlist th{font-size:14pt;padding:0 5px;line-height:1.3}.ddoc table.sdlist th{background:#f0f0f0}.ddoc table.sdlist .nw{white-space:nowrap}.ddoc table.sdlist .pos{font-size:12.5pt}.ddoc table.sdlist .rm{font-size:12.5pt;line-height:1.15}.ddoc table.sdlist tr.sg td{background:#e6e6e6;font-weight:700;font-size:13.5pt}.ddoc table.sdlist tr.sg span{font-weight:400;font-size:12.5pt;margin-left:3mm}.ddoc table.sdlist tr.ab td{background:#f6f6f6}.ddoc table.sdlist .st{white-space:nowrap;font-size:13pt;font-weight:400}.ddoc .dnote{font-size:14pt;margin-top:6px}.ddoc .dsigs{display:flex;justify-content:flex-end;margin-top:26px}.ddoc .dsig{min-width:280px;text-align:center}.ddoc .dsig .h{margin-bottom:18px}.ddoc .dsig .ln{text-align:center}.ddoc .esig{vertical-align:bottom}';
 try { document.head.insertAdjacentHTML('beforeend', '<style id="ddocCss">' + DDOC_CSS + '</style>'); } catch (e) {}
 function dHead(){ var P = (S.dept && S.dept.people) || []; return P.find(function(p){ return /^หน\.ผธก/.test(p.pos || ''); }) || P.find(function(p){ return p.line === 'บริหาร'; }) || P[0]; }
 function dSigner(){
@@ -7134,7 +7134,7 @@ function dSigText(){ var s = dSigner(); if (!s.name) return ''; return '\n\n' + 
 function dDocTitle(k, id){
   if (k === 'clean') return ['ตารางเวรทำความสะอาด แผนกธุรการและกำลังพล', unitFullName() + ' ประจำเดือน ' + monthLabel()];
   if (k === 'list') return ['บัญชีรายชื่อกำลังพล แผนกธุรการและกำลังพล', unitFullName()];
-  if (k === 'daily') return ['ยอดกำลังพลประจำวัน แผนกธุรการและกำลังพล', unitFullName() + ' ประจำวันที่ ' + thd(id, 1)];
+  if (k === 'daily') return ['ยอดกำลังพลประจำวัน แผนกธุรการและกำลังพล', unitFullName() + '\nประจำวันที่ ' + T(thd(id, 1))];
   if (k === 'docs') return ['ทะเบียนหนังสือรับ–ส่ง แผนกธุรการและกำลังพล', unitFullName()];
   if (k === 'leave') return ['บัญชีสรุปวันลา แผนกธุรการและกำลังพล', unitFullName() + ' ปีงบประมาณ ' + (+id + 543)];
   if (k === 'line') return ['บัญชีรายชื่อกำลังพล ' + (id === '-' ? 'ผู้ยังไม่ระบุสาย' : 'สาย' + id) + ' แผนกธุรการและกำลังพล', unitFullName()];
@@ -7145,7 +7145,7 @@ function dDocTitle(k, id){
 function dActsOfMonth(){ var k = ym(); return S.dept.acts.filter(function(a){ return (a.date || '').slice(0, 7) === k || !a.date; }).sort(function(a, b){ return (a.date || '').localeCompare(b.date || ''); }); }
 function dById(id){ return S.dept.people.find(function(x){ return x.id === id; }); }
 function dDocBody(k, id){
-  var t = dDocTitle(k, id), h = '<h1>' + esc(t[0]) + '</h1><h2>' + esc(t[1]) + '</h2>', P = S.dept.people, n = 0;
+  var t = dDocTitle(k, id), h = '<h1>' + esc(t[0]) + '</h1><h2>' + esc(t[1]).replace(/\n/g, '<br>') + '</h2>', P = S.dept.people, n = 0;
   if (k === 'daily' || k === 'docs' || k === 'leave') h += dAdmBody(k, id);
   else if (k === 'clean') {
     h += dCleanDoc();
@@ -7536,7 +7536,9 @@ function dStatusOf(p, iso){
 function dStrength(iso){ var P = S.dept.people, by = {}; P.forEach(function(p){ var st = dStatusOf(p, iso); (by[st.s] = by[st.s] || []).push({ p: p, st: st }); }); return { total: P.length, here: (by['อยู่'] || []).length, by: by }; }
 function dStrengthText(iso){
   var R = dStrength(iso), t = '📊 ยอดกำลังพล ผธก. ' + unitShow() + '\nประจำวันที่ ' + thd(iso, 1) + '\nยอดเต็ม ' + R.total + ' • อยู่ ' + R.here + ' • ไม่อยู่ ' + (R.total - R.here) + '\n';
+  if (R.total - R.here) t += '\n🔻 จำหน่าย ' + (R.total - R.here) + ' นาย';
   DST.slice(1).forEach(function(s){ var L = R.by[s[0]]; if (L && L.length) t += '\n▪️ ' + s[0] + ' ' + L.length + ' นาย\n' + L.map(function(x){ return '   - ' + pLabel(x.p) + (x.st.why && !x.st.man ? ' (' + x.st.why.slice(0, 40) + ')' : ''); }).join('\n'); });
+  var H = R.by['อยู่'] || []; if (H.length) t += '\n\n✅ อยู่ ' + H.length + ' นาย\n' + H.map(function(x, i){ return '   ' + (i + 1) + '. ' + pLabel(x.p); }).join('\n');
   return t + dSigText();
 }
 function dDailyView(){
@@ -7599,9 +7601,18 @@ function dTaskView(){
 }
 function dAdmBody(k, id){
   var P = S.dept.people, h = '';
-  if (k === 'daily') { var R = dStrength(id), n = 0;
-    h += '<div class="dnote" style="text-align:center;font-size:16pt"><b>ยอดเต็ม ' + T(String(R.total)) + ' นาย • อยู่ ' + T(String(R.here)) + ' นาย • ไม่อยู่ ' + T(String(R.total - R.here)) + ' นาย</b></div><table><thead><tr><th style="width:8%">ลำดับ</th><th style="width:36%">ยศ ชื่อ สกุล</th><th style="width:16%">สถานะ</th><th>รายละเอียด</th></tr></thead><tbody>' +
-      DST.slice(1).map(function(s){ return (R.by[s[0]] || []).map(function(x){ n++; return '<tr><td class="c">' + T(String(n)) + '</td><td>' + esc(pLabel(x.p)) + '</td><td class="c">' + esc(s[0]) + '</td><td>' + esc(x.st.why && !x.st.man ? x.st.why : '') + '</td></tr>'; }).join(''); }).join('') + (n ? '' : '<tr><td colspan="4" class="c">อยู่ครบทุกนาย</td></tr>') + '</tbody></table>'; }
+  if (k === 'daily') { var R = dStrength(id), stOf = {}; P.forEach(function(p){ stOf[p.id] = dStatusOf(p, id); });
+    var LN = DLINES.map(function(x){ return x[0]; }).concat(['']).map(function(ln){ return [ln, P.filter(function(p){ return (p.line || '') === ln; })]; }).filter(function(x){ return x[1].length; });
+    h += '<table><thead><tr><th style="width:8%">ลำดับ</th><th style="width:32%">ยศ ชื่อ สกุล</th><th style="width:25%">ตำแหน่ง</th><th style="width:13%">สถานะ</th><th>หมายเหตุ</th></tr></thead><tbody>';
+    var n = 0; LN.forEach(function(x){ var hn = x[1].filter(function(p){ return stOf[p.id].s === 'อยู่'; }).length;
+      h += '<tr class="g"><td colspan="5">' + (x[0] ? 'สาย' + esc(x[0]) : 'ยังไม่ระบุสาย') + ' (' + T(String(x[1].length)) + ' นาย' + (x[1].length - hn ? ' อยู่ ' + T(String(hn)) + ' จำหน่าย ' + T(String(x[1].length - hn)) : '') + ')</td></tr>';
+      x[1].forEach(function(p){ n++; var st = stOf[p.id], ab = st.s !== 'อยู่';
+        h += '<tr><td class="c">' + T(String(n)) + '</td><td style="white-space:nowrap">' + esc(pLabel(p)) + '</td><td>' + esc(p.pos || '') + '</td><td class="c" style="white-space:nowrap">' + (ab ? '<b>' + esc(st.s) + '</b>' : 'อยู่') + '</td><td style="font-size:13pt">' + esc(ab && st.why && !st.man ? st.why : '') + '</td></tr>'; }); });
+    h += '</tbody></table>';
+    var outN = R.total - R.here, br = DST.slice(1).map(function(s){ var c = (R.by[s[0]] || []).length; return c ? s[0] + ' ' + T(String(c)) : ''; }).filter(Boolean);
+    h += '<div class="dnote">ยอดกำลังพลรวม ' + T(String(R.total)) + ' นาย &nbsp;อยู่ ' + T(String(R.here)) + ' นาย &nbsp;จำหน่าย ' + T(String(outN)) + ' นาย' + (br.length ? ' (' + br.join(', ') + ')' : '') + '</div>' +
+      '<div class="dnote" style="margin-top:0">แยกตามสาย: ' + LN.map(function(x){ var hn = x[1].filter(function(p){ return stOf[p.id].s === 'อยู่'; }).length; return (x[0] || 'ไม่ระบุ') + ' ' + T(String(hn)) + '/' + T(String(x[1].length)); }).join(', ') + ' (อยู่/ยอด)</div>';
+  }
   else if (k === 'docs') { var L = S.dept.docs.slice().sort(function(a, b){ return (a.date || '').localeCompare(b.date || ''); });
     h += '<table><thead><tr><th style="width:7%">รับ/ส่ง</th><th style="width:9%">เลขที่</th><th style="width:12%">ลงวันที่</th><th style="width:15%">จาก/ถึง</th><th>เรื่อง</th><th style="width:14%">ผู้รับผิดชอบ</th><th style="width:11%">สถานะ</th></tr></thead><tbody>' + (L.length ? L.map(function(d){ var o = dById(d.owner); return '<tr><td class="c">' + (d.dir === 'in' ? 'รับ' : 'ส่ง') + '</td><td>' + esc(d.no || '') + '</td><td>' + (d.date ? esc(thd(d.date)) : '') + '</td><td>' + esc(d.dir === 'in' ? d.from : d.to) + '</td><td>' + esc(d.subject || '') + '</td><td>' + (o ? esc(pShort(o)) : '') + '</td><td>' + esc(d.status || '') + '</td></tr>'; }).join('') : '<tr><td colspan="7" class="c">ไม่มีรายการ</td></tr>') + '</tbody></table>'; }
   else if (k === 'leave') { var fy = +id, LV = S.dept.leave.filter(function(x){ return dFY(x.from) === fy; });
