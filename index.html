@@ -635,6 +635,8 @@ table.t tr.dim td{opacity:.5}
 .dleg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#7a7460;margin:8px 2px 12px}.dleg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}.dleg i.ex{background:#fdecea;border:1px solid #f3c1bb}.dleg i.hol{background:repeating-linear-gradient(135deg,#f6f4ec,#f6f4ec 3px,#e3dfd0 3px,#e3dfd0 6px)}.dleg i.td{box-shadow:inset 0 0 0 2px #8a6d1f}
 .dge{border:1px solid #e6e0cc;border-radius:14px;background:#fff}.dgeh{all:unset;box-sizing:border-box;width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;font-size:14px;font-weight:700;color:#3d3a2c}.dgeh small{font-weight:400;color:#8a8470;font-size:12px}.dgeh i{margin-left:auto;font-style:normal;font-size:12.5px;color:#6b4a1f}.dgeh:hover{background:#faf8f1;border-radius:14px}.dgeb{padding:0 12px 12px}
 @media (max-width:760px){.dkp{grid-template-columns:repeat(2,1fr)}.dch{display:none}.dcr{display:block}.dcs2{border-right:none;border-bottom:2px solid #8a6d1f;flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px}.dcs2 .dsel{margin-left:auto}.dcd{display:grid;grid-template-columns:62px 1fr;min-height:0;border-left:none;border-top:1px solid #f0ebda;gap:2px 6px}.dcd .dn{grid-row:span 9;flex-direction:column;align-items:flex-start;gap:0}.dcd.out{display:none}.dcd::before{width:3px;height:auto;bottom:0;right:auto}.dcd .pm{display:inline-block}.dts{display:none}}
+.ezai{margin-top:10px;border:1px solid #f0d9a0;background:#fffaf0;border-radius:12px;padding:10px 12px}.ezaih{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.ezaih>span{font-size:22px}.ezaih>div{flex:1;min-width:220px;display:flex;flex-direction:column}.ezaih small{font-size:12.5px;color:#7a6a40}
+.ezaim{margin-top:10px}.ezaig{display:flex;gap:8px;flex-wrap:wrap}.ezaig img{height:150px;border-radius:8px;border:1px solid #e6e0cc;box-shadow:0 2px 6px rgba(0,0,0,.08);background:#fff}
 .dph{padding:14px 16px}.dphh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.dpi{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:linear-gradient(135deg,#a0703a,#6b4a1f);box-shadow:0 3px 8px rgba(107,74,31,.25)}
 .dphh>div:nth-child(2){display:flex;flex-direction:column}.dphh b{font-size:16px}.dphh small{font-size:12px;color:#8a8470}
 .dpl{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}.dpl span{font-size:12.5px;border-radius:999px;padding:3px 10px;background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 30%,#fff)}.dpl b{font-size:14px}
@@ -1448,7 +1450,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1407';
+var APP_VER = '2569.11.27-1424';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -3162,10 +3164,12 @@ function exToolsHtml(l){
   h += '</div>';
   // ② โยนไฟล์ / วางข้อความ
   h += '<div class="ezsec"><div class="ezst"><span class="ezn">3</span>โยนไฟล์คำสั่ง / หนังสือ หรือวางข้อความ</div><div class="ezin">' +
-    '<label class="drop ezdrop"><div class="ezdi">📂</div><b>ลากไฟล์มาวาง</b><span>หรือคลิกเลือก</span><small>Word • Excel • PDF • รูปถ่าย • .txt</small><small class="muted">' + (aiReady() ? 'PDF/รูป ' + BOT_SHORT + ' อ่านให้อัตโนมัติ' : 'PDF/รูป ต้องเชื่อม AI ก่อน') + '</small><input type="file" multiple data-ch="exFile" accept=".doc,.docx,.xlsx,.csv,.txt,.pdf,image/*" hidden></label>' +
+    (aiCheck(), '') + '<label class="drop ezdrop"><div class="ezdi">📂</div><b>ลากไฟล์มาวาง</b><span>หรือคลิกเลือก</span><small>Word • Excel • PDF • รูปถ่าย • .txt</small><small class="muted">' + (aiReady() ? 'PDF/รูป ' + BOT_SHORT + ' อ่านให้อัตโนมัติ' : UI.aiSt ? 'PDF/รูป: เชื่อม AI ก่อนจึงอ่านอัตโนมัติ' : 'PDF/รูป ' + BOT_SHORT + ' อ่านให้ (ถ้าเชื่อม AI แล้ว)') + '</small><input type="file" multiple data-ch="exFile" accept=".doc,.docx,.xlsx,.csv,.txt,.pdf,image/*" hidden></label>' +
     '<div class="ezpaste"><textarea id="ezTxt" data-ch="ezTxt" placeholder="วางข้อความจาก LINE / หนังสือ ได้เลย เช่น&#10;ส.อ. สมชาย ใจดี ลาพักผ่อน 15 - 19 ธ.ค. 69&#10;ให้ ร.ท. สมชาย ใจดี ศึกษาหลักสูตร... ตั้งแต่ 7 ธ.ค. 69">' + esc(UI.ezTxt || '') + '</textarea><button class="btn sm pri" data-act="exPasteGo">🔍 อ่านข้อความ หาชื่อในเวร</button></div></div>';
   if (X && X.busy) h += '<div class="exbusy">⏳ ' + esc(X.busy) + '</div>';
   if (X && X.info) h += '<div class="ezinfo">' + X.info.map(function(x){ return '<span class="' + (x.ok ? 'ok' : 'bad') + '">' + (x.ok ? '✅ ' : '⚠️ ') + esc(x.name) + ' — ' + esc(x.msg) + '</span>'; }).join('') + '</div>';
+  if (X && X.noAi) h += '<div class="ezai"><div class="ezaih"><span>🖼</span><div><b>รูป / PDF ยังอ่านอัตโนมัติไม่ได้ เพราะยังไม่ได้เชื่อม AI ในระบบ</b><small>เชื่อมครั้งเดียว (ฟรี ใช้บัญชี Google) แล้วโยนรูปหนังสือมาได้เลย ' + esc(BOT_SHORT) + ' จะอ่านชื่อและวันที่ให้เอง</small></div><button class="btn sm pri" data-act="aiSetup">🔗 เชื่อม AI (ครั้งเดียว)</button></div>' +
+    ((X.imgs || []).length ? '<div class="ezaim"><div class="small muted" style="margin-bottom:6px">หรือดูรูปแล้วพิมพ์ <b>ยศ ชื่อ สกุล + วันที่</b> ลงช่องข้อความด้านบน แล้วกด 🔍 อ่านข้อความ (กดรูปเพื่อขยาย)</div><div class="ezaig">' + X.imgs.map(function(m){ return '<a href="' + m.url + '" target="_blank" rel="noopener" title="' + esc(m.name) + '"><img src="' + m.url + '" alt=""></a>'; }).join('') + '</div></div>' : '') + '</div>';
   if (X && X.rows) {
     if (!X.rows.length) h += '<div class="warnbox" style="margin-top:8px">ไม่พบชื่อที่ตรงกับบัญชีเวร — ตรวจการสะกด ชื่อ + นามสกุล</div>';
     else {
@@ -3192,12 +3196,14 @@ function exFiles(files, l){
   files = Array.from(files || []); if (!files.length) return;
   var X = UI.exFile = { busy: 'กำลังอ่าน ' + files.length + ' ไฟล์…' }; render();
   var media = files.filter(function(f){ return /\.pdf$/i.test(f.name) || /^image\//.test(f.type); }), docs = files.filter(function(f){ return media.indexOf(f) < 0; });
-  Promise.all(docs.map(fileText)).then(function(R){
+  var pre = media.length && !UI.aiSt && stoOn() ? sapi('aiStatus').then(function(j){ UI.aiSt = j; }, function(e){ UI.aiSt = { has: false, err: e.message }; }) : Promise.resolve();
+  X.imgs = media.filter(function(f){ return /^image\//.test(f.type); }).map(function(f){ try { return { name: f.name, url: URL.createObjectURL(f) }; } catch (e) { return null; } }).filter(Boolean);
+  pre.then(function(){ return Promise.all(docs.map(fileText)); }).then(function(R){
     var info = R.map(function(x){ return { name: x.name, ok: !!(x.text && x.text.trim()), msg: x.skip || (x.text && x.text.trim() ? 'อ่านแล้ว' : 'ไม่พบข้อความ') }; });
     var txt = R.filter(function(x){ return x.text; }).map(function(x){ return x.text; }).join('\n');
     var rd = function(f){ return new Promise(function(ok){ var r = new FileReader(); r.onload = function(){ ok({ name: f.name, mime: /\.pdf$/i.test(f.name) ? 'application/pdf' : f.type, data: r.result }); }; r.onerror = function(){ ok(null); }; r.readAsDataURL(f); }); };
     if (!media.length) return { txt: txt, info: info };
-    if (!aiReady()) { media.forEach(function(f){ info.push({ name: f.name, ok: false, msg: 'PDF/รูปต้องเชื่อม AI ก่อน' }); }); return { txt: txt, info: info }; }
+    if (!aiReady()) { media.forEach(function(f){ info.push({ name: f.name, ok: false, msg: 'ยังอ่านอัตโนมัติไม่ได้' }); }); return { txt: txt, info: info, noAi: true }; }
     X.busy = BOT_SHORT + ' กำลังอ่าน ' + media.map(function(f){ return f.name; }).join(', ') + ' …'; render();
     return Promise.all(media.filter(function(f){ return f.size < 7e6; }).map(rd)).then(function(M){
       M = M.filter(Boolean); UI.lastFileText = txt;
@@ -3205,7 +3211,7 @@ function exFiles(files, l){
         M.forEach(function(m){ info.push({ name: m.name, ok: true, msg: BOT_SHORT + ' อ่านแล้ว' }); }); return { txt: txt + '\n' + (j.text || ''), info: info };
       }, function(e){ M.forEach(function(m){ info.push({ name: m.name, ok: false, msg: 'AI อ่านไม่สำเร็จ: ' + e.message }); }); return { txt: txt, info: info }; });
     });
-  }).then(function(o){ exRowsFrom(o.txt, o.info, files.map(function(f){ return f.name.replace(/\.[^.]+$/, ''); }).join(', '), l);
+  }).then(function(o){ var imgs = X.imgs; if (o.noAi && !String(o.txt || '').trim()) { UI.exFile = { info: o.info, noAi: true, imgs: imgs }; render(); return; } exRowsFrom(o.txt, o.info, files.map(function(f){ return f.name.replace(/\.[^.]+$/, ''); }).join(', '), l); if (o.noAi) { UI.exFile.noAi = true; UI.exFile.imgs = imgs; render(); }
   }).catch(function(e){ UI.exFile = { info: [{ name: 'ไฟล์', ok: false, msg: e.message }] }; render(); });
 }
 function exRowsFrom(txt, info, src, l){
@@ -5774,7 +5780,7 @@ var BAL_ACT = { balGo: function(t){ UI.listId = t.dataset.v; UI.tab = 'roster'; 
 function aiReady(){ return !!(UI.aiSt && UI.aiSt.has); }
 function aiCheck(){
   if (UI.aiSt || UI.aiChk || !stoOn()) return; UI.aiChk = 1;
-  sapi('aiStatus').then(function(j){ UI.aiSt = j; UI.aiChk = 0; if (document.querySelector('.anai')) annDlg(); if (document.getElementById('aiCard')) render(); })
+  sapi('aiStatus').then(function(j){ UI.aiSt = j; UI.aiChk = 0; if (document.querySelector('.anai')) annDlg(); if (document.getElementById('aiCard') || document.querySelector('.ezdrop')) render(); })
     .catch(function(e){ UI.aiSt = { has: false, err: e.message }; UI.aiChk = 0; });
 }
 function aiInBox(){
