@@ -643,6 +643,25 @@ table.t tr.dim td{opacity:.5}
 .pd2go{display:flex;justify-content:flex-end;gap:8px}.pd2btn{padding:8px 22px!important;font-size:14.5px!important}
 .pd2info summary{list-style:none;cursor:pointer;margin:0}.pd2info summary::before{content:'▸ ';color:#8a8470}.pd2info[open] summary::before{content:'▾ '}
 @media (max-width:600px){.pd2f{grid-template-columns:1fr;gap:4px}.pd2d{min-width:0;flex:1 1 100%}}
+#main>.card{position:relative}
+.lfb{position:absolute;top:6px;right:6px;z-index:3;width:24px;height:24px;border-radius:50%;border:1px solid #e4dec8;background:#fff;color:#8a8470;font-size:11px;cursor:pointer;opacity:.55;transition:.15s;padding:0;line-height:1}
+.card:hover>.lfb,.lfold>.lfb{opacity:1}.lfb:hover{background:#f4f1e6;color:#3e4a1f}
+#main>.card:has(>.lfb){padding-right:34px}
+.lfold>*:not(.lfb):not(.lbar):not(.lhd){display:none!important}.lfold{padding-bottom:10px!important}.lfold>.lhd{margin-bottom:0!important}
+.lfold::after{content:'พับไว้ • กด ▸ เพื่อขยาย';display:block;font-size:11.5px;color:#a9a28c;margin-top:2px}
+.lhide{display:none!important}.lhid2{opacity:.45}
+#main.layedit>[data-lk]{outline:2px dashed #b9ae8a;outline-offset:3px;cursor:grab;position:relative;margin-top:26px;overflow:visible!important}#main.layedit>.ldrag{opacity:.4}
+.lbar{position:absolute;top:-14px;left:14px;z-index:4;display:flex;align-items:center;gap:6px;padding:3px 8px;background:#f4f1e6;border:1px solid #d9d0b4;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.1);font-size:12px;color:#6b6450}.lbar span{font-weight:700;cursor:grab;white-space:nowrap}.lbar button{border:1px solid #e0dac6;background:#fff;border-radius:6px;font:inherit;font-size:12px;padding:1px 8px;cursor:pointer}
+#laybar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:10px;background:#2f3a18;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:13px;max-width:calc(100vw - 30px);flex-wrap:wrap}#laybar span{opacity:.8;font-size:12px}#laybar .btn{background:#fff;color:#2f3a18}#laybar .btn.pri{background:#c9b77a;color:#2f3a18;border-color:#c9b77a}
+@media print{.lfb,.lbar,#laybar{display:none!important}}
+.xgb{margin:6px 0 12px;border:1px solid #ece6d3;border-radius:14px;padding:10px 12px;background:#fcfbf7}.xgbh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px}.xgbh b{font-size:14px;color:#3a3527}.xgbh small{font-size:11.5px;color:#8a8470}
+.xgbg{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;align-items:start}
+.xgc{background:#fff;border:1px solid #ece6d3;border-top:4px solid var(--c);border-radius:10px;overflow:hidden}
+.xgbt{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--b);color:var(--c);font-weight:800;font-size:12.5px}.xgbt i{width:9px;height:9px;border-radius:3px;background:var(--c)}.xgbt em{margin-left:auto;font-style:normal;background:#fff;border-radius:999px;padding:0 8px;font-size:12px}
+.xgi{display:flex;flex-direction:column;padding:5px 10px;border-top:1px solid #f3f0e6;line-height:1.25}.xgi b{font-size:13px;color:#2b2b22}.xgi small{font-size:11.5px;color:#7a7460}.xgi.off{opacity:.55}
+.xleg{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 10px;padding:8px 12px;border:1px solid #ece6d3;border-radius:12px;background:#fcfbf7;font-size:13px}.xleg>b{font-size:13px;color:#4a4330}
+.xleg span{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;background:var(--b);color:var(--c);font-weight:700;font-size:12.5px}.xleg span i{width:10px;height:10px;border-radius:3px;background:var(--c)}.xleg em{font-style:normal;background:#fff;border-radius:999px;padding:0 6px;font-size:11.5px}
+.xleg small{flex-basis:100%;font-size:11.5px;color:#8a8470}.xleg .btn{margin-left:auto}.xleg.off{background:none;border:none;padding:0}
 .exv{padding:14px 16px}.exvh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .exvi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:18px;background:linear-gradient(135deg,#d9534f,#9e2a24);box-shadow:0 3px 8px rgba(158,42,36,.25)}
 .exvt{display:flex;flex-direction:column;line-height:1.2}.exvt b{font-size:16px;color:#2b2b22}.exvt small{font-size:12px;color:#8a8470}
@@ -655,7 +674,8 @@ table.t tr.dim td{opacity:.5}
 .exva{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px}
 .exvn{display:flex;flex-direction:column;min-width:0}.exvn b{font-size:14px;color:#222}.exvn small{font-size:12px;color:#8a8470;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .exvp{display:flex;flex-direction:column;gap:4px}.exvp small{font-size:11.5px;color:#7a7460}
-.exvbar{height:6px;border-radius:999px;background:#f1ece0;overflow:hidden}.exvbar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#e8867c,#c0392b)}.exvbar.w{background:repeating-linear-gradient(45deg,#f6efd9,#f6efd9 6px,#efe5c8 6px,#efe5c8 12px)}
+.exvc{font-size:10.5px;font-weight:700;color:var(--xc);background:color-mix(in srgb,var(--xc) 12%,#fff);border-radius:999px;padding:1px 7px;vertical-align:2px;margin-left:4px}
+.exvbar{height:6px;border-radius:999px;background:#f1ece0;overflow:hidden}.exvbar i{display:block;height:100%;border-radius:999px;background:var(--xc,#c0392b);opacity:.85}.exvbar.w{background:repeating-linear-gradient(45deg,#f6efd9,#f6efd9 6px,#efe5c8 6px,#efe5c8 12px)}
 .exvtag{align-self:flex-start;font-size:12px;font-weight:700;color:#8a5a00;background:#fff4d6;border-radius:999px;padding:2px 10px}
 .exvk{text-align:right;display:flex;flex-direction:column;line-height:1.2}.exvk small{font-size:11px;color:#8a8470}.exvk b{font-size:13.5px;color:#2e7a3a}.exvk .nod{color:#b07800}
 .exvmore{display:block;margin:8px auto 0;border:none;background:none;color:#6b7a3a;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
@@ -818,7 +838,7 @@ if ('serviceWorker' in navigator) window.addEventListener('load', function(){ na
   <div class="hbar">
     <span id="hOwn"></span><div class="hgrp hundo"><button id="hUndo" data-act="undo" disabled>↶ <span>ย้อนกลับ</span></button><button id="hRedo" data-act="redo" title="ทำซ้ำ (Ctrl+Y)" disabled>↷</button></div>
     <div class="hgrp hmonth"><button class="hnav" data-act="prevMonth" title="ย้อนกลับไปเดือนก่อน">‹</button><div class="hml"><small>เดือนที่จัดเวร</small><div class="lbl" id="monthLbl"></div></div></div>
-    <div class="hgrp"><button data-act="snapDlg" title="บันทึกฉบับเก็บไว้ในคลัง">💾 <span>บันทึกฉบับ</span></button><button class="go" data-act="nextMonth" title="ยืนยันเดือนนี้ แล้วจัดเดือนถัดไปต่อรอบ (วนรายชื่ออัตโนมัติ)">เดือนถัดไป ›</button></div>
+    <div class="hgrp"><button data-act="layEdit" title="จัดหน้า: ลากย้าย / พับ / ซ่อนการ์ด">🧩 <span>จัดหน้า</span></button></div><div class="hgrp"><button data-act="snapDlg" title="บันทึกฉบับเก็บไว้ในคลัง">💾 <span>บันทึกฉบับ</span></button><button class="go" data-act="nextMonth" title="ยืนยันเดือนนี้ แล้วจัดเดือนถัดไปต่อรอบ (วนรายชื่ออัตโนมัติ)">เดือนถัดไป ›</button></div>
   </div>
 </header>
 <nav class="tabs" id="tabs"></nav>
@@ -1376,7 +1396,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1144';
+var APP_VER = '2569.11.27-1154';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -1693,6 +1713,59 @@ var HEALTH_ACT = {
   healthCopy: function(){ var t = 'สถานะระบบจัดเวร\nหน้าจอ: ' + APP_VER + '\nCode.gs: ' + (HEALTH.code || '?') + ' (ต้องการ ' + codeExpected() + ')\nออนไลน์: ' + navigator.onLine + '\nบันทึก: ' + ((document.getElementById('syncLbl') || {}).textContent || '') + '\nข้อผิดพลาด:\n' + HEALTH.errors.map(function(x){ return new Date(x.t).toLocaleString('th-TH') + ' ' + x.msg + ' ' + x.src; }).join('\n');
     try { navigator.clipboard.writeText(t).then(function(){ toast('คัดลอกรายงานแล้ว — ส่งให้ผู้ดูแลได้เลย'); }); } catch (e) { toast('คัดลอกไม่ได้'); } }
 };
+/* ===================== จัดหน้า: พับการ์ด / ลากย้ายตำแหน่ง / ซ่อน (เก็บแยกแต่ละเครื่อง) ===================== */
+function layGet(){ try { return JSON.parse(localStorage.getItem('layout2') || '{}'); } catch (e) { return {}; } }
+function laySet(L){ try { localStorage.setItem('layout2', JSON.stringify(L)); } catch (e) {} }
+function layKey(el){
+  var t = el.querySelector('h2, .exvt b, .eztt b, .ck2tt, .rvtt b, .hsec b, b');
+  var s = (t ? t.textContent : '') || el.className || 'x';
+  return String(s).replace(/[0-9๐-๙]+/g, '#').replace(/\s+/g, ' ').trim().slice(0, 28);
+}
+function layCards(){ var m = document.getElementById('main'); if (!m) return []; return Array.from(m.children).filter(function(el){ return el.nodeType === 1 && (el.classList.contains('card') || el.classList.contains('hmas') || el.classList.contains('home2') || /card/.test(el.className)); }); }
+function layApply(){
+  var m = document.getElementById('main'); if (!m) return; var tab = UI.tab, L = layGet(), T = L[tab] || {}, cards = layCards(), seen = {};
+  cards.forEach(function(el){ var k = layKey(el); if (seen[k]) k += '#' + (seen[k]++); else seen[k] = 1; el.dataset.lk = k; });
+  // เรียงตามที่ผู้ใช้จัดไว้ (การ์ดใหม่ที่ไม่เคยจัดคงที่เดิม)
+  var ord = T.order || [];
+  if (ord.length) {
+    var slots = [], known = [];
+    cards.forEach(function(el, i){ if (ord.indexOf(el.dataset.lk) >= 0) { slots.push(i); known.push(el); } });
+    known.sort(function(a, b){ return ord.indexOf(a.dataset.lk) - ord.indexOf(b.dataset.lk); });
+    var marker = cards.map(function(el){ var c = document.createComment('lay'); el.parentNode.insertBefore(c, el); return c; });
+    slots.forEach(function(si, j){ marker[si].parentNode.insertBefore(known[j], marker[si]); });
+    marker.forEach(function(c){ c.remove(); });
+  }
+  cards.forEach(function(el){
+    var k = el.dataset.lk, fold = !!(T.fold || {})[k], hide = !!(T.hide || {})[k];
+    var hd = Array.from(el.children).find(function(c){ return !c.classList.contains('lfb') && !c.classList.contains('lbar'); }); if (hd) hd.classList.add('lhd');
+    el.classList.toggle('lfold', fold); el.classList.toggle('lhide', hide && !UI.layEdit); el.classList.toggle('lhid2', hide && !!UI.layEdit);
+    if (!el.classList.contains('card') || el.querySelector(':scope > .lfb')) return;
+    var b = document.createElement('button'); b.className = 'lfb'; b.setAttribute('data-act', 'layFold'); b.title = fold ? 'ขยาย' : 'พับเก็บ'; b.textContent = fold ? '▸' : '▾'; el.insertBefore(b, el.firstChild);
+  });
+  m.classList.toggle('layedit', !!UI.layEdit);
+  if (UI.layEdit) cards.forEach(function(el){
+    el.setAttribute('draggable', 'true');
+    if (!el.querySelector(':scope > .lbar')) { var hb = !!((T.hide || {})[el.dataset.lk]); var bar = document.createElement('div'); bar.className = 'lbar'; bar.innerHTML = '<span>⠿ ลากเพื่อย้าย</span><button data-act="layUp">▲</button><button data-act="layDown">▼</button><button data-act="layHide">' + (hb ? '👁 แสดง' : '🙈 ซ่อน') + '</button>'; el.insertBefore(bar, el.firstChild); }
+  });
+  var tb = document.getElementById('laybar');
+  if (UI.layEdit && !tb) { tb = document.createElement('div'); tb.id = 'laybar'; document.body.appendChild(tb); }
+  if (tb) { if (!UI.layEdit) tb.remove(); else tb.innerHTML = '<b>🧩 โหมดจัดหน้า</b><span>ลากการ์ดขึ้น-ลง หรือกด ▲▼ • ซ่อนการ์ดที่ไม่ใช้ • กด ▾ ที่มุมการ์ดเพื่อพับ</span><button class="btn sm" data-act="layReset">รีเซ็ตหน้านี้</button><button class="btn sm pri" data-act="layEdit">✓ เสร็จสิ้น</button>'; }
+}
+function laySave(){ var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.order = layCards().map(function(el){ return el.dataset.lk; }); laySet(L); }
+(function(){
+  var drag = null;
+  document.addEventListener('dragstart', function(e){ if (!UI.layEdit) return; var c = e.target.closest && e.target.closest('#main [data-lk]'); if (!c || c.parentNode.id !== 'main') return; drag = c; c.classList.add('ldrag'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', c.dataset.lk); } catch (x) {} });
+  document.addEventListener('dragover', function(e){ if (!drag) return; var c = e.target.closest && e.target.closest('#main > [data-lk]'); if (!c || c === drag) return; e.preventDefault(); var r = c.getBoundingClientRect(), after = e.clientY > r.top + r.height / 2; c.parentNode.insertBefore(drag, after ? c.nextSibling : c); });
+  document.addEventListener('dragend', function(){ if (!drag) return; drag.classList.remove('ldrag'); drag = null; laySave(); });
+})();
+var LAY_ACT = {
+  layEdit: function(){ UI.layEdit = !UI.layEdit; render(); toast(UI.layEdit ? 'โหมดจัดหน้า — ลากการ์ดไปวางตำแหน่งที่ต้องการ' : 'บันทึกการจัดหน้าแล้ว'); },
+  layFold: function(t){ var c = t.closest('[data-lk]'); if (!c) return; var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.fold = T.fold || {}; if (T.fold[c.dataset.lk]) delete T.fold[c.dataset.lk]; else T.fold[c.dataset.lk] = 1; laySet(L); c.classList.toggle('lfold'); t.textContent = c.classList.contains('lfold') ? '▸' : '▾'; t.title = c.classList.contains('lfold') ? 'ขยาย' : 'พับเก็บ'; },
+  layHide: function(t){ var c = t.closest('[data-lk]'); if (!c) return; var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.hide = T.hide || {}; if (T.hide[c.dataset.lk]) delete T.hide[c.dataset.lk]; else T.hide[c.dataset.lk] = 1; laySet(L); render(); },
+  layUp: function(t){ var c = t.closest('[data-lk]'), p = c && c.previousElementSibling; while (p && !p.dataset.lk) p = p.previousElementSibling; if (p) { c.parentNode.insertBefore(c, p); laySave(); } },
+  layDown: function(t){ var c = t.closest('[data-lk]'), n = c && c.nextElementSibling; while (n && !n.dataset.lk) n = n.nextElementSibling; if (n) { c.parentNode.insertBefore(n, c); laySave(); } },
+  layReset: function(){ var L = layGet(); delete L[UI.tab]; laySet(L); render(); toast('คืนค่าการจัดหน้านี้แล้ว'); }
+};
 /* ---------- render ---------- */
 function unitFullName(){ return S.unitFull || 'โรงเรียนสงครามพิเศษ ศูนย์สงครามพิเศษ'; }
 function unitIsFull(){ try { return localStorage.getItem('unitFull') !== '0'; } catch (e) { return true; } }
@@ -1702,7 +1775,7 @@ var TABS = [['home', 'ภาพรวม'], ['roster', 'ตารางเวร
 function render(){
   if (UI.sim) return;
   try { if (!UI._rs) { UI._rs = 1; rankSyncRun(); UI._rs = 0; } } catch (e) { UI._rs = 0; }
-  try { renderInner(); UI._good = _snap; try { healthBanner(); syncDot(); if (stoOn() && !HEALTH.at && !HEALTH.busy) setTimeout(healthCheck, 3000); } catch (e) {} }
+  try { renderInner(); UI._good = _snap; try { layApply(); } catch (e) { console.warn(e); } try { healthBanner(); syncDot(); if (stoOn() && !HEALTH.at && !HEALTH.busy) setTimeout(healthCheck, 3000); } catch (e) {} }
   catch (err) {
     console.error(err); try { healthErr('แสดงผลหน้าไม่ได้: ' + (err && err.message), UI.tab); } catch (e) {}
     document.getElementById('main').innerHTML = '<div class="card" style="border:2px solid var(--accent)"><h2>⚠️ หน้านี้แสดงผลไม่ได้</h2><div class="small muted">' + esc(String(err && err.message || err)) + '</div><div class="row" style="margin-top:10px"><button class="btn pri" data-act="undo">↶ ย้อนกลับการแก้ล่าสุด</button><button class="btn" data-act="tab" data-v="home">ไปหน้าภาพรวม</button><button class="btn" data-act="tab" data-v="archive">กู้คืนชุดสำรอง</button></div><div class="small muted" style="margin-top:8px">ข้อมูลไม่หาย — ระบบสำรองไว้ทุก ๑๐ นาที</div></div>';
@@ -1823,7 +1896,7 @@ function viewRoster(){
   var pv = UI.preview || 'annex';
   var pp = pv === 'pay' ? (l.rate ? [pg('p:' + l.id, renderPay(l), 'ใบตอบแทนเวร • ' + l.annex + ' ' + l.short)] : null) : [pg('a:' + l.id, renderAnnex(l), 'บัญชีเวร • ' + l.annex + ' ' + l.short)];
   h += '<div class="card"><div class="hx"><h2 style="margin:0">ตัวอย่างเอกสาร</h2><div class="seg"><button class="' + (pv === 'annex' ? 'on' : '') + '" data-act="preview" data-v="annex">บัญชีเวร (ต้นเดือน)</button><button class="' + (pv === 'pay' ? 'on' : '') + '" data-act="preview" data-v="pay">ใบตอบแทนเวร (สิ้นเดือน)</button></div></div>' + shareBar() +
-    (function(){ var cc = cmpCard(l, pv); return cc + (UI.cmpSideActive ? '' : (pp ? viewer(pp) : '<div class="muted" style="padding:30px;text-align:center">' + esc(l.annex + ' ' + l.short) + ' ไม่ได้รับค่าตอบแทนเวร — ไม่ต้องทำใบตอบแทน</div>')); })() + '</div>' + esignCard();
+    (function(){ var cc = cmpCard(l, pv); return cc + (UI.cmpSideActive ? '' : (pv === 'annex' && !l.external ? exLegend(l) : '') + (pp ? viewer(pp) : '<div class="muted" style="padding:30px;text-align:center">' + esc(l.annex + ' ' + l.short) + ' ไม่ได้รับค่าตอบแทนเวร — ไม่ต้องทำใบตอบแทน</div>')); })() + '</div>' + esignCard();
   h += '</div></div>';
   return h;
 }
@@ -1967,7 +2040,8 @@ function annexModel(l){
     if (p.note) rem.unshift(p.note);
     if (p.helper) { var hl = list(p.helper.from); rem.unshift('ช่วยเวรจาก ' + (hl ? hl.short : 'บัญชีอื่น') + (p.helper.until ? ' ถึง ' + DE.thDate(p.helper.until) : '')); }
     var remS = rem.join(' / '); if (S.rules.thaiDigits) remS = T(remS);
-    return { p: p, i: i, cells: g, absent: !hasDuty && openEnded && r.days.length > 0, rem: remS };
+    var exR = (r.remarks[i] || []).filter(function(x){ return x.ex; }).map(function(x){ return x.ex.reason || ''; })[0], cs = exR != null ? exR : (p.note || ''), cat = cs ? exCat(cs) : null; if (cat && cat.k === 'other' && exR == null) cat = null;
+    return { p: p, i: i, cells: g, absent: !hasDuty && openEnded && r.days.length > 0, rem: remS, cat: cat ? cat.k : '' };
   });
   if (S.rules.rotateTop && start) rows = rows.slice(start).concat(rows.slice(0, start));
   if (S.rules.absentBottom) {
@@ -3102,6 +3176,7 @@ var EX2_ACT = {
   exUndoLast: function(){ document.getElementById('modal').innerHTML = ''; undo(); toast('ยกเลิกการงดแล้ว'); },
   exGoPrint: function(){ document.getElementById('modal').innerHTML = ''; UI.tab = 'print'; render(); scrollTo(0, 0); },
   exScope: function(t){ UI.exScope = t.dataset.v; render(); },
+  exColTog: function(){ S.rules.exColor = S.rules.exColor === false; save(); render(); },
   exlAll: function(t){ UI.exlAll = UI.exlAll || {}; UI.exlAll[t.dataset.v] = 1; render(); },
   exlTog: function(t){ UI.exlOpen = UI.exlOpen || {}; UI.exlOpen[t.dataset.v] = !UI.exlOpen[t.dataset.v]; render(); },
   exNQuick: function(t){ var o = UI.exNote[t.dataset.v]; if (!o) return; var mr = monthRange(); o.from = o.from || mr[0]; o.to = t.dataset.m === 'month' ? mr[1] : ''; o.sel = true; render(); },
@@ -4447,7 +4522,7 @@ function docCss(){
 }
 function pageToCanvas(paper, scale){
   scale = scale || 2;
-  var cl = paper.cloneNode(true); cl.style.zoom = ''; cl.querySelectorAll('[contenteditable]').forEach(function(e){ e.removeAttribute('contenteditable'); }); cl.querySelectorAll('.tick').forEach(function(e){ e.remove(); }); cl.querySelectorAll('.chg').forEach(function(e){ e.classList.remove('chg'); });
+  var cl = paper.cloneNode(true); cl.style.zoom = ''; cl.querySelectorAll('tr[class^="xc-"]').forEach(function(e){ e.removeAttribute('class'); }); cl.querySelectorAll('[contenteditable]').forEach(function(e){ e.removeAttribute('contenteditable'); }); cl.querySelectorAll('.tick').forEach(function(e){ e.remove(); }); cl.querySelectorAll('.chg').forEach(function(e){ e.classList.remove('chg'); });
   var w = paper.offsetWidth / (parseFloat(paper.style.zoom) || 1), hgt = paper.offsetHeight / (parseFloat(paper.style.zoom) || 1);
   var wrap = document.createElement('div'); wrap.className = 'pimg'; wrap.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml'); wrap.appendChild(cl);
   var st = document.createElement('style'); st.textContent = docCss(); wrap.insertBefore(st, cl);
@@ -4623,11 +4698,27 @@ function rotDlg(){ rotViewDlg(); }
 
 /* ===================== ภาพรวมการงดเวร (หน้า งดเวร) ===================== */
 var EXCAT = [
-  { k: 'study', t: 'ศึกษา/ฝึก/อบรม', c: '#4a7bd0', re: /ศึกษา|หลักสูตร|ฝึก|อบรม|ภาคสนาม|กระโดดร่ม|ลส\.|MDMP|สัมมนา|ดูงาน/i },
-  { k: 'duty', t: 'ราชการ/ช่วยราชการ', c: '#3f9a5b', re: /ราชการ|ฉก\.|ปฏิบัติ|กองกำลัง|ภารกิจ|ผู้ฝึกสอน|ครูฝึก/ },
-  { k: 'leave', t: 'ลา', c: '#e08a2e', re: /ลา|อุปสมบท|คลอด|ป่วย|รักษาตัว/ },
-  { k: 'other', t: 'อื่น ๆ', c: '#8a8a7a', re: /.*/ }
+  { k: 'study', t: 'ศึกษา / อบรม / หลักสูตร', c: '#2f6fd0', bg: '#e9f1fe', re: /ศึกษา|หลักสูตร|อบรม|สัมมนา|ลส\.|MDMP|ดูงาน/ },
+  { k: 'train', t: 'ฝึก / ภาคสนาม', c: '#8a44c4', bg: '#f3eafb', re: /ฝึก|ภาคสนาม|กระโดดร่ม|Cobra|ทหารใหม่|ซ้อม/i },
+  { k: 'duty', t: 'ไปราชการ / ช่วยราชการ', c: '#2f8a4a', bg: '#e8f6ec', re: /ราชการ|ฉก\.|ปฏิบัติ|กองกำลัง|ภารกิจ|ผู้ฝึก|ครูฝึก|วิทยากร|ประจำการ/ },
+  { k: 'leave', t: 'ลา (พักผ่อน / กิจ / ป่วย)', c: '#d9791f', bg: '#fdf1e3', re: /ลา|อุปสมบท|คลอด|ป่วย|รักษาตัว/ },
+  { k: 'other', t: 'อื่น ๆ', c: '#7a7a6a', bg: '#f1f0ea', re: /.*/ }
 ];
+function exLegend(l){
+  // กระดานแยกประเภทงดเวร (สีอยู่บนกระดานนี้เท่านั้น เอกสารนำเรียนเป็นขาวดำ)
+  var mr = monthRange(), keys = {}; l.people.forEach(function(p){ keys[DE.personKey(p)] = p; });
+  var items = S.exemptions.filter(function(e){ return keys[e.key] && (!e.listId || e.listId === l.id) && e.from <= mr[1] && (!e.to || e.to >= mr[0]); });
+  if (!items.length) return '';
+  var G = {}; items.forEach(function(e){ var c = exCat(e.reason || ''); (G[c.k] = G[c.k] || []).push(e); });
+  var tdy = todayIso();
+  return '<div class="xgb"><div class="xgbh"><b>🎨 ผู้งดเวรเดือนนี้ แยกตามประเภท</b><small>' + items.length + ' รายการ • สีใช้ดูในระบบเท่านั้น เอกสารที่พิมพ์นำเรียนเป็นขาวดำ</small></div><div class="xgbg">' +
+    EXCAT.filter(function(c){ return G[c.k]; }).map(function(c){
+      var L = G[c.k].sort(function(a, b){ return (a.to || '9999').localeCompare(b.to || '9999'); });
+      return '<div class="xgc" style="--c:' + c.c + ';--b:' + c.bg + '"><div class="xgbt"><i></i>' + esc(c.t) + '<em>' + L.length + '</em></div>' +
+        L.map(function(e){ var p = keys[e.key], on = e.from <= tdy && (!e.to || e.to >= tdy);
+          return '<div class="xgi' + (on ? '' : ' off') + '" title="' + esc(e.reason || '') + '"><b>' + esc(pShort(p)) + '</b><small>' + esc(thd(e.from) + ' – ' + (e.to ? thd(e.to) : 'ไม่มีกำหนด')) + '</small></div>'; }).join('') + '</div>';
+    }).join('') + '</div></div>';
+}
 function exCat(r){ return EXCAT.find(function(c){ return c.re.test(r || ''); }); }
 
 /* ===================== ข่าววันหยุดพิเศษ (ออกแบบใหม่) ===================== */
@@ -5154,7 +5245,7 @@ var OWN_KEY = 'dutyOwner.v1', OWN_HRS = 8;
 // ส่วนตั้งค่าระบบ — ต้องเป็นเจ้าของเสมอ
 var OWN_SYS = { act: 'lcolReset miOk mRank mRankAll esSavePad esClearPad esDel esMv rotDlg rotFix rotSkip rotOrder rotGAdd rotGDel sortSeed resetHol resetAll addList delList addSigner delSigner copyGs showGs goSetup updGo updRevert updUseIndex ghSave updCopyCode pwaTeam pwaInvite aiKeySave aiKeyDel stoDlg stoGo stoCheck stoBack stoClean stoCleanRun bakRestore logRestore restoreVer delVer forceSave purgeEx ownMode ownCode', ch: 'lcol esOn esH esFile masterFile rule hol sg rotMember wmode isg il ifolder drv importJson stoD' };
 // ดูได้อย่างเดียว (เมื่อล็อกทั้งระบบ) — คำสั่งที่ไม่เปลี่ยนข้อมูล
-var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
+var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone layEdit layFold layHide layUp layDown layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
 (function(){ ['act', 'ch'].forEach(function(k){ var o = {}; OWN_SYS[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_SYS[k] = o; o = {}; OWN_VIEW[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_VIEW[k] = o; }); })();
 function ownSess(){ try { var o = JSON.parse(sessionStorage.getItem(OWN_KEY) || 'null'); if (o && o.until > Date.now()) return o; } catch (e) {} return null; }
 function isOwner(){ return !!ownSess(); }
@@ -5497,8 +5588,8 @@ exCardHtml = function(l){
     var col = ['#c0392b', '#2f6f8f', '#7a5a2a', '#5a6f2a', '#8a3f7a', '#3f5a8a'];
     h += '<div class="exvl">' + A.slice(0, lim).map(function(o, i){ var r = o.r, nm = r.p.name || '?', once = r.kind === 'once', w = o.st === 'wait';
       var left = !once && o.to ? Math.max(0, Math.round((new Date(o.to) - new Date(now)) / 864e5)) : null, tot = !once && o.to ? Math.max(1, Math.round((new Date(o.to) - new Date(o.from)) / 864e5) + 1) : null, pct = tot ? Math.min(100, Math.max(4, 100 - left / tot * 100)) : 100;
-      return '<div class="exvr"><span class="exva" style="background:' + col[nm.charCodeAt(0) % col.length] + '">' + esc(nm.charAt(0)) + '</span>' +
-        '<div class="exvn"><b>' + esc(pShort(r.p)) + '</b><small>' + esc(r.reason || 'งดเวร') + '</small></div>' +
+      var ct = exCat(r.reason || ''); return '<div class="exvr" style="--xc:' + ct.c + '"><span class="exva" style="background:' + ct.c + '" title="' + esc(ct.t) + '">' + esc(nm.charAt(0)) + '</span>' +
+        '<div class="exvn"><b>' + esc(pShort(r.p)) + ' <span class="exvc">' + esc(ct.t.split(' ')[0]) + '</span></b><small>' + esc(r.reason || 'งดเวร') + '</small></div>' +
         '<div class="exvp">' + (once ? '<span class="exvtag">งด ๑ ครั้ง</span>' : '<div class="exvbar' + (w ? ' w' : '') + '"><i style="width:' + (w ? 0 : pct) + '%"></i></div><small>' + esc(thd(r.from || o.from) + ' – ' + ((r.to || o.to) ? thd(r.to || o.to) : 'ไม่มีกำหนด')) + (w ? ' • ยังไม่เริ่ม' : left != null ? ' • เหลือ ' + left + ' วัน' : '') + '</small>') + '</div>' +
         '<div class="exvk">' + (once ? '' : o.back ? '<small>กลับเข้าเวร</small><b>' + esc(thd(o.back, 1)) + '</b>' : '<small>กลับเข้าเวร</small><b class="nod">ไม่มีกำหนด</b>') + '</div></div>'; }).join('') + '</div>';
     if (A.length > lim) h += '<button class="exvmore" data-act="exlAll" data-v="' + l.id + '">แสดงอีก ' + (A.length - lim) + ' คน ▾</button>';
@@ -6848,7 +6939,7 @@ document.addEventListener('focusout', function(e){
 document.addEventListener('keydown', function(e){
   if (e.key === 'Escape' && UI.asst) { UI.asst = false; renderAsst(); return; }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.ed) { e.preventDefault(); e.target.blur(); return; } if (e.key === 'Escape' && UI.editDay != null) { UI.editDay = null; render(); } });
-Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ROT_ACT, ST_ACT, PWA_ACT, UPD_ACT, CHAT_ACT, AG_ACT, EX2_ACT, BOT_ACT, UNIT_ACT, HEALTH_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH, CHAT_CH, EX2_CH);
+Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ROT_ACT, ST_ACT, PWA_ACT, UPD_ACT, CHAT_ACT, AG_ACT, EX2_ACT, BOT_ACT, UNIT_ACT, HEALTH_ACT, LAY_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH, CHAT_CH, EX2_CH);
 setTimeout(function(){ try { statPing(); } catch (e) {} }, 2500);
 init();
 })();
