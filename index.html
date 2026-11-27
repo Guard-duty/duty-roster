@@ -661,6 +661,14 @@ table.t tr.dim td{opacity:.5}
 .sthb .sw.hd-grad i{background:linear-gradient(90deg,var(--ink),color-mix(in srgb,var(--ink) 45%,#fff))}.sthb .sw.hd-stripe i{background:repeating-linear-gradient(45deg,var(--ink) 0 3px,color-mix(in srgb,var(--ink) 65%,#000) 3px 6px)}.sthb .sw.hd-outline i{background:#fff;border-top:1.5px solid var(--ink)}.sthb .sw.hd-dots i{background:radial-gradient(circle,var(--ink) 1px,transparent 1.3px) 0 0/4px 4px}.sthb .sw.hd-hazard i{background:repeating-linear-gradient(-45deg,var(--ink) 0 3px,#ffd34d 3px 6px)}
 .sthb b{font-size:12px;line-height:1}.sthb small{font-size:9.5px;color:#7a7460;line-height:1.1}
 @media (max-width:700px){.sthg{grid-template-columns:repeat(5,1fr)}}
+.dnav{grid-template-columns:repeat(4,1fr)}
+.dsum{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.dsum .big{background:#2f3a1c;color:#fff;border-radius:14px;padding:8px 16px;display:flex;align-items:baseline;gap:6px}.dsum .big b{font-size:30px}.dsum .it{border:1.5px solid color-mix(in srgb,var(--c) 40%,#fff);background:color-mix(in srgb,var(--c) 8%,#fff);border-radius:12px;padding:6px 12px;display:flex;flex-direction:column;min-width:78px}.dsum .it b{font-size:20px;color:var(--c)}.dsum .it span{font-size:12px;color:#5d584a}.dsum .it.z{opacity:.45}
+.dgrid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px}.dpc{display:flex;align-items:center;gap:8px;border:1px solid #ece6d3;border-left:4px solid var(--c);border-radius:10px;padding:6px 8px;background:#fff}.dpc>div{flex:1;min-width:0;display:flex;flex-direction:column}.dpc b{font-size:13.5px}.dpc small{font-size:11.5px;color:#8a8470;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dpc .dsel{max-width:120px;font-size:12px}
+.ddt tr.ov td{background:#fdecea}.ddt tr.dn td{opacity:.6}.ddt td{font-size:13px}
+.dlv td.c{text-align:center}.dlv td.has{background:#fdf7e6}.dlv td.over{background:#fdecea;color:#b3261e;font-weight:700}.lvb{height:4px;background:#eee;border-radius:3px;margin-top:3px;overflow:hidden}.lvb i{display:block;height:100%;background:#d9791f}
+.dlvr{display:flex;align-items:center;gap:8px;padding:5px 2px;border-bottom:1px dashed #ece6d3;font-size:13px;flex-wrap:wrap}.dlvr small{color:#8a8470;flex:1}
+.dtl{display:flex;flex-direction:column;gap:6px;margin-top:8px}.dti2{display:flex;align-items:center;gap:10px;border:1px solid #ece6d3;border-radius:12px;padding:8px 10px;background:#fff;cursor:pointer}.dti2 input{width:18px;height:18px}.dti2 .dd2{display:flex;flex-direction:column;align-items:center;min-width:38px;font-weight:800;font-size:16px;color:#4b5a2a;line-height:1}.dti2 .dd2 small{font-size:10px;font-weight:400;color:#8a8470}.dti2 .tx2{flex:1;display:flex;flex-direction:column;font-size:14px}.dti2 .tx2 small{font-size:11.5px}
+.dti2.ok{background:#f1f8ee;border-color:#cde3c4}.dti2.ok .tx2{color:#5a7a4a;text-decoration:line-through}.dti2.ok .tx2 small{text-decoration:none;display:block}.dti2.late{background:#fdecea;border-color:#f3c1bb}.dti2.late small{color:#b3261e}.dti2.soon{background:#fff8e6;border-color:#f0d9a0}.dti2.soon small{color:#9a6a00}
 .dph{padding:14px 16px}.dphh{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.dpi{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:linear-gradient(135deg,#a0703a,#6b4a1f);box-shadow:0 3px 8px rgba(107,74,31,.25)}
 .dphh>div:nth-child(2){display:flex;flex-direction:column}.dphh b{font-size:16px}.dphh small{font-size:12px;color:#8a8470}
 .dpl{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}.dpl span{font-size:12.5px;border-radius:999px;padding:3px 10px;background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 30%,#fff)}.dpl b{font-size:14px}
@@ -1477,7 +1485,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1851';
+var APP_VER = '2569.11.27-1900';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -5397,7 +5405,7 @@ var OWN_KEY = 'dutyOwner.v1', OWN_HRS = 8;
 // ส่วนตั้งค่าระบบ — ต้องเป็นเจ้าของเสมอ
 var OWN_SYS = { act: 'lcolReset miOk mRank mRankAll esSavePad esClearPad esDel esMv rotDlg rotFix rotSkip rotOrder rotGAdd rotGDel sortSeed ordPrev resetHol resetAll addList delList addSigner delSigner copyGs showGs goSetup updGo updRevert updUseIndex ghSave updCopyCode pwaTeam pwaInvite aiKeySave aiKeyDel stoDlg stoGo stoCheck stoBack stoClean stoCleanRun bakRestore logRestore restoreVer delVer forceSave purgeEx ownMode ownCode', ch: 'lcol esOn esH esFile masterFile rule hol sg rotMember wmode isg il ifolder drv importJson stoD' };
 // ดูได้อย่างเดียว (เมื่อล็อกทั้งระบบ) — คำสั่งที่ไม่เปลี่ยนข้อมูล
-var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone dSub dCleanCopy dCleanPrint dListCopy dListPrint dActCopy dDoc dDocPrint dDocImg dDocSave dDocTxt dAll dAllAll dAllPrint dAllImg dAllTxt dGrpEd stagDlg stPrint stImg stKindB boardDlg archOff stTh layEdit layFold layHide layUp layDown layW layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
+var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone dSub dCleanCopy dCleanPrint dListCopy dListPrint dActCopy dDoc dDocPrint dDocImg dDocSave dDocTxt dAll dAllAll dAllPrint dAllImg dAllTxt dGrpEd stagDlg stPrint stImg stKindB boardDlg archOff stTh dDayTxt dRegF dRegRemind layEdit layFold layHide layUp layDown layW layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
 (function(){ ['act', 'ch'].forEach(function(k){ var o = {}; OWN_SYS[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_SYS[k] = o; o = {}; OWN_VIEW[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_VIEW[k] = o; }); })();
 function ownSess(){ try { var o = JSON.parse(sessionStorage.getItem(OWN_KEY) || 'null'); if (o && o.until > Date.now()) return o; } catch (e) {} return null; }
 function isOwner(){ return !!ownSess(); }
@@ -6502,6 +6510,10 @@ function deptCtx(){
     L.push('รายชื่อ (ลำดับอาวุโส): ' + D.people.map(function(p){ return pLabel(p) + '[' + (p.line || 'ไม่ระบุสาย') + (p.clean ? ',ทำความสะอาด' : '') + (p.sup ? ',ผู้กำกับ' : '') + (p.phone ? ',โทร ' + p.phone : '') + (p.pos ? ',' + p.pos : '') + ']'; }).join('; '));
     L.push('เวรทำความสะอาด ' + monthLabel() + ' (กลุ่มประจำวัน ทำทุกสัปดาห์): ' + G.map(function(g, i){ return DGN[i] + '=' + g.map(pShort).join(', '); }).join(' | '));
     L.push('ผู้กำกับดูแลรายสัปดาห์: ' + R.weeks.map(function(wk, wi){ var r = R.rows.find(function(x){ return x.wi === wi; }); return 'สัปดาห์' + (wi + 1) + '(' + wk[0] + '-' + wk[wk.length - 1] + ')=' + (r && r.sup ? pShort(r.sup) : '-'); }).join(', '));
+    try { dAdmInit(); var td0 = todayIso(), SR = dStrength(td0); L.push('ยอดกำลังพลวันนี้: อยู่ ' + SR.here + '/' + SR.total + '; ' + DST.slice(1).map(function(s){ var x = SR.by[s[0]]; return x && x.length ? s[0] + ' ' + x.map(function(y){ return pShort(y.p); }).join(',') : ''; }).filter(Boolean).join('; '));
+      var od = D.docs.filter(function(d){ return d.status !== 'เสร็จ'; }); if (od.length) L.push('หนังสือค้าง: ' + od.map(function(d){ var o = dById(d.owner); return (d.no || '') + ' ' + d.subject + (o ? ' (' + pShort(o) + ')' : '') + (d.due ? ' กำหนด ' + d.due + (d.due < td0 ? ' เกินกำหนด' : '') : ''); }).join('; '));
+      var tk = ym(), dn = (D.taskDone || {})[tk] || {}; L.push('งานประจำเดือนที่ยังไม่เสร็จ: ' + D.tasks.filter(function(t){ return !dn[t.id]; }).map(function(t){ return t.name + '(วันที่ ' + t.day + ')'; }).join('; '));
+      var fy0 = dFY(td0), lv = D.leave.filter(function(x){ return dFY(x.from) === fy0; }); if (lv.length) L.push('วันลาปีงบนี้: ' + lv.map(function(x){ var p = dById(x.pid); return (p ? pShort(p) : '?') + ' ' + x.type + ' ' + x.days + 'วัน(' + x.from + ')'; }).join('; ')); } catch (e) {}
     if (D.acts.length) L.push('กิจกรรมของส่วน: ' + D.acts.map(function(a){ return a.name + (a.date ? ' ' + a.date : '') + ' ' + a.ppl.length + (a.need ? '/' + a.need : '') + ' นาย'; }).join('; '));
     return L.join('\n'); } catch (e) { return ''; }
 }
@@ -6969,7 +6981,7 @@ function deptClean(y, m){
 }
 function dCount(){ var c = {}; S.dept.acts.forEach(function(a){ a.ppl.forEach(function(id){ c[id] = (c[id] || 0) + 1; }); }); return c; }
 function viewDept(){
-  deptInit();
+  deptInit(); dAdmInit();
   var D = S.dept, sub = UI.dsub || 'clean', P = D.people, cnt = {}; P.forEach(function(p){ var k = p.line || ''; cnt[k] = (cnt[k] || 0) + 1; });
   var tdy = todayIso(), tp = tdy.split('-'), isCur = +tp[0] === S.y && +tp[1] === S.m, R = deptClean(S.y, S.m), G = dGroups();
   var wd = isCur ? DE.wday(S.y, S.m, +tp[2]) : 0, row = isCur ? R.rows.find(function(r){ return r.d === +tp[2]; }) : null;
@@ -6977,15 +6989,15 @@ function viewDept(){
   var kpi = function(ic, v, l, s){ return '<div class="dk"><span class="dki">' + ic + '</span><div><b>' + v + '</b><span>' + l + '</span>' + (s ? '<small>' + s + '</small>' : '') + '</div></div>'; };
   var h = '<div class="card dhero"><div class="dhb"><img src="' + SEAL_IMG + '" alt="" class="dhs"><div class="dht"><small>' + esc(unitFullName()) + '</small><h1>แผนกธุรการและกำลังพล</h1><span>ผธก. • ' + esc(monthLabel()) + ' • กำลังพล ' + P.length + ' นาย</span></div>' +
     '<div class="dhact">' + foldBtn() + '<button class="btn pri dpall" data-act="dAll">📑 ใบทุกส่วน <small>พิมพ์รวม / ส่ง LINE</small></button></div></div>' +
-    '<div class="dkr">' + kpi('👥', P.length, 'กำลังพล', DLINES.filter(function(L){ return cnt[L[0]]; }).map(function(L){ return L[0] + ' ' + cnt[L[0]]; }).join(' • ') + (cnt[''] ? ' • ไม่ระบุ ' + cnt[''] : '')) +
+    '<div class="dkr">' + kpi('👥', dStrength(tdy).here + '/' + P.length, 'อยู่วันนี้ / ยอดเต็ม', DLINES.filter(function(L){ return cnt[L[0]]; }).map(function(L){ return L[0] + ' ' + cnt[L[0]]; }).join(' • ') + (cnt[''] ? ' • ไม่ระบุ ' + cnt[''] : '')) +
       kpi('🧹', row ? G[wd - 1].length : '—', row ? 'ทำความสะอาดวันนี้ (' + DGN[wd - 1] + ')' : 'วันนี้ไม่มีเวรทำความสะอาด', row ? G[wd - 1].map(pShort).join(', ') : '') +
       kpi('👮', supNow ? esc(pShort(supNow)) : '—', 'ผู้กำกับดูแลสัปดาห์นี้', '') +
-      kpi('🎯', acts.length, 'กิจกรรมเดือนนี้', acts.slice(0, 2).map(function(a){ return a.name; }).join(', ')) + '</div>' +
-    '<div class="dnav">' + [['clean', '🧹', 'เวรทำความสะอาด', 'กลุ่มวัน จ.–ศ. + ผู้กำกับ'], ['act', '🎯', 'กิจกรรมของส่วน', 'จัดคนเข้าร่วม'], ['list', '📇', 'รายชื่อ / ติดตามงาน', 'เบอร์โทร แยกตามสาย']].map(function(t){
+      (function(){ var od = D.docs.filter(function(d){ return d.status !== 'เสร็จ' && d.due && d.due < tdy; }).length, op = D.docs.filter(function(d){ return d.status !== 'เสร็จ'; }).length; return kpi(od ? '⚠️' : '📨', op, 'หนังสือค้างดำเนินการ', od ? 'เกินกำหนด ' + od + ' เรื่อง' : 'ไม่มีเกินกำหนด'); })() + '</div>' +
+    '<div class="dnav">' + [['daily', '📊', 'ยอดกำลังพลวันนี้', 'อยู่ ' + dStrength(todayIso()).here + '/' + P.length + ' • ส่ง LINE'], ['docs', '📨', 'ทะเบียนหนังสือ', (function(){ var n = (S.dept.docs || []).filter(function(d){ return d.status !== 'เสร็จ'; }).length, o2 = (S.dept.docs || []).filter(function(d){ return d.status !== 'เสร็จ' && d.due && d.due < todayIso(); }).length; return 'ค้าง ' + n + (o2 ? ' • ⚠ เกิน ' + o2 : ''); })()], ['task', '✅', 'งานประจำเดือน', (function(){ var k = ym(), dn = Object.keys((S.dept.taskDone || {})[k] || {}).length; return 'เสร็จ ' + dn + '/' + (S.dept.tasks || []).length; })()], ['leave', '🏖', 'บัญชีวันลา', 'นับวันทำการ • สิทธิ์คงเหลือ'], ['clean', '🧹', 'เวรทำความสะอาด', 'กลุ่มวัน จ.–ศ. + ผู้กำกับ'], ['act', '🎯', 'กิจกรรมของส่วน', 'จัดคนเข้าร่วม'], ['list', '📇', 'รายชื่อ / ติดตามงาน', 'เบอร์โทร แยกตามสาย']].map(function(t){
       return '<button class="dnt' + (sub === t[0] ? ' on' : '') + '" data-act="dSub" data-v="' + t[0] + '"><span>' + t[1] + '</span><b>' + t[2] + '</b><small>' + t[3] + '</small></button>'; }).join('') +
       '<button class="dnt" data-act="stagDlg"><span>📎</span><b>ป้าย / มุม / ปก</b><small>กรุณาลงนาม 30 แบบ</small></button></div>' +
     '<div class="dpl dlc">' + DLINES.map(function(L){ return '<span style="--c:' + L[1] + '"><b>' + (cnt[L[0]] || 0) + '</b> ' + L[0] + '</span>'; }).join('') + (cnt[''] ? '<span style="--c:#b07800"><b>' + cnt[''] + '</b> ยังไม่ระบุสาย</span>' : '') + '</div></div>';
-  if (sub === 'clean') h += dCleanView(); else if (sub === 'act') h += dActView(); else h += dListView();
+  if (sub === 'clean') h += dCleanView(); else if (sub === 'act') h += dActView(); else if (sub === 'daily') h += dDailyView(); else if (sub === 'docs') h += dRegView(); else if (sub === 'leave') h += dLeaveView(); else if (sub === 'task') h += dTaskView(); else h += dListView();
   return h;
 }
 function dSel(name, cur, list, extra){ return '<select class="dsel" data-ch="' + name + '"' + (extra || '') + '>' + list.map(function(o){ return '<option value="' + esc(o[0]) + '"' + (o[0] === cur ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select>'; }
@@ -7122,6 +7134,9 @@ function dSigText(){ var s = dSigner(); if (!s.name) return ''; return '\n\n' + 
 function dDocTitle(k, id){
   if (k === 'clean') return ['ตารางเวรทำความสะอาด แผนกธุรการและกำลังพล', unitFullName() + ' ประจำเดือน ' + monthLabel()];
   if (k === 'list') return ['บัญชีรายชื่อกำลังพล แผนกธุรการและกำลังพล', unitFullName()];
+  if (k === 'daily') return ['ยอดกำลังพลประจำวัน แผนกธุรการและกำลังพล', unitFullName() + ' ประจำวันที่ ' + thd(id, 1)];
+  if (k === 'docs') return ['ทะเบียนหนังสือรับ–ส่ง แผนกธุรการและกำลังพล', unitFullName()];
+  if (k === 'leave') return ['บัญชีสรุปวันลา แผนกธุรการและกำลังพล', unitFullName() + ' ปีงบประมาณ ' + (+id + 543)];
   if (k === 'line') return ['บัญชีรายชื่อกำลังพล ' + (id === '-' ? 'ผู้ยังไม่ระบุสาย' : 'สาย' + id) + ' แผนกธุรการและกำลังพล', unitFullName()];
   if (k === 'acts') return ['สรุปการจัดกำลังพลเข้าร่วมกิจกรรม แผนกธุรการและกำลังพล', unitFullName() + ' ประจำเดือน ' + monthLabel()];
   var a = S.dept.acts.find(function(x){ return x.id === id; }) || {};
@@ -7131,7 +7146,8 @@ function dActsOfMonth(){ var k = ym(); return S.dept.acts.filter(function(a){ re
 function dById(id){ return S.dept.people.find(function(x){ return x.id === id; }); }
 function dDocBody(k, id){
   var t = dDocTitle(k, id), h = '<h1>' + esc(t[0]) + '</h1><h2>' + esc(t[1]) + '</h2>', P = S.dept.people, n = 0;
-  if (k === 'clean') {
+  if (k === 'daily' || k === 'docs' || k === 'leave') h += dAdmBody(k, id);
+  else if (k === 'clean') {
     h += dCleanDoc();
   } else if (k === 'list') {
     h += '<table><thead><tr><th style="width:8%">ลำดับ</th><th style="width:34%">ยศ ชื่อ สกุล</th><th>ตำแหน่ง</th><th style="width:19%">เบอร์โทร</th></tr></thead><tbody>';
@@ -7155,6 +7171,7 @@ function dDocBody(k, id){
 }
 function dDocText(k, id){
   var t = '', P = S.dept.people;
+  if (k === 'daily') return dStrengthText(id);
   if (k === 'clean') t = dCleanText();
   else if (k === 'list') { t = 'บัญชีรายชื่อ ผธก. (ติดตามงาน)\n'; DLINES.map(function(x){ return x[0]; }).concat(['']).forEach(function(ln){ var L = P.filter(function(p){ return (p.line || '') === ln; }); if (!L.length) return; t += '\n' + (ln ? 'สาย' + ln : 'ยังไม่ระบุสาย') + ' (' + L.length + ' นาย)\n' + L.map(function(p, i){ return (i + 1) + '. ' + pLabel(p) + (p.phone ? ' โทร ' + p.phone : ''); }).join('\n') + '\n'; }); t += '\nยอดรวม ' + P.length + ' นาย'; }
   else if (k === 'line') { var LL = P.filter(function(p){ return (p.line || '') === dLineName(id); }); t = '👥 ' + (id === '-' ? 'ผู้ยังไม่ระบุสาย' : 'สาย' + id) + ' ผธก. (' + LL.length + ' นาย)\n' + LL.map(function(p, i){ return (i + 1) + '. ' + pLabel(p) + (p.phone ? ' โทร ' + p.phone : ''); }).join('\n'); }
@@ -7498,6 +7515,134 @@ var STAG_CH = {
 };
 function foldBtn(){ return '<button class="foldbtn" data-act="stagDlg" title="ทำป้ายคลิปหนีบ กรุณาลงนาม"><img src="' + SEAL_IMG + '" alt=""><span><b>กรุณาลงนาม</b><small>ป้ายคลิปหนีบ</small></span></button>'; }
 
+/* ===================== ผธก. เพิ่มเติม: ยอดกำลังพลประจำวัน • ทะเบียนหนังสือ • บัญชีวันลา • งานประจำเดือน ===================== */
+var DST = [['อยู่', '#2f8a4a'], ['ไปราชการ', '#2f6fd0'], ['ศึกษา/ฝึก', '#8a44c4'], ['ลา', '#d9791f'], ['ป่วย', '#c0392b'], ['ออกเวร/พักเวร', '#7a7a6a'], ['อื่น ๆ', '#9a8a5a']];
+var DLV = [['ลาพักผ่อน', 10], ['ลากิจ', 45], ['ลาป่วย', 60], ['ลาอื่น ๆ', 0]];
+var DTASK0 = [
+  ['ส่งยอดกำลังพลประจำวัน/ประจำสัปดาห์ให้ผู้บังคับบัญชา', 1], ['จัดทำบัญชีเวรรักษาการณ์เดือนถัดไป เสนอลงนาม', 20], ['เบิกค่าตอบแทนเวรเดือนที่แล้ว (ใบตอบแทน + ใบรับเงิน)', 5],
+  ['สรุปวันลาของกำลังพล ตรวจสิทธิ์วันลาคงเหลือ', 25], ['ปรับปรุงทะเบียนกำลังพล (ยศ ตำแหน่ง ย้ายเข้า-ออก)', 28], ['ตรวจทะเบียนหนังสือค้าง/เกินกำหนด แจ้งผู้รับผิดชอบ', 15],
+  ['จัดเวรทำความสะอาด + กิจกรรมของส่วนเดือนถัดไป', 26], ['สำรองข้อมูลระบบ (บันทึกฉบับ / ดาวน์โหลด)', 30]];
+function dAdmInit(){ deptInit(); var D = S.dept; D.docs = D.docs || []; D.leave = D.leave || []; D.daily = D.daily || {};
+  if (!D.tasks) D.tasks = DTASK0.map(function(t, i){ return { id: 't' + i, name: t[0], day: t[1] }; }); D.taskDone = D.taskDone || {}; D.lvq = D.lvq || {}; }
+function dFY(iso){ var y = +iso.slice(0, 4), m = +iso.slice(5, 7); return m >= 10 ? y + 1 : y; } // ปีงบประมาณ (ค.ศ.)
+function dWorkDays(f, t){ var n = 0, d = new Date(f + 'T00:00:00'), e = new Date((t || f) + 'T00:00:00'); while (d <= e) { var w = d.getDay(), y = d.getFullYear(), m = d.getMonth() + 1, hol = (S.holidays[y + '-' + pad(m)] || DE.holidaysFor(y, m) || {}); if (w > 0 && w < 6 && !hol[d.getDate()]) n++; d.setDate(d.getDate() + 1); } return n; }
+function dStatusOf(p, iso){
+  var D = S.dept, man = (D.daily[iso] || {})[p.id]; if (man) return { s: man, why: 'ระบุเอง', man: true };
+  var lv = D.leave.find(function(x){ return x.pid === p.id && x.from <= iso && (x.to || x.from) >= iso; });
+  if (lv) return { s: lv.type === 'ลาป่วย' ? 'ป่วย' : 'ลา', why: lv.type + (lv.note ? ' ' + lv.note : '') };
+  var e = dExOn(p, iso); if (e) { var c = exCat(e.reason || ''), k = c ? c.k : 'other'; return { s: k === 'study' || k === 'train' ? 'ศึกษา/ฝึก' : k === 'duty' ? 'ไปราชการ' : k === 'leave' ? (/ป่วย|รักษาตัว/.test(e.reason || '') ? 'ป่วย' : 'ลา') : 'อื่น ๆ', why: e.reason || 'งดเวร' }; }
+  return { s: 'อยู่', why: '' };
+}
+function dStrength(iso){ var P = S.dept.people, by = {}; P.forEach(function(p){ var st = dStatusOf(p, iso); (by[st.s] = by[st.s] || []).push({ p: p, st: st }); }); return { total: P.length, here: (by['อยู่'] || []).length, by: by }; }
+function dStrengthText(iso){
+  var R = dStrength(iso), t = '📊 ยอดกำลังพล ผธก. ' + unitShow() + '\nประจำวันที่ ' + thd(iso, 1) + '\nยอดเต็ม ' + R.total + ' • อยู่ ' + R.here + ' • ไม่อยู่ ' + (R.total - R.here) + '\n';
+  DST.slice(1).forEach(function(s){ var L = R.by[s[0]]; if (L && L.length) t += '\n▪️ ' + s[0] + ' ' + L.length + ' นาย\n' + L.map(function(x){ return '   - ' + pLabel(x.p) + (x.st.why && !x.st.man ? ' (' + x.st.why.slice(0, 40) + ')' : ''); }).join('\n'); });
+  return t + dSigText();
+}
+function dDailyView(){
+  dAdmInit(); var iso = UI.dDay || todayIso(), R = dStrength(iso), P = S.dept.people;
+  var h = '<div class="card"><div class="hx"><h2 style="margin:0">📊 ยอดกำลังพลประจำวัน<small>ระบบคิดให้อัตโนมัติจากการงดเวร/วันลา • กดเปลี่ยนสถานะรายคนได้</small></h2><div class="row"><input type="date" data-ch="dDay" value="' + iso + '" class="dsel"><button class="btn sm" data-act="dDayTxt">📋 คัดลอกส่ง LINE</button><button class="btn sm pri" data-act="dDoc" data-v="daily" data-id="' + iso + '">🖨 พิมพ์ / 🖼 รูป</button></div></div>';
+  h += '<div class="dsum"><div class="big"><b>' + R.here + '</b><span>/ ' + R.total + ' อยู่</span></div>' + DST.slice(1).map(function(s){ var n = (R.by[s[0]] || []).length; return '<div class="it' + (n ? '' : ' z') + '" style="--c:' + s[1] + '"><b>' + n + '</b><span>' + s[0] + '</span></div>'; }).join('') + '</div>';
+  h += '<div class="dgrid2">' + P.map(function(p){ var st = dStatusOf(p, iso), c = (DST.find(function(x){ return x[0] === st.s; }) || DST[6])[1];
+    return '<div class="dpc" style="--c:' + c + '"><div><b>' + esc(pShort(p)) + '</b><small>' + esc(st.why || p.line || '') + '</small></div>' + dSel('dStat', st.man ? st.s : '', [['', (st.man ? '↺ ' : '') + 'อัตโนมัติ: ' + (st.man ? dStatusOf.call(null, Object.assign({}, p, { id: '_' }), iso).s : st.s)]].concat(DST.map(function(x){ return [x[0], x[0]]; })), ' data-v="' + p.id + '"') + '</div>'; }).join('') + '</div>';
+  return h + '<div class="small muted" style="margin-top:8px">💡 ระบบรู้เองว่าใครไปราชการ/ศึกษา/ฝึก จากรายการงดเวรในระบบจัดเวร และจากบัญชีวันลาของแผนก • ส่งยอดทุกเช้าได้ด้วยปุ่ม 📋</div></div>';
+}
+function dRegView(){
+  dAdmInit(); var D = S.dept, f = UI.dRegF || 'open', q = (UI.dRegQ || '').trim(), tdy = todayIso();
+  var L = D.docs.slice().sort(function(a, b){ return (b.date || '').localeCompare(a.date || '') || (b.no || '').localeCompare(a.no || ''); });
+  var over = function(d){ return d.status !== 'เสร็จ' && d.due && d.due < tdy; };
+  var cnt = { all: L.length, open: L.filter(function(d){ return d.status !== 'เสร็จ'; }).length, over: L.filter(over).length, done: L.filter(function(d){ return d.status === 'เสร็จ'; }).length };
+  if (f === 'open') L = L.filter(function(d){ return d.status !== 'เสร็จ'; }); else if (f === 'over') L = L.filter(over); else if (f === 'done') L = L.filter(function(d){ return d.status === 'เสร็จ'; });
+  if (q) L = L.filter(function(d){ return [d.no, d.from, d.to, d.subject, d.note].join(' ').indexOf(q) >= 0; });
+  var h = '<div class="card"><div class="hx"><h2 style="margin:0">📨 ทะเบียนหนังสือรับ–ส่ง<small>ลงรับ/ส่ง กำหนดเสร็จ ผู้รับผิดชอบ • เตือนเมื่อเกินกำหนด</small></h2><div class="row"><button class="btn sm" data-act="dRegRemind">🔔 ข้อความทวงงานค้าง</button><button class="btn sm" data-act="dDoc" data-v="docs">🖨 พิมพ์ทะเบียน</button><button class="btn sm pri" data-act="dRegNew" data-v="in">＋ ลงรับ</button><button class="btn sm pri" data-act="dRegNew" data-v="out">＋ ลงส่ง</button></div></div>';
+  h += '<div class="row" style="margin:8px 0"><div class="seg">' + [['open', 'ค้างดำเนินการ', cnt.open], ['over', '⚠ เกินกำหนด', cnt.over], ['done', 'เสร็จแล้ว', cnt.done], ['all', 'ทั้งหมด', cnt.all]].map(function(x){ return '<button class="' + (f === x[0] ? 'on' : '') + '" data-act="dRegF" data-v="' + x[0] + '">' + x[1] + ' <b>' + x[2] + '</b></button>'; }).join('') + '</div><input class="dsel" data-ch="dRegQ" value="' + esc(q) + '" placeholder="🔍 ค้นเลขที่ / เรื่อง / จาก" style="min-width:220px"></div>';
+  if (!L.length) h += '<div class="nempty" style="padding:16px"><div>📨</div><b>' + (D.docs.length ? 'ไม่มีรายการในตัวกรองนี้' : 'ยังไม่มีหนังสือในทะเบียน') + '</b><span>กด ＋ ลงรับ เมื่อได้รับหนังสือ หรือ ＋ ลงส่ง เมื่อส่งออก</span></div>';
+  else h += '<div class="dtw"><table class="dct ddt"><thead><tr><th>รับ/ส่ง</th><th>เลขที่</th><th>ลงวันที่</th><th>จาก / ถึง</th><th>เรื่อง</th><th>ผู้รับผิดชอบ</th><th>กำหนดเสร็จ</th><th>สถานะ</th><th></th></tr></thead><tbody>' + L.map(function(d){ var o = dById(d.owner), ov = over(d);
+    return '<tr class="' + (ov ? 'ov' : '') + (d.status === 'เสร็จ' ? ' dn' : '') + '"><td><span class="pill ' + (d.dir === 'in' ? 'ok' : '') + '">' + (d.dir === 'in' ? '📥 รับ' : '📤 ส่ง') + '</span></td><td><b>' + esc(d.no || '') + '</b></td><td>' + (d.date ? esc(thd(d.date)) : '') + '</td><td>' + esc(d.dir === 'in' ? d.from || '' : d.to || '') + '</td><td>' + esc(d.subject || '') + (d.note ? '<br><small class="muted">' + esc(d.note) + '</small>' : '') + '</td><td>' + (o ? esc(pShort(o)) : '<span class="muted">—</span>') + '</td><td>' + (d.due ? (ov ? '⚠ ' : '') + esc(thd(d.due)) : '') + '</td><td>' + dSel('dRegSt', d.status || 'รอดำเนินการ', [['รอดำเนินการ', '⏳ รอดำเนินการ'], ['กำลังดำเนินการ', '🔧 กำลังทำ'], ['เสนอแล้ว', '📝 เสนอแล้ว'], ['เสร็จ', '✅ เสร็จ']], ' data-v="' + d.id + '"') + '</td><td style="white-space:nowrap"><button class="ib" data-act="dRegEd" data-v="' + d.id + '" title="แก้ไข">✏️</button><button class="ib" data-act="dRegDel" data-v="' + d.id + '" title="ลบ">🗑</button></td></tr>'; }).join('') + '</tbody></table></div>';
+  return h + '<div class="small muted" style="margin-top:8px">💡 เลขรับรันต่อให้อัตโนมัติ • หนังสือที่เกินกำหนดจะขึ้นแดงและแจ้งในหน้าภาพรวมแผนก • ถาม ' + esc(BOT_SHORT) + ' ได้ เช่น "หนังสือค้างของใครบ้าง"</div></div>';
+}
+function dRegDlg(d, dir){
+  var P = S.dept.people, nx = function(){ var y = dFY(todayIso()), n = S.dept.docs.filter(function(x){ return x.dir === dir && dFY(x.date || todayIso()) === y; }).length + 1; return String(n) + '/' + String(y + 543).slice(2); };
+  var e = d || { dir: dir, no: nx(), date: todayIso(), from: '', to: '', subject: '', owner: '', due: '', status: 'รอดำเนินการ', note: '' };
+  modal('<h2 class="ezmt" style="color:var(--olive)">' + (e.dir === 'in' ? '📥 ลงรับหนังสือ' : '📤 ลงส่งหนังสือ') + '</h2><div class="dfrm">' +
+    '<label>เลขที่' + (e.dir === 'in' ? 'รับ' : 'หนังสือ') + '<input id="dqNo" value="' + esc(e.no || '') + '"></label><label>ลงวันที่<input id="dqDate" type="date" value="' + esc(e.date || '') + '"></label><label>กำหนดเสร็จ<input id="dqDue" type="date" value="' + esc(e.due || '') + '"></label>' +
+    '<label class="w">' + (e.dir === 'in' ? 'จาก (หน่วย/ผู้ส่ง)' : 'ถึง (หน่วย/ผู้รับ)') + '<input id="dqFT" value="' + esc(e.dir === 'in' ? e.from : e.to) + '" list="dqUnits"></label><datalist id="dqUnits">' + ['ศสพ.', 'รร.สพศ.ศสพ.', 'กพ.ศสพ.', 'กบ.ศสพ.', 'ยก.ศสพ.', 'ฝสส.รร.สพศ.ศสพ.', 'กอง ทพ.'].map(function(x){ return '<option value="' + x + '">'; }).join('') + '</datalist>' +
+    '<label>ผู้รับผิดชอบ' + dSel('_', e.owner || '', [['', '— เลือก —']].concat(P.map(function(p){ return [p.id, pShort(p)]; })), ' id="dqOw"') + '</label>' +
+    '<label class="w" style="grid-column:1/-1">เรื่อง<input id="dqSub" value="' + esc(e.subject || '') + '"></label><label class="w" style="grid-column:1/-1">หมายเหตุ / การปฏิบัติ<input id="dqNote" value="' + esc(e.note || '') + '"></label></div>' +
+    '<div class="ezmb"><button class="btn" data-act="closeModal">ยกเลิก</button><button class="btn pri" data-act="dRegSave" data-v="' + (d ? d.id : '') + '" data-dir="' + e.dir + '">💾 บันทึก</button></div>', 600);
+}
+function dLeaveView(){
+  dAdmInit(); var D = S.dept, fy = UI.dFY || dFY(todayIso()), P = D.people;
+  var L = D.leave.filter(function(x){ return dFY(x.from) === fy; });
+  var h = '<div class="card"><div class="hx"><h2 style="margin:0">🏖 บัญชีวันลา ปีงบประมาณ ' + (fy + 543) + '<small>นับวันทำการให้อัตโนมัติ (ไม่นับเสาร์-อาทิตย์/วันหยุด) • ใส่ลาแล้วงดเวรให้ด้วยได้</small></h2><div class="row">' + dSel('dFY', String(fy), [fy - 1, fy, fy + 1].map(function(y){ return [String(y), 'ปีงบ ' + (y + 543)]; })) + '<button class="btn sm" data-act="dDoc" data-v="leave" data-id="' + fy + '">🖨 พิมพ์สรุป</button><button class="btn sm pri" data-act="dLvNew">＋ บันทึกการลา</button></div></div>';
+  h += '<div class="dtw"><table class="dct dlv"><thead><tr><th>ยศ ชื่อ สกุล</th>' + DLV.map(function(t){ return '<th>' + t[0] + '<br><small>' + ((D.lvq[t[0]] || t[1]) ? 'สิทธิ์ ' + (D.lvq[t[0]] || t[1]) + ' วัน' : 'ไม่กำหนดสิทธิ์') + ' <button class="ib" data-act="dLvQ" data-v="' + t[0] + '" title="แก้สิทธิ์วันลา" style="width:20px;height:20px;font-size:11px">⚙</button></small></th>'; }).join('') + '<th>รวม</th></tr></thead><tbody>' +
+    P.map(function(p){ var tot = 0; return '<tr><td><b>' + esc(pLabel(p)) + '</b></td>' + DLV.map(function(t){ var n = L.filter(function(x){ return x.pid === p.id && x.type === t[0]; }).reduce(function(s, x){ return s + (+x.days || 0); }, 0), q = D.lvq[t[0]] || t[1]; tot += n;
+      return '<td class="c' + (q && n > q ? ' over' : n ? ' has' : '') + '">' + (n || '–') + (q && n ? '<div class="lvb"><i style="width:' + Math.min(100, n / q * 100) + '%"></i></div>' : '') + '</td>'; }).join('') + '<td class="c"><b>' + (tot || '–') + '</b></td></tr>'; }).join('') + '</tbody></table></div>';
+  if (L.length) h += '<details class="dfair" open><summary>📋 รายการลา (' + L.length + ')</summary>' + L.slice().sort(function(a, b){ return b.from.localeCompare(a.from); }).map(function(x){ var p = dById(x.pid);
+    return '<div class="dlvr"><span class="pill">' + esc(x.type) + '</span><b>' + esc(p ? pLabel(p) : '?') + '</b><span>' + esc(thd(x.from) + (x.to && x.to !== x.from ? ' – ' + thd(x.to) : '')) + ' • ' + x.days + ' วัน</span><small>' + esc(x.note || '') + (x.ex ? ' • งดเวรแล้ว' : '') + '</small><button class="ib" data-act="dLvDel" data-v="' + x.id + '" title="ลบ">🗑</button></div>'; }).join('') + '</details>';
+  return h + '<div class="small muted" style="margin-top:8px">💡 สิทธิ์วันลาเริ่มต้นตามระเบียบทั่วไป (พักผ่อน 10 วัน) แก้ได้ในปุ่ม ⚙ ของแต่ละประเภท • ระบบแจ้งเมื่อใช้เกินสิทธิ์ (ช่องสีแดง)</div></div>';
+}
+function dLvDlg(){
+  var P = S.dept.people;
+  modal('<h2 class="ezmt" style="color:var(--olive)">🏖 บันทึกการลา</h2><div class="dfrm"><label class="w">ผู้ลา' + dSel('_', '', [['', '— เลือก —']].concat(P.map(function(p){ return [p.id, pLabel(p)]; })), ' id="dlP"') + '</label><label>ประเภท' + dSel('_', 'ลาพักผ่อน', DLV.map(function(t){ return [t[0], t[0]]; }), ' id="dlT"') + '</label>' +
+    '<label>ตั้งแต่<input id="dlF" type="date" value="' + todayIso() + '"></label><label>ถึง<input id="dlTo" type="date" value="' + todayIso() + '"></label><label>จำนวนวัน (ว่าง = นับวันทำการให้)<input id="dlN" type="number" min="0" step=".5"></label>' +
+    '<label class="w" style="grid-column:1/-1">หมายเหตุ<input id="dlNote" placeholder="เช่น ลาไปต่างจังหวัด / ใบลาเลขที่"></label><label class="ck"><input type="checkbox" id="dlEx" checked> งดเวรรักษาการณ์ช่วงที่ลาให้ด้วย (ถ้ามีชื่อในบัญชีเวร)</label></div>' +
+    '<div class="ezmb"><button class="btn" data-act="closeModal">ยกเลิก</button><button class="btn pri" data-act="dLvSave">💾 บันทึก</button></div>', 560);
+}
+function dTaskView(){
+  dAdmInit(); var D = S.dept, k = ym(), done = D.taskDone[k] || {}, tdy = todayIso(), tp = tdy.split('-'), cur = +tp[0] === S.y && +tp[1] === S.m, dd = cur ? +tp[2] : (tdy > DE.iso(S.y, S.m, 1) ? 99 : 0);
+  var T = D.tasks.slice().sort(function(a, b){ return a.day - b.day; }), nd = T.filter(function(t){ return done[t.id]; }).length;
+  var h = '<div class="card"><div class="hx"><h2 style="margin:0">✅ งานประจำเดือนของแผนก — ' + esc(monthLabel()) + '<small>รายการที่ต้องทำทุกเดือน มีวันกำหนด • ติ๊กเมื่อเสร็จ ระบบเตือนเมื่อเลยกำหนด</small></h2><div class="row"><span class="pill ' + (nd === T.length ? 'ok' : 'warn') + '">เสร็จ ' + nd + '/' + T.length + '</span><button class="btn sm" data-act="dTaskAdd">＋ เพิ่มงาน</button></div></div>';
+  h += '<div class="dtl">' + T.map(function(t){ var ok = !!done[t.id], late = !ok && dd > t.day, soon = !ok && !late && dd && t.day - dd <= 3;
+    return '<label class="dti2' + (ok ? ' ok' : late ? ' late' : soon ? ' soon' : '') + '"><input type="checkbox" data-ch="dTaskTk" data-v="' + t.id + '"' + (ok ? ' checked' : '') + '><span class="dd2">' + t.day + '<small>' + DE.MONTHS_S[S.m - 1] + '</small></span><span class="tx2">' + esc(t.name) + (ok ? '<small>✓ เสร็จ ' + new Date(done[t.id]).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' }) + '</small>' : late ? '<small>⚠ เลยกำหนดแล้ว</small>' : soon ? '<small>⏰ ใกล้กำหนด</small>' : '') + '</span><button class="ib" data-act="dTaskDel" data-v="' + t.id + '" title="ลบงานนี้">🗑</button></label>'; }).join('') + '</div>';
+  return h + '<div class="small muted" style="margin-top:8px">💡 รายการเริ่มต้นคืองานที่ธุรการมักต้องทำทุกเดือน (ส่งยอด จัดเวร เบิกค่าเวร สรุปวันลา สำรองข้อมูล ฯลฯ) ปรับ/ลบ/เพิ่มได้ตามจริง • ติ๊กของแต่ละเดือนแยกกัน</div></div>';
+}
+function dAdmBody(k, id){
+  var P = S.dept.people, h = '';
+  if (k === 'daily') { var R = dStrength(id), n = 0;
+    h += '<div class="dnote" style="text-align:center;font-size:16pt"><b>ยอดเต็ม ' + T(String(R.total)) + ' นาย • อยู่ ' + T(String(R.here)) + ' นาย • ไม่อยู่ ' + T(String(R.total - R.here)) + ' นาย</b></div><table><thead><tr><th style="width:8%">ลำดับ</th><th style="width:36%">ยศ ชื่อ สกุล</th><th style="width:16%">สถานะ</th><th>รายละเอียด</th></tr></thead><tbody>' +
+      DST.slice(1).map(function(s){ return (R.by[s[0]] || []).map(function(x){ n++; return '<tr><td class="c">' + T(String(n)) + '</td><td>' + esc(pLabel(x.p)) + '</td><td class="c">' + esc(s[0]) + '</td><td>' + esc(x.st.why && !x.st.man ? x.st.why : '') + '</td></tr>'; }).join(''); }).join('') + (n ? '' : '<tr><td colspan="4" class="c">อยู่ครบทุกนาย</td></tr>') + '</tbody></table>'; }
+  else if (k === 'docs') { var L = S.dept.docs.slice().sort(function(a, b){ return (a.date || '').localeCompare(b.date || ''); });
+    h += '<table><thead><tr><th style="width:7%">รับ/ส่ง</th><th style="width:9%">เลขที่</th><th style="width:12%">ลงวันที่</th><th style="width:15%">จาก/ถึง</th><th>เรื่อง</th><th style="width:14%">ผู้รับผิดชอบ</th><th style="width:11%">สถานะ</th></tr></thead><tbody>' + (L.length ? L.map(function(d){ var o = dById(d.owner); return '<tr><td class="c">' + (d.dir === 'in' ? 'รับ' : 'ส่ง') + '</td><td>' + esc(d.no || '') + '</td><td>' + (d.date ? esc(thd(d.date)) : '') + '</td><td>' + esc(d.dir === 'in' ? d.from : d.to) + '</td><td>' + esc(d.subject || '') + '</td><td>' + (o ? esc(pShort(o)) : '') + '</td><td>' + esc(d.status || '') + '</td></tr>'; }).join('') : '<tr><td colspan="7" class="c">ไม่มีรายการ</td></tr>') + '</tbody></table>'; }
+  else if (k === 'leave') { var fy = +id, LV = S.dept.leave.filter(function(x){ return dFY(x.from) === fy; });
+    h += '<table><thead><tr><th style="width:7%">ลำดับ</th><th>ยศ ชื่อ สกุล</th>' + DLV.map(function(t){ return '<th style="width:11%">' + t[0] + '</th>'; }).join('') + '<th style="width:9%">รวม</th></tr></thead><tbody>' + P.map(function(p, i){ var tot = 0; return '<tr><td class="c">' + T(String(i + 1)) + '</td><td>' + esc(pLabel(p)) + '</td>' + DLV.map(function(t){ var n = LV.filter(function(x){ return x.pid === p.id && x.type === t[0]; }).reduce(function(s, x){ return s + (+x.days || 0); }, 0); tot += n; return '<td class="c">' + (n ? T(String(n)) : '-') + '</td>'; }).join('') + '<td class="c">' + (tot ? T(String(tot)) : '-') + '</td></tr>'; }).join('') + '</tbody></table>'; }
+  return h;
+}
+var DADM_ACT = {
+  dDayTxt: function(){ var s = dStrengthText(UI.dDay || todayIso()); try { navigator.clipboard.writeText(s).then(function(){ toast('คัดลอกยอดกำลังพลแล้ว — วางในกลุ่ม LINE ได้เลย'); }, function(){ showText('ยอดกำลังพล', s); }); } catch (e) { showText('ยอดกำลังพล', s); } },
+  dRegNew: function(t){ dRegDlg(null, t.dataset.v); }, dRegEd: function(t){ var d = S.dept.docs.find(function(x){ return x.id === t.dataset.v; }); if (d) dRegDlg(d, d.dir); },
+  dRegF: function(t){ UI.dRegF = t.dataset.v; render(); },
+  dRegSave: function(t){ var g = function(i){ var e = document.getElementById(i); return e ? e.value.trim() : ''; }, dir = t.dataset.dir, id = t.dataset.v;
+    var o = { dir: dir, no: g('dqNo'), date: g('dqDate'), due: g('dqDue'), subject: g('dqSub'), owner: g('dqOw'), note: g('dqNote') }; o[dir === 'in' ? 'from' : 'to'] = g('dqFT');
+    if (!o.subject) { toast('ใส่ชื่อเรื่องก่อน'); return; }
+    if (id) Object.assign(S.dept.docs.find(function(x){ return x.id === id; }), o); else { o.id = uid('q'); o.status = 'รอดำเนินการ'; S.dept.docs.push(o); }
+    document.getElementById('modal').innerHTML = ''; save(); render(); toast('บันทึกทะเบียนแล้ว'); },
+  dRegDel: function(t){ showConfirm('ลบรายการนี้ออกจากทะเบียน?', function(){ S.dept.docs = S.dept.docs.filter(function(x){ return x.id !== t.dataset.v; }); save(); render(); }); },
+  dRegRemind: function(){ var tdy = todayIso(), L = S.dept.docs.filter(function(d){ return d.status !== 'เสร็จ'; }); if (!L.length) { toast('ไม่มีหนังสือค้าง 👍'); return; }
+    var by = {}; L.forEach(function(d){ var o = dById(d.owner); var k = o ? pShort(o) : 'ยังไม่ระบุผู้รับผิดชอบ'; (by[k] = by[k] || []).push(d); });
+    var s = '🔔 ติดตามหนังสือค้าง ผธก. (' + thd(tdy, 1) + ')\n' + Object.keys(by).map(function(k){ return '\n👤 ' + k + '\n' + by[k].map(function(d){ return '  • ' + (d.no ? d.no + ' ' : '') + d.subject + (d.due ? ' — กำหนด ' + thd(d.due) + (d.due < tdy ? ' ⚠ เกินกำหนด' : '') : ''); }).join('\n'); }).join('\n');
+    try { navigator.clipboard.writeText(s).then(function(){ toast('คัดลอกข้อความทวงงานแล้ว'); }, function(){ showText('ทวงงานค้าง', s); }); } catch (e) { showText('ทวงงานค้าง', s); } },
+  dLvNew: function(){ dLvDlg(); },
+  dLvQ: function(t){ var k = t.dataset.v, cur = S.dept.lvq[k] || (DLV.find(function(x){ return x[0] === k; }) || [])[1] || 0, v = prompt('สิทธิ์ ' + k + ' ต่อปีงบประมาณ (วัน) — ใส่ 0 = ไม่กำหนด', cur); if (v == null) return; S.dept.lvq[k] = Math.max(0, +v || 0); save(); render(); },
+  dLvSave: function(){ var g = function(i){ var e = document.getElementById(i); return e ? (e.type === 'checkbox' ? e.checked : e.value.trim()) : ''; }, pid = g('dlP'), f = g('dlF'), to = g('dlTo') || f;
+    if (!pid || !f) { toast('เลือกผู้ลาและวันที่'); return; } if (to < f) { toast('วันสิ้นสุดต้องไม่ก่อนวันเริ่ม'); return; }
+    var p = dById(pid), x = { id: uid('l'), pid: pid, type: g('dlT'), from: f, to: to, days: g('dlN') !== '' ? +g('dlN') : dWorkDays(f, to), note: g('dlNote'), ex: false };
+    if (g('dlEx')) { var k = DE.personKey(p), inDuty = S.lists.some(function(l){ return l.people.some(function(q){ return DE.personKey(q) === k; }); });
+      if (inDuty) { S.exemptions.push({ id: uid('e'), key: k, label: pLabel(p), from: f, to: to, reason: x.type + (x.note ? ' ' + x.note : '') }); x.ex = true; } }
+    S.dept.leave.push(x); document.getElementById('modal').innerHTML = ''; save(); render(); toast('บันทึกการลา ' + x.days + ' วันแล้ว' + (x.ex ? ' — งดเวรให้แล้ว' : '')); },
+  dLvDel: function(t){ showConfirm('ลบรายการลานี้? (การงดเวรที่สร้างไว้ ลบได้ที่หน้างดเวร)', function(){ S.dept.leave = S.dept.leave.filter(function(x){ return x.id !== t.dataset.v; }); save(); render(); }); },
+  dTaskAdd: function(){ var n = prompt('ชื่องานประจำเดือน'); if (!n) return; var d = +prompt('ต้องทำภายในวันที่ (1–31)', '25') || 25; S.dept.tasks.push({ id: uid('t'), name: n, day: Math.max(1, Math.min(31, d)) }); save(); render(); },
+  dTaskDel: function(t){ showConfirm('ลบงานนี้ออกจากรายการประจำเดือน?', function(){ S.dept.tasks = S.dept.tasks.filter(function(x){ return x.id !== t.dataset.v; }); save(); render(); }); }
+};
+var DADM_CH = {
+  dDay: function(t){ UI.dDay = t.value; render(); },
+  dStat: function(t){ var iso = UI.dDay || todayIso(), D = S.dept; D.daily[iso] = D.daily[iso] || {}; if (t.value) D.daily[iso][t.dataset.v] = t.value; else delete D.daily[iso][t.dataset.v]; save(); render(); },
+  dRegQ: function(t){ UI.dRegQ = t.value; render(); setTimeout(function(){ var e = document.querySelector('[data-ch="dRegQ"]'); if (e) { e.focus(); e.setSelectionRange(e.value.length, e.value.length); } }, 0); },
+  dRegSt: function(t){ var d = S.dept.docs.find(function(x){ return x.id === t.dataset.v; }); if (d) { d.status = t.value; if (t.value === 'เสร็จ') d.doneAt = todayIso(); save(); render(); } },
+  dFY: function(t){ UI.dFY = +t.value; render(); },
+  dTaskTk: function(t){ var k = ym(), D = S.dept; D.taskDone[k] = D.taskDone[k] || {}; if (t.checked) D.taskDone[k][t.dataset.v] = Date.now(); else delete D.taskDone[k][t.dataset.v]; save(); render(); }
+};
+
 /* ---------- actions ---------- */
 var ACT = {
   agDone: function(t){ var T = taskStore(); T[t.dataset.v] = { done: true, ts: Date.now() }; save(); render(); toast('ทำเครื่องหมายเสร็จแล้ว — กด ↶ ย้อนกลับได้'); },
@@ -7795,7 +7940,7 @@ document.addEventListener('focusout', function(e){
 document.addEventListener('keydown', function(e){
   if (e.key === 'Escape' && UI.asst) { UI.asst = false; renderAsst(); return; }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.ed) { e.preventDefault(); e.target.blur(); return; } if (e.key === 'Escape' && UI.editDay != null) { UI.editDay = null; render(); } });
-Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ROT_ACT, ST_ACT, PWA_ACT, UPD_ACT, CHAT_ACT, AG_ACT, EX2_ACT, BOT_ACT, UNIT_ACT, HEALTH_ACT, LAY_ACT, DEPT_ACT, STAG_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH, CHAT_CH, EX2_CH, DEPT_CH, STAG_CH);
+Object.assign(ACT, STO_ACT, OWN_ACT, SUB_ACT, ANN_ACT, ES_ACT, BAL_ACT, AI_ACT, GAR_ACT, ROT_ACT, ST_ACT, PWA_ACT, UPD_ACT, CHAT_ACT, AG_ACT, EX2_ACT, BOT_ACT, UNIT_ACT, HEALTH_ACT, LAY_ACT, DEPT_ACT, STAG_ACT, DADM_ACT); Object.assign(CH, STO_CH, OWN_CH, SUB_CH, ANN_CH, GAR_CH, PWA_CH, UPD_CH, CHAT_CH, EX2_CH, DEPT_CH, STAG_CH, DADM_CH);
 setTimeout(function(){ try { statPing(); } catch (e) {} }, 2500);
 init();
 })();
