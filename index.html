@@ -651,6 +651,15 @@ table.t tr.dim td{opacity:.5}
 .lfold::after{content:'พับไว้ • กด ▸ เพื่อขยาย';display:block;font-size:11.5px;color:#a9a28c;margin-top:2px}
 .lhide{display:none!important}.lhid2{opacity:.45}
 #main.layedit>[data-lk]{outline:2px dashed #b9ae8a;outline-offset:3px;cursor:grab;position:relative;margin-top:26px;overflow:visible!important}#main.layedit>.ldrag{opacity:.4}
+#main.layw{display:flex;flex-wrap:wrap;column-gap:16px;align-items:flex-start;align-content:flex-start}#main.layw>*{flex:1 1 100%;min-width:0;box-sizing:border-box}
+#main.layw>[data-lw=half]{flex:0 0 calc(50% - 8px)}#main.layw>[data-lw=third]{flex:0 0 calc(33.333% - 10.67px)}#main.layw>[data-lw=two3]{flex:0 0 calc(66.666% - 5.33px)}
+@media (max-width:900px){#main.layw>[data-lw]{flex:1 1 100%}}
+.lrs{position:absolute;right:-7px;bottom:-7px;width:22px;height:22px;z-index:6;cursor:nwse-resize;border-radius:6px;background:#3e4a1f;box-shadow:0 2px 6px rgba(0,0,0,.25);touch-action:none}
+.lrs::after{content:'';position:absolute;inset:5px;border-right:2px solid #fff;border-bottom:2px solid #fff;border-radius:0 0 3px 0}
+.lrz{position:absolute;top:30%;bottom:30%;right:-5px;width:6px;border-radius:4px;background:#b9ae8a;opacity:.6;pointer-events:none}
+.lrsz{outline:2px solid #3e4a1f!important;user-select:none}.lrb{position:absolute;right:20px;bottom:10px;z-index:7;background:#2f3a18;color:#fff;font-size:12px;font-weight:700;border-radius:8px;padding:3px 9px;pointer-events:none}
+#main:not(.layedit) .lrs,#main:not(.layedit) .lrz{display:none}
+.lws{display:inline-flex;border:1px solid #e0dac6;border-radius:6px;overflow:hidden;background:#fff}.lws button{border:none!important;border-radius:0!important;padding:1px 7px!important}.lws button+button{border-left:1px solid #ece6d3!important}.lws button.on{background:#3e4a1f!important;color:#fff}
 .lbar{position:absolute;top:-14px;left:14px;z-index:4;display:flex;align-items:center;gap:6px;padding:3px 8px;background:#f4f1e6;border:1px solid #d9d0b4;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.1);font-size:12px;color:#6b6450}.lbar span{font-weight:700;cursor:grab;white-space:nowrap}.lbar button{border:1px solid #e0dac6;background:#fff;border-radius:6px;font:inherit;font-size:12px;padding:1px 8px;cursor:pointer}
 #laybar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:10px;background:#2f3a18;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.3);font-size:13px;max-width:calc(100vw - 30px);flex-wrap:wrap}#laybar span{opacity:.8;font-size:12px}#laybar .btn{background:#fff;color:#2f3a18}#laybar .btn.pri{background:#c9b77a;color:#2f3a18;border-color:#c9b77a}
 @media print{.lfb,.lbar,#laybar{display:none!important}}
@@ -1396,7 +1405,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1154';
+var APP_VER = '2569.11.27-1203';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -1738,18 +1747,29 @@ function layApply(){
   cards.forEach(function(el){
     var k = el.dataset.lk, fold = !!(T.fold || {})[k], hide = !!(T.hide || {})[k];
     var hd = Array.from(el.children).find(function(c){ return !c.classList.contains('lfb') && !c.classList.contains('lbar'); }); if (hd) hd.classList.add('lhd');
+    var lw = (T.w || {})[k] || '', lh = (T.h || {})[k] || 0; laySize(el, lw, lh);
     el.classList.toggle('lfold', fold); el.classList.toggle('lhide', hide && !UI.layEdit); el.classList.toggle('lhid2', hide && !!UI.layEdit);
     if (!el.classList.contains('card') || el.querySelector(':scope > .lfb')) return;
     var b = document.createElement('button'); b.className = 'lfb'; b.setAttribute('data-act', 'layFold'); b.title = fold ? 'ขยาย' : 'พับเก็บ'; b.textContent = fold ? '▸' : '▾'; el.insertBefore(b, el.firstChild);
   });
   m.classList.toggle('layedit', !!UI.layEdit);
+  m.classList.toggle('layw', cards.some(function(el){ return !!el.dataset.lw; }) || !!UI.layEdit);
   if (UI.layEdit) cards.forEach(function(el){
     el.setAttribute('draggable', 'true');
-    if (!el.querySelector(':scope > .lbar')) { var hb = !!((T.hide || {})[el.dataset.lk]); var bar = document.createElement('div'); bar.className = 'lbar'; bar.innerHTML = '<span>⠿ ลากเพื่อย้าย</span><button data-act="layUp">▲</button><button data-act="layDown">▼</button><button data-act="layHide">' + (hb ? '👁 แสดง' : '🙈 ซ่อน') + '</button>'; el.insertBefore(bar, el.firstChild); }
+    if (!el.querySelector(':scope > .lrs')) { var rs = document.createElement('div'); rs.className = 'lrs'; rs.title = 'ลากเพื่อย่อ/ขยาย (ดับเบิลคลิก = คืนขนาดเดิม)'; el.appendChild(rs); var rz = document.createElement('div'); rz.className = 'lrz'; el.appendChild(rz); }
+    if (!el.querySelector(':scope > .lbar')) { var hb = !!((T.hide || {})[el.dataset.lk]); var bar = document.createElement('div'); bar.className = 'lbar'; bar.innerHTML = '<span>⠿ ลากเพื่อย้าย</span><button data-act="layUp">▲</button><button data-act="layDown">▼</button><span class="lws">' + [['', 'เต็ม'], ['two3', '⅔'], ['half', '½'], ['third', '⅓']].map(function(w){ return '<button data-act="layW" data-v="' + w[0] + '" class="' + (Math.abs((layPct(el.dataset.lw) || 100) - (layPct(w[0]) || 100)) < 1 ? 'on' : '') + '" title="ความกว้าง ' + w[1] + '">' + w[1] + '</button>'; }).join('') + '</span><button data-act="layHide">' + (hb ? '👁 แสดง' : '🙈 ซ่อน') + '</button>'; el.insertBefore(bar, el.firstChild); }
   });
   var tb = document.getElementById('laybar');
   if (UI.layEdit && !tb) { tb = document.createElement('div'); tb.id = 'laybar'; document.body.appendChild(tb); }
-  if (tb) { if (!UI.layEdit) tb.remove(); else tb.innerHTML = '<b>🧩 โหมดจัดหน้า</b><span>ลากการ์ดขึ้น-ลง หรือกด ▲▼ • ซ่อนการ์ดที่ไม่ใช้ • กด ▾ ที่มุมการ์ดเพื่อพับ</span><button class="btn sm" data-act="layReset">รีเซ็ตหน้านี้</button><button class="btn sm pri" data-act="layEdit">✓ เสร็จสิ้น</button>'; }
+  if (tb) { if (!UI.layEdit) tb.remove(); else tb.innerHTML = '<b>🧩 โหมดจัดหน้า</b><span>ลากการ์ดไปวาง • ลากมุมขวาล่าง ◢ เพื่อย่อ/ขยาย (ดับเบิลคลิกคืนขนาด) • ซ่อน • ▾ พับ</span><button class="btn sm" data-act="layReset">รีเซ็ตหน้านี้</button><button class="btn sm pri" data-act="layEdit">✓ เสร็จสิ้น</button>'; }
+}
+var LAYW = { half: 50, third: 33.333, two3: 66.667 };
+function layPct(lw){ return lw ? (LAYW[lw] || +lw || 0) : 0; }
+function layLbl(p){ var F = [[100, 'เต็ม'], [75, '¾'], [66.667, '⅔'], [50, '½'], [33.333, '⅓'], [25, '¼']]; var f = F.find(function(x){ return Math.abs(x[0] - p) < 1; }); return f ? f[1] : Math.round(p) + '%'; }
+function laySize(el, lw, lh){
+  var p = layPct(lw);
+  if (p && p < 99.5) { el.dataset.lw = lw; el.style.flex = '0 0 calc(' + p.toFixed(3) + '% - ' + (16 * (1 - p / 100)).toFixed(2) + 'px)'; } else { delete el.dataset.lw; el.style.flex = ''; }
+  if (lh) { el.dataset.lh = lh; el.style.maxHeight = lh + 'px'; el.style.overflow = 'auto'; } else { delete el.dataset.lh; el.style.maxHeight = ''; el.style.overflow = ''; }
 }
 function laySave(){ var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.order = layCards().map(function(el){ return el.dataset.lk; }); laySet(L); }
 (function(){
@@ -1758,12 +1778,26 @@ function laySave(){ var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.order =
   document.addEventListener('dragover', function(e){ if (!drag) return; var c = e.target.closest && e.target.closest('#main > [data-lk]'); if (!c || c === drag) return; e.preventDefault(); var r = c.getBoundingClientRect(), after = e.clientY > r.top + r.height / 2; c.parentNode.insertBefore(drag, after ? c.nextSibling : c); });
   document.addEventListener('dragend', function(){ if (!drag) return; drag.classList.remove('ldrag'); drag = null; laySave(); });
 })();
+(function(){
+  var R = null, SNAP = [25, 33.333, 41.667, 50, 58.333, 66.667, 75, 83.333, 100];
+  function badge(el, t){ var b = el.querySelector(':scope > .lrb'); if (!b) { b = document.createElement('div'); b.className = 'lrb'; el.appendChild(b); } b.textContent = t; }
+  document.addEventListener('pointerdown', function(e){ var h = e.target.closest && e.target.closest('.lrs'); if (!h || !UI.layEdit) return; var el = h.parentNode, m = document.getElementById('main'), r = el.getBoundingClientRect();
+    e.preventDefault(); e.stopPropagation(); el.setAttribute('draggable', 'false'); R = { el: el, x: e.clientX, y: e.clientY, w: r.width, h: r.height, W: m.clientWidth, p: layPct(el.dataset.lw) || 100, hh: +el.dataset.lh || 0 }; el.classList.add('lrsz'); try { h.setPointerCapture(e.pointerId); } catch (x) {} });
+  document.addEventListener('pointermove', function(e){ if (!R) return; var raw = (R.w + e.clientX - R.x) / R.W * 100, p = SNAP.reduce(function(a, b){ return Math.abs(b - raw) < Math.abs(a - raw) ? b : a; }, 100);
+    var hh = R.hh; if (Math.abs(e.clientY - R.y) > 12 || R.hh) { hh = Math.max(140, Math.round(R.h + e.clientY - R.y)); if (hh >= R.el.scrollHeight - 4) hh = 0; }
+    R.p = p; R.nh = hh; laySize(R.el, p >= 99.5 ? '' : String(p), hh); badge(R.el, 'กว้าง ' + layLbl(p) + (hh ? ' • สูง ' + hh + 'px' : '')); });
+  document.addEventListener('pointerup', function(){ if (!R) return; var el = R.el, L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.w = T.w || {}; T.h = T.h || {};
+    if (R.p >= 99.5) delete T.w[el.dataset.lk]; else T.w[el.dataset.lk] = String(R.p); if (R.nh) T.h[el.dataset.lk] = R.nh; else delete T.h[el.dataset.lk];
+    laySet(L); el.classList.remove('lrsz'); el.setAttribute('draggable', 'true'); var b = el.querySelector(':scope > .lrb'); if (b) b.remove(); R = null; render(); });
+  document.addEventListener('dblclick', function(e){ var h = e.target.closest && e.target.closest('.lrs'); if (!h) return; var el = h.parentNode, L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; if (T.w) delete T.w[el.dataset.lk]; if (T.h) delete T.h[el.dataset.lk]; laySet(L); render(); });
+})();
 var LAY_ACT = {
   layEdit: function(){ UI.layEdit = !UI.layEdit; render(); toast(UI.layEdit ? 'โหมดจัดหน้า — ลากการ์ดไปวางตำแหน่งที่ต้องการ' : 'บันทึกการจัดหน้าแล้ว'); },
   layFold: function(t){ var c = t.closest('[data-lk]'); if (!c) return; var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.fold = T.fold || {}; if (T.fold[c.dataset.lk]) delete T.fold[c.dataset.lk]; else T.fold[c.dataset.lk] = 1; laySet(L); c.classList.toggle('lfold'); t.textContent = c.classList.contains('lfold') ? '▸' : '▾'; t.title = c.classList.contains('lfold') ? 'ขยาย' : 'พับเก็บ'; },
   layHide: function(t){ var c = t.closest('[data-lk]'); if (!c) return; var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.hide = T.hide || {}; if (T.hide[c.dataset.lk]) delete T.hide[c.dataset.lk]; else T.hide[c.dataset.lk] = 1; laySet(L); render(); },
   layUp: function(t){ var c = t.closest('[data-lk]'), p = c && c.previousElementSibling; while (p && !p.dataset.lk) p = p.previousElementSibling; if (p) { c.parentNode.insertBefore(c, p); laySave(); } },
   layDown: function(t){ var c = t.closest('[data-lk]'), n = c && c.nextElementSibling; while (n && !n.dataset.lk) n = n.nextElementSibling; if (n) { c.parentNode.insertBefore(n, c); laySave(); } },
+  layW: function(t){ var c = t.closest('[data-lk]'); if (!c) return; var L = layGet(), T = L[UI.tab] = L[UI.tab] || {}; T.w = T.w || {}; if (t.dataset.v) T.w[c.dataset.lk] = t.dataset.v; else delete T.w[c.dataset.lk]; laySet(L); render(); },
   layReset: function(){ var L = layGet(); delete L[UI.tab]; laySet(L); render(); toast('คืนค่าการจัดหน้านี้แล้ว'); }
 };
 /* ---------- render ---------- */
@@ -5245,7 +5279,7 @@ var OWN_KEY = 'dutyOwner.v1', OWN_HRS = 8;
 // ส่วนตั้งค่าระบบ — ต้องเป็นเจ้าของเสมอ
 var OWN_SYS = { act: 'lcolReset miOk mRank mRankAll esSavePad esClearPad esDel esMv rotDlg rotFix rotSkip rotOrder rotGAdd rotGDel sortSeed resetHol resetAll addList delList addSigner delSigner copyGs showGs goSetup updGo updRevert updUseIndex ghSave updCopyCode pwaTeam pwaInvite aiKeySave aiKeyDel stoDlg stoGo stoCheck stoBack stoClean stoCleanRun bakRestore logRestore restoreVer delVer forceSave purgeEx ownMode ownCode', ch: 'lcol esOn esH esFile masterFile rule hol sg rotMember wmode isg il ifolder drv importJson stoD' };
 // ดูได้อย่างเดียว (เมื่อล็อกทั้งระบบ) — คำสั่งที่ไม่เปลี่ยนข้อมูล
-var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone layEdit layFold layHide layUp layDown layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
+var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone layEdit layFold layHide layUp layDown layW layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
 (function(){ ['act', 'ch'].forEach(function(k){ var o = {}; OWN_SYS[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_SYS[k] = o; o = {}; OWN_VIEW[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_VIEW[k] = o; }); })();
 function ownSess(){ try { var o = JSON.parse(sessionStorage.getItem(OWN_KEY) || 'null'); if (o && o.until > Date.now()) return o; } catch (e) {} return null; }
 function isOwner(){ return !!ownSess(); }
