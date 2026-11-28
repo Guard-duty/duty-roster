@@ -1488,7 +1488,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.28-2130';
+var APP_VER = '2569.11.28-2139';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -1957,7 +1957,7 @@ function viewRoster(){
   var ov = (S.overrides[k] || {})[l.id] || {};
   var h = '<div class="grid2"><div class="card side"><h2>บัญชีเวร</h2>' + sideLists('pickList') +
     '<div class="small muted" style="margin-top:8px">คลิกเลือกบัญชีเพื่อดู/แก้ไข</div>' +
-    '<div class="rmenu"><div class="rmt">เมนูจัดเวร</div><button data-act="rotView">🔄 ระบบวน / ภาพรวมการวน' + (rotAny() ? '<small>' + rotGroupsAll().filter(function(g){ return g.length > 1; }).length + ' กลุ่ม</small>' : '') + '</button><button data-act="tab" data-v="exempt">⛔ งดเวร</button><button data-act="nextMonth">📅 เดือนถัดไป</button><button data-act="tab" data-v="print">🖨️ พิมพ์ส่งเซ็น</button></div></div><div>';
+    '<div class="rmenu"><div class="rmt">เมนูจัดเวร</div><button data-act="rotView">🔄 ระบบวน / ภาพรวมการวน' + (rotAny() ? '<small>' + rotGroupsAll().filter(function(g){ return g.length > 1; }).length + ' กลุ่ม</small>' : '') + '</button><button data-act="tab" data-v="exempt">⛔ งดเวร</button><button data-act="nextMonth">📅 เดือนถัดไป</button><button data-act="tab" data-v="print">🖨️ พิมพ์ส่งเซ็น</button><button data-act="tab" data-v="history">📚 ดูเวรและค่าตอบแทนย้อนหลัง</button></div></div><div>';
   if (rotAny()) h += '<div class="card rvcard">' + rotOverview(l.id, false) + '</div>';
   // summary
   var exThisMonth = S.exemptions.filter(exActive).length;
@@ -2007,7 +2007,6 @@ function viewRoster(){
     if (UI.editDay === d) {
       h += '<select data-ch="override" data-v="' + d + '" autofocus><option value="">— อัตโนมัติ —</option>' + l.people.map(function(pp){ return '<option value="' + pp.id + '"' + (ov[d] === pp.id ? ' selected' : '') + '>' + esc(pShort(pp)) + '</option>'; }).join('') + '</select>';
     } else h += '<div class="who">' + (p ? (p.helper ? '🤝 ' : '') + esc(pShort(p)) + '<br><span class="muted small">' + esc(p.surname) + '</span>' : '<b style="color:var(--accent)">ว่าง</b>') + '</div>';
-    if (p) h += '<button class="exdayb" data-act="exFromDay" data-v="' + d + '" title="งดเวรคนนี้จากวันนี้">⛔</button>';
     h += dhCell(l, d) + '</div>';
   }
   h += '</div><div class="legend"><span><i style="background:var(--sat)"></i>วันเสาร์</span><span><i style="background:var(--sun)"></i>วันอาทิตย์</span><span><i style="background:var(--hol)"></i>วันหยุดราชการ</span><span><i style="box-shadow:inset 0 0 0 2px #6b8cc7"></i>สลับเวรด้วยมือ</span><span>⚠️ เข้าเวรซ้อนบัญชีอื่น</span></div></div>';
