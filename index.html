@@ -110,6 +110,8 @@ table.t tr.dim td{opacity:.5}
 /* calendar */
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
 .cal .wd{font-size:12px;color:var(--muted);text-align:center;padding:2px 0}
+.exdayb{position:absolute;top:3px;right:4px;border:0;background:transparent;cursor:pointer;font-size:13px;line-height:1;padding:2px 3px;border-radius:5px;opacity:.55}
+.exdayb:hover{opacity:1;background:#fbe9e7}
 .cal .d{min-height:74px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 7px;cursor:pointer;position:relative}
 .cal .d:hover{border-color:var(--olive2)}
 .cal .d.sat{background:var(--sat)} .cal .d.sun{background:var(--sun)} .cal .d.hol{background:var(--hol)}
@@ -1486,7 +1488,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.27-1955';
+var APP_VER = '2569.11.28-2130';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -1887,7 +1889,7 @@ function unitFullName(){ return S.unitFull || 'โรงเรียนสงค
 function unitIsFull(){ try { return localStorage.getItem('unitFull') !== '0'; } catch (e) { return true; } }
 function unitShow(){ return unitIsFull() ? unitFullName() : S.unit; }
 var UNIT_ACT = { unitTog: function(){ try { localStorage.setItem('unitFull', unitIsFull() ? '0' : '1'); } catch (e) {} render(); } };
-var TABS = [['home', 'ภาพรวม'], ['roster', 'ตารางเวร'], ['exempt', 'งดเวร'], ['docs', 'คำสั่ง / หนังสือ'], ['claim', 'ชุดเบิกเผชิญเหตุ'], ['pay', 'ค่าตอบแทนเวร'], ['print', 'พิมพ์ส่งเซ็น'], ['archive', 'คลังฉบับ'], ['dept', 'แผนก ผธก.'], ['setup', 'รายชื่อ & ตั้งค่า'], ['install', 'ติดตั้งระบบ']];
+var TABS = [['home', 'ภาพรวม'], ['roster', 'ตารางเวร'], ['exempt', 'งดเวร'], ['docs', 'คำสั่ง / หนังสือ'], ['claim', 'ชุดเบิกเผชิญเหตุ'], ['pay', 'ค่าตอบแทนเวร'], ['print', 'พิมพ์ส่งเซ็น'], ['archive', 'คลังฉบับ'], ['history', 'ย้อนหลัง'], ['dept', 'แผนก ผธก.'], ['setup', 'รายชื่อ & ตั้งค่า'], ['install', 'ติดตั้งระบบ']];
 function render(){
   if (UI.sim) return;
   try { if (!UI._rs) { UI._rs = 1; rankSyncRun(); UI._rs = 0; } } catch (e) { UI._rs = 0; }
@@ -1914,6 +1916,7 @@ function renderInner(){
   else if (UI.tab === 'exempt') h = viewExempt();
   else if (UI.tab === 'setup') h = viewSetup();
   else if (UI.tab === 'pay') h = viewPay();
+  else if (UI.tab === 'history') h = viewHistory();
   else if (UI.tab === 'home') h = viewHome();
   else if (UI.tab === 'install') h = viewInstall();
   else if (UI.tab === 'docs') h = viewDocs();
@@ -2004,6 +2007,7 @@ function viewRoster(){
     if (UI.editDay === d) {
       h += '<select data-ch="override" data-v="' + d + '" autofocus><option value="">— อัตโนมัติ —</option>' + l.people.map(function(pp){ return '<option value="' + pp.id + '"' + (ov[d] === pp.id ? ' selected' : '') + '>' + esc(pShort(pp)) + '</option>'; }).join('') + '</select>';
     } else h += '<div class="who">' + (p ? (p.helper ? '🤝 ' : '') + esc(pShort(p)) + '<br><span class="muted small">' + esc(p.surname) + '</span>' : '<b style="color:var(--accent)">ว่าง</b>') + '</div>';
+    if (p) h += '<button class="exdayb" data-act="exFromDay" data-v="' + d + '" title="งดเวรคนนี้จากวันนี้">⛔</button>';
     h += dhCell(l, d) + '</div>';
   }
   h += '</div><div class="legend"><span><i style="background:var(--sat)"></i>วันเสาร์</span><span><i style="background:var(--sun)"></i>วันอาทิตย์</span><span><i style="background:var(--hol)"></i>วันหยุดราชการ</span><span><i style="box-shadow:inset 0 0 0 2px #6b8cc7"></i>สลับเวรด้วยมือ</span><span>⚠️ เข้าเวรซ้อนบัญชีอื่น</span></div></div>';
@@ -2316,6 +2320,29 @@ function archBar(){
     (on ? '<b>กำลังแสดงฉบับย้อนหลังจากคลัง — พิมพ์ได้เลย ไม่ต้องย้อนเดือน (ข้อมูลเดือนปัจจุบันไม่ถูกแตะ)</b><button class="btn xs" data-act="archOff">กลับเดือนปัจจุบัน</button>' : '<small>เลือกเดือนก่อนเพื่อพิมพ์ใบตอบแทน/คำสั่งรับค่าตอบแทนย้อนหลัง โดยไม่ต้องกด "ย้อนเดือน"</small>') + '</div>';
 }
 function payLists(){ return S.lists.filter(function(l){ return l.active !== false && +l.rate > 0; }); }
+/* ---------- ย้อนหลัง: ดูใบเวรและค่าตอบแทนของเดือนที่ผ่านมาจากคลังฉบับ (อ่านอย่างเดียว) ---------- */
+function histRosterCore(){
+  var h = '';
+  S.lists.filter(function(l){ return l.active !== false; }).forEach(function(l){
+    var r = CACHE.res[l.id]; if (!r) return;
+    var rows = r.days.map(function(d){ var pi = r.byDay[d], p = pi != null ? l.people[pi] : null;
+      return '<tr><td class="c">' + T(d) + '</td><td>' + DE.WD[DE.wday(S.y, S.m, d)] + '</td><td>' + (p ? esc(pLabel(p)) : '<span class="muted">ว่าง</span>') + '</td></tr>'; }).join('');
+    h += '<div class="card" style="border-top:4px solid ' + lcol(l) + ';margin-top:12px"><h2 style="margin:0">' + esc(l.annex) + ' ' + esc(l.title) + ' <small>ประจำเดือน ' + esc(monthShort(S.y, S.m)) + '</small></h2>' +
+      (rows ? '<table class="t" style="margin-top:8px"><tr><th style="width:12%">วันที่</th><th style="width:14%">วัน</th><th>ยศ - ชื่อ - สกุล</th></tr>' + rows + '</table>' : '<div class="muted" style="margin-top:8px">ไม่มีวันเข้าเวรในเดือนนี้</div>') + '</div>';
+  });
+  return h || '<div class="card muted" style="margin-top:12px">ไม่มีบัญชีเวรในฉบับนี้</div>';
+}
+function viewHistory(){
+  var M = archMonths();
+  if (!M.length) return '<div class="card"><h2 style="margin:0">📚 ย้อนหลัง</h2><div class="muted" style="margin-top:10px">ยังไม่มีฉบับย้อนหลังในคลัง — ระบบเก็บฉบับให้อัตโนมัติเมื่อพิมพ์หรือส่งเอกสาร</div></div>';
+  var e = M.find(function(x){ return x.id === UI.hiId; }) || M[0], tab = UI.hiTab || 'roster';
+  UI.hiId = e.id; UI.archId = e.id;
+  var h = '<div class="card"><div class="hx"><h2 style="margin:0">📚 ย้อนหลัง <small>ใบเวรและค่าตอบแทนของเดือนที่ผ่านมา อ่านจากคลังฉบับ ไม่แตะข้อมูลปัจจุบัน</small></h2></div>' +
+    '<div class="row" style="margin-top:10px"><select data-ch="hiSel">' + M.map(function(x){ return '<option value="' + x.id + '"' + (x.id === e.id ? ' selected' : '') + '>' + esc(archLbl(x)) + '</option>'; }).join('') + '</select>' +
+    '<div class="seg"><button class="' + (tab === 'roster' ? 'on' : '') + '" data-act="hiTab" data-v="roster">📅 ใบเวร</button><button class="' + (tab === 'pay' ? 'on' : '') + '" data-act="hiTab" data-v="pay">💰 ค่าตอบแทน</button></div></div></div>';
+  h += tab === 'pay' ? withArch(viewPayCore) : withArch(histRosterCore);
+  return h;
+}
 function viewPay(){ return archBar() + withArch(viewPayCore); }
 function viewPayCore(){
   var ls = payLists(), tm = 0, td = 0;
@@ -3324,6 +3351,8 @@ var EX2_ACT = {
   ezQClr: function(){ UI.ezQ.key = ''; render(); },
   ezQR: function(t){ UI.ezQ.reason = UI.ezQ.reason === t.dataset.v ? '' : t.dataset.v; render(); },
   ezQM: function(t){ UI.ezQ.mode = t.dataset.v; render(); },
+  exFromDay: function(t){ var d = +t.dataset.v, l = list(UI.listId) || S.lists[0], r = CACHE.res[l.id], pi = r && r.byDay[d], p = pi != null ? l.people[pi] : null; if (!p) return;
+    UI.ezQ = { mode: 'one', from: DE.iso(S.y, S.m, d), to: '', reason: '', key: DE.personKey(p) }; UI.tab = 'exempt'; render(); scrollTo(0, 0); toast('เลือกเหตุแล้วกด ⛔ งด — ' + pLabel(p)); },
   ezQGo: function(){ var Q = UI.ezQ, mr = monthRange(), p = allPeople().map[Q.key]; if (!p || !Q.from) return;
     var to = Q.mode === 'one' ? Q.from : Q.mode === 'month' ? mr[1] : Q.mode === 'open' ? null : Q.to;
     if (to && to < Q.from) { toast('วันสิ้นสุดต้องไม่ก่อนวันเริ่ม'); return; }
@@ -5205,7 +5234,7 @@ function colorCard(){
   return '<div class="card"><h2>🎨 สีประจำผนวก<small>ใช้สีเดียวกันทุกหน้า — รายชื่อบัญชี ปฏิทิน สรุปเวร สมุดเบอร์ ภาพรวมงดเวร • กลุ่มที่วนกันใช้โทนสีเดียวกัน • คลิกจุดสีเพื่อเปลี่ยน</small></h2><div class="cgrid">' +
     groups.map(function(g){ return '<div class="cgrp"><div class="cgt">' + g[0] + '</div>' + g[1].map(function(c){ var l = byC[c]; if (!l) return ''; return '<label class="crow"><input type="color" data-ch="lcol" data-v="' + l.id + '" value="' + lcol(l) + '"><span class="csw" style="background:' + lcol(l) + '"></span><b>' + esc(l.annex) + '</b> ' + esc(l.short) + (l.color ? ' <button class="lk" data-act="lcolReset" data-v="' + l.id + '">คืนค่า</button>' : '') + '</label>'; }).join('') + '</div>'; }).join('') + '</div></div>';
 }
-var TABI = { home: ['🏠', '#3b4a24'], roster: ['📅', '#2f6b2a'], exempt: ['⛔', '#b3261e'], docs: ['📜', '#8a6d1f'], claim: ['💰', '#1f6f43'], pay: ['🧾', '#3f6fd0'], print: ['🖨️', '#5a5a5a'], archive: ['🗂️', '#6b4fbb'], dept: ['🏢', '#7a4a1f'], setup: ['👥', '#24456b'], install: ['⚙️', '#7a7f86'] };
+var TABI = { home: ['🏠', '#3b4a24'], roster: ['📅', '#2f6b2a'], exempt: ['⛔', '#b3261e'], docs: ['📜', '#8a6d1f'], claim: ['💰', '#1f6f43'], pay: ['🧾', '#3f6fd0'], print: ['🖨️', '#5a5a5a'], archive: ['🗂️', '#6b4fbb'], history: ['📚', '#2e7d7a'], dept: ['🏢', '#7a4a1f'], setup: ['👥', '#24456b'], install: ['⚙️', '#7a7f86'] };
 
 /* ===================== แถบหัว: ย้อนกลับ/ทำซ้ำ ===================== */
 function hdrUndo(){
@@ -5406,7 +5435,7 @@ var OWN_KEY = 'dutyOwner.v1', OWN_HRS = 8;
 // ส่วนตั้งค่าระบบ — ต้องเป็นเจ้าของเสมอ
 var OWN_SYS = { act: 'lcolReset miOk mRank mRankAll esSavePad esClearPad esDel esMv rotDlg rotFix rotSkip rotOrder rotGAdd rotGDel sortSeed ordPrev resetHol resetAll addList delList addSigner delSigner copyGs showGs goSetup updGo updRevert updUseIndex ghSave updCopyCode pwaTeam pwaInvite aiKeySave aiKeyDel stoDlg stoGo stoCheck stoBack stoClean stoCleanRun bakRestore logRestore restoreVer delVer forceSave purgeEx ownMode ownCode', ch: 'lcol esOn esH esFile masterFile rule hol sg rotMember wmode isg il ifolder drv importJson stoD' };
 // ดูได้อย่างเดียว (เมื่อล็อกทั้งระบบ) — คำสั่งที่ไม่เปลี่ยนข้อมูล
-var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone dSub dCleanCopy dCleanPrint dListCopy dListPrint dActCopy dDoc dDocPrint dDocImg dDocSave dDocTxt dAll dAllAll dAllPrint dAllImg dAllTxt dGrpEd stagDlg stPrint stImg stKindB boardDlg archOff stTh dDayTxt dRegF dRegRemind paperO ddFitT ddEditT ddEdReset layEdit layFold layHide layUp layDown layW layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt' };
+var OWN_VIEW = { act: 'tab pickList pickSetList preview payView doc docPrev rep rcMode printOne doPrint printPay printEast printClaim printRep printDoc selAll logView logSide logPrint closeModal copyModal copyMsg imgCopy annCopy newsReload newsMore newsJump agMore agAll exovView exovAll cmpAll cmpMode ownCancel agNo kvToggle kvMic kvMode botPick botSel botHear botTone dSub dCleanCopy dCleanPrint dListCopy dListPrint dActCopy dDoc dDocPrint dDocImg dDocSave dDocTxt dAll dAllAll dAllPrint dAllImg dAllTxt dGrpEd stagDlg stPrint stImg stKindB boardDlg archOff stTh dDayTxt dRegF dRegRemind paperO ddFitT ddEditT ddEdReset layEdit layFold layHide layUp layDown layW layReset healthDlg healthRe healthCopy healthSave healthFix botEdit botEditX botSave botDel unitTog chImgDel chDocDel chatOpen chatClose chatMin chatMax chatClear chatSug chatCopy chatSend pwaSave pwaReset pwaInstall stRefresh stGo balGo annTone annAi aiWrite aiSetup annCopy annStyle annWhy annCopyOne annCopyAll asstOpen asstClose asstGo asstPrint exportJson driveLoad stoRefresh stoCleanPrev msgStep ownOpen ownIn ownOut prevMonth hiTab', ch: 'pbq psearch exFilter cmpA cmpB cmpId cmpShow msgDay logAll logList printSel pdOv hpSrc pwInv chatCtx chImg ownPw annF annPick hrWho annAiTxt hiSel' };
 (function(){ ['act', 'ch'].forEach(function(k){ var o = {}; OWN_SYS[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_SYS[k] = o; o = {}; OWN_VIEW[k].split(' ').forEach(function(x){ o[x] = 1; }); OWN_VIEW[k] = o; }); })();
 function ownSess(){ try { var o = JSON.parse(sessionStorage.getItem(OWN_KEY) || 'null'); if (o && o.until > Date.now()) return o; } catch (e) {} return null; }
 function isOwner(){ return !!ownSess(); }
@@ -7516,6 +7545,7 @@ var STAG_ACT = {
   stImg: function(){ var p = document.getElementById('stPaper'); if (!p) return; toast('กำลังสร้างรูป…'); pageToCanvas(p).then(canvasBlob).then(function(b){ dlBlob(b, 'ป้ายกรุณาลงนาม.png'); toast('บันทึกรูปแล้ว'); }).catch(function(){ toast('สร้างรูปไม่สำเร็จ — ใช้พิมพ์แทน'); }); }
 };
 var STAG_CH = {
+  hiSel: function(t){ UI.hiId = t.value; UI.archId = t.value || null; render(); },
   archSel: function(t){ UI.archId = t.value || null; render(); toast(t.value ? 'แสดงข้อมูลย้อนหลังจากคลังฉบับ — เดือนปัจจุบันไม่ถูกแตะ' : 'กลับมาใช้เดือนปัจจุบัน'); },
   stTxt: function(t){ stagOpt().txt = t.value; stagRe(); }, stCus: function(t){ stagOpt().custom = t.value; stagRe(); }, stKind: function(t){ stagOpt().kind = t.value; stagRe(); },
   stUnit: function(t){ stagOpt().unit = t.value; stagRe(); }, stCol: function(t){ stagOpt().col = t.checked; stagRe(); }, stFld: function(t){ stagOpt().fields = t.checked; stagRe(); },
@@ -7854,6 +7884,7 @@ var ACT = {
   printRep: function(t){ var R = REPORTS.find(function(r){ return r.k === t.dataset.v; });
     if (UI.archId) { var P = withArch(function(){ return R.pages().map(function(p){ return '<div class="pp' + (p.land ? ' land' : '') + (p.off ? ' a4' : '') + '">' + pageOut(p) + '</div>'; }).join(''); }); document.getElementById('printArea').innerHTML = P; try { window.print(); } catch (e) { toast('พิมพ์จากหน้านี้ไม่ได้'); } return; }
     printPages(R.pages(), 'พิมพ์' + R.t + ' ' + monthShort(S.y, S.m), R.t.replace(/\s+/g, '')); },
+  hiTab: function(t){ UI.hiTab = t.dataset.v; render(); },
   archOff: function(){ UI.archId = null; render(); },
   printDoc: function(t){ var v = t.dataset.v, P = v === 'order1' ? orderDocPages(true) : v === 'order0' ? orderDocPages(false) : v === 'real' ? orderDocPages(false, 'real').filter(function(p){ return p.key.indexOf('o:memo') < 0; }) : v === 'copy' ? orderDocPages(false, 'copy').filter(function(p){ return p.key.indexOf('o:memo') < 0; }) : v === 'east' ? eastDocPages() : royalDocPages();
     printPages(P, 'พิมพ์' + ((v.indexOf('order') === 0 || v === 'real' || v === 'copy') ? 'คำสั่งเวร' : v === 'east' ? 'หนังสือขออนุมัติงบทิศตะวันออก' : 'หนังสือเวร นรอ.'), (v.indexOf('order') === 0 || v === 'real' || v === 'copy') ? 'คำสั่งเวร' : v === 'east' ? 'งบทิศตะวันออก' : 'เวรนรอ'); },
