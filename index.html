@@ -1488,7 +1488,7 @@ var SEED = {"v": 7, "unit": "รร.สพศ.ศสพ.", "y": 2026, "m": 11, "
 var LS = 'dutyRoster.v1';
 var S, UI = { tab: 'home', listId: null, editDay: null, exFilter: 'month', parsed: [], setListId: null, printSel: null };
 var inFrame = (function(){ try { return window.self !== window.top; } catch (e) { return true; } })();
-var APP_VER = '2569.11.28-2139';
+var APP_VER = '2569.11.28-2159';
 var GMODE = !!(typeof google !== 'undefined' && google.script && google.script.run);
 if (GMODE) inFrame = false;
 function gcall(fn){ var args = [].slice.call(arguments, 1); return new Promise(function(res, rej){ var r = google.script.run.withSuccessHandler(res).withFailureHandler(rej); r[fn].apply(r, args); }); }
@@ -7505,7 +7505,7 @@ function stagCorner(){
 }
 function stagStrip(){
   var o = stagOpt(), t = (o.txt === '_' ? o.custom : o.txt) || 'กรุณาลงนาม', u = o.sUnit || 'ผธก.ฯ', lg = t.length > 11 ? ' lg' : '', dbl = !!o.sDbl, n = dbl ? 8 : 16;
-  var front = (o.sSeal ? '<div class="seal"><img src="' + (o.col ? SEAL_IMG : SEAL_BW) + '" alt=""></div>' : '') + '<div class="sg un"><span>' + esc(u) + '</span></div>' + '<div class="sg big end' + lg + '"><span>' + esc(t) + '</span></div>';
+  var front = accHtml() + (o.sSeal ? '<div class="seal"><img src="' + (o.col ? SEAL_IMG : SEAL_BW) + '" alt=""></div>' : '') + '<div class="sg un"><span>' + esc(u) + '</span></div>' + '<div class="sg big end' + lg + '"><span>' + esc(t) + '</span></div>';
   var back = dbl ? '<div class="sg big r180' + lg + '"><span>' + esc(t) + '</span></div><div class="sg un r180"><span>' + esc(u) + '</span></div>' : '<div class="sg glue"><span>ทากาว / แม็ก<br>ติดด้านหลัง</span></div>';
   var one = '<div class="sstr">' + back + '<div class="fz">⟲ พับรอบ<br>ลวดคลิป</div>' + front + '</div>';
   return '<div class="sstrips' + (o.col ? ' col' : '') + '">' + Array(n + 1).join(one) + '<div class="cutnote">✂ ตัดเป็นแถบ • สอดลวดคลิปที่ช่อง "พับรอบลวดคลิป" แล้วพับ' + (dbl ? 'ประกบหลังกัน (อ่านได้ทั้งสองด้าน)' : 'ส่วนลายขีดไปด้านหลัง ทากาวหรือแม็กติด') + ' • หนีบคลิปที่มุมเอกสาร ให้แถบห้อยลงมา</div></div>';
@@ -7516,14 +7516,30 @@ function stagSheet0(){
   var t = (o.txt === '_' ? o.custom : o.txt) || 'กรุณาลงนาม', img = o.col ? SEAL_IMG : SEAL_BW, n = o.kind === 'card' ? 8 : 12, lg = t.length > 11 ? ' lg' : '', one;
   var tab = '<div class="tab"><i class="a"></i>📎 หนีบคลิป<small>พับ/หนีบที่แถบนี้</small><i class="b"></i></div>';
   if (o.kind === 'card') one = '<div class="stw">' + tab + '<div class="stag card"><div class="bd"><div class="seal"><img src="' + img + '" alt=""></div><div class="tx"><div class="big' + lg + '">' + esc(t) + '</div><div class="unit">' + esc(o.unit || '') + '</div></div></div>' +
-    (o.fields ? '<div class="ln">เรียน <span></span></div><div class="ln">เรื่อง <span></span></div>' : '') + '<div class="arw">✍️ ลงนามหน้าที่ ........ &nbsp;▼</div></div></div>';
-  else one = '<div class="stw">' + tab + '<div class="stag flag"><div class="bd"><div class="seal"><img src="' + img + '" alt=""></div><div class="tx"><div class="big' + lg + '">' + esc(t) + '</div><div class="unit">' + esc(o.unit || '') + '</div></div></div><div class="tip">ลงนาม<br>ตรงนี้</div></div></div>';
+    (o.fields ? '<div class="ln">เรียน <span></span></div><div class="ln">เรื่อง <span></span></div>' : '') + '<div class="arw">✍️ ลงนามหน้าที่ ........ &nbsp;▼</div>' + accHtml() + '</div></div>';
+  else one = '<div class="stw">' + tab + '<div class="stag flag"><div class="bd"><div class="seal"><img src="' + img + '" alt=""></div><div class="tx"><div class="big' + lg + '">' + esc(t) + '</div><div class="unit">' + esc(o.unit || '') + '</div></div></div><div class="tip">ลงนาม<br>ตรงนี้</div>' + accHtml() + '</div></div>';
   return '<div class="stsheet ' + o.kind + (o.col ? ' col' : '') + '">' + Array(n + 1).join(one) + '<div class="cutnote">✂ ตัดตามขอบ (รวมแถบด้านบน) • หนีบคลิปที่แถบ 📎 ให้ป้ายห้อยลงมาบนเอกสาร หรือพับแถบไปด้านหลังกระดาษแล้วหนีบ</div></div>';
+}
+var ACC = [['star', '★', 'ดาว'], ['dia', '◆', 'เพชร'], ['flower', '✿', 'ดอกไม้'], ['arrow', '➤', 'ลูกศร'], ['check', '✔', 'ถูกต้อง'], ['flag', '⚑', 'ธง'], ['cross', '✚', 'กากบาท'], ['alert', '❗', 'เตือน'], ['pen', '✎', 'ปากกา'], ['heart', '♥', 'หัวใจ']];
+var ACC_POS = [['tl', '↖ มุมซ้ายบน'], ['tc', '↑ กลางบน'], ['tr', '↗ มุมขวาบน'], ['bl', '↙ มุมซ้ายล่าง'], ['br', '↘ มุมขวาล่าง']];
+function accHtml(){
+  var o = stagOpt(), A = o.acc || {}, ks = Object.keys(A).filter(function(k){ return ACC.some(function(x){ return x[0] === k; }); });
+  if (!ks.length || o.kind === 'board' || o.kind === 'corner') return '';
+  return '<style>.acc{position:absolute;font-size:4.2mm;line-height:1;color:var(--ink);z-index:3;pointer-events:none}.acc.ap-tl{left:1.2mm;top:1.2mm}.acc.ap-tc{left:50%;top:1mm;transform:translateX(-50%)}.acc.ap-tr{right:1.2mm;top:1.2mm}.acc.ap-bl{left:1.2mm;bottom:1.2mm}.acc.ap-br{right:1.2mm;bottom:1.2mm}.stag{position:relative}</style>' +
+    ks.map(function(k){ var it = ACC.find(function(x){ return x[0] === k; }); return '<i class="acc ap-' + (A[k] || 'tr') + '">' + it[1] + '</i>'; }).join('');
+}
+function accPicker(){
+  var o = stagOpt(), A = o.acc || {};
+  return '<div class="sthp"><span>🧩 ตกแต่ง — เลือกอุปกรณ์ แล้วกำหนดตำแหน่งเอง (ไม่เลือก = ไม่แสดง)</span><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">' + ACC.map(function(x){
+    var on = A[x[0]] != null;
+    return '<span style="display:inline-flex;align-items:center;gap:4px;border:1px solid ' + (on ? '#2f6b2a' : '#cfc7b2') + ';border-radius:8px;padding:3px 6px;background:' + (on ? '#eef6ea' : '#fff') + '"><button class="btn xs" data-act="accTog" data-v="' + x[0] + '">' + x[1] + ' ' + x[2] + '</button>' +
+      (on ? '<select data-ch="accPos" data-v="' + x[0] + '">' + ACC_POS.map(function(q){ return '<option value="' + q[0] + '"' + (A[x[0]] === q[0] ? ' selected' : '') + '>' + q[1] + '</option>'; }).join('') + '</select>' : '') + '</span>';
+  }).join('') + (Object.keys(A).length ? '<button class="btn xs danger" data-act="accClr">ล้างตกแต่งทั้งหมด</button>' : '') + '</div></div>';
 }
 function stagDlg(){
   var o = stagOpt(), B = o.kind === 'board';
   modal('<div class="ddm"><div class="ddmh"><b>📎 ป้ายกรุณาลงนาม / ปกหัวกระดาษติดบอร์ด</b><button class="ib" data-act="closeModal" title="ปิด">✕</button></div>' +
-    '<div class="seg" style="margin-bottom:8px">' + [['strip', '📎 แถบพับรัดคลิป'], ['corner', '🔺 มุมเก็บเรื่องเข้าแฟ้ม'], ['card', '🏷 การ์ดหนีบคลิป'], ['flag', '➡️ ธงลูกศร'], ['board', '📌 ปกหัวกระดาษติดบอร์ด']].map(function(k){ return '<button class="' + (o.kind === k[0] ? 'on' : '') + '" data-act="stKindB" data-v="' + k[0] + '">' + k[1] + '</button>'; }).join('') + '</div>' + sthPicker() +
+    '<div class="seg" style="margin-bottom:8px">' + [['strip', '📎 แถบพับรัดคลิป'], ['corner', '🔺 มุมเก็บเรื่องเข้าแฟ้ม'], ['card', '🏷 การ์ดหนีบคลิป'], ['flag', '➡️ ธงลูกศร'], ['board', '📌 ปกหัวกระดาษติดบอร์ด']].map(function(k){ return '<button class="' + (o.kind === k[0] ? 'on' : '') + '" data-act="stKindB" data-v="' + k[0] + '">' + k[1] + '</button>'; }).join('') + '</div>' + sthPicker() + (B || o.kind === 'corner' ? '' : accPicker()) +
     '<div class="stopt">' + (B ? '<label>หัวเรื่อง<input data-ch="stBT" value="' + esc(o.bTitle) + '"></label><label>จำนวนรูเจาะ' + dSel('stHoles', String(o.holes), [['2', '2 รู (ห่าง 8 ซม.)'], ['3', '3 รู'], ['4', '4 รู']]) + '</label>' +
         '<label class="ck"><input type="checkbox" data-ch="stBA"' + (o.bAnx ? ' checked' : '') + '> รายการผนวก</label><label class="ck"><input type="checkbox" data-ch="stBW"' + (o.bWarn ? ' checked' : '') + '> ข้อความเตือนท้าย</label>'
       : '<label>ข้อความ' + dSel('stTxt', o.txt, STAG_TXT.map(function(x){ return [x, x]; }).concat([['_', '✏️ พิมพ์เอง…']])) + '</label>' + (o.txt === '_' ? '<label>ข้อความเอง<input data-ch="stCus" value="' + esc(o.custom) + '" placeholder="เช่น ลงนามด่วนภายในวันนี้"></label>' : '') +
@@ -7539,11 +7555,14 @@ var STAG_ACT = {
   stKindB: function(t){ stagOpt().kind = t.dataset.v; stagRe(); },
   stTh: function(t){ var o = stagOpt(); o.th = o.th || { tag: 0, corner: 0, board: 0 }; o.th[sthGroup(o.kind)] = +t.dataset.v; stagRe(); },
   boardDlg: function(){ stagOpt().kind = 'board'; stagDlg(); },
+  accTog: function(t){ var o = stagOpt(); o.acc = o.acc || {}; var k = t.dataset.v; if (o.acc[k] != null) delete o.acc[k]; else o.acc[k] = 'tr'; stagRe(); },
+  accClr: function(){ stagOpt().acc = {}; stagRe(); },
   stPrint: function(){ var w = window.open('', '_blank'); if (!w) { toast('เบราว์เซอร์บล็อกหน้าต่างพิมพ์'); return; }
     w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>ป้ายกรุณาลงนาม</title><style>@page{size:' + paperAt(false) + ';margin:' + (stagOpt().kind === 'board' ? '12mm 14mm' : '9mm') + '}body{margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}:root{--pf:"TH SarabunPSK","TH Sarabun New","Sarabun",sans-serif}' + STAG_CSS + '</style></head><body>' + stagSheet() + '<script>window.onload=function(){setTimeout(function(){window.print()},400)}<\/script></body></html>'); w.document.close(); },
   stImg: function(){ var p = document.getElementById('stPaper'); if (!p) return; toast('กำลังสร้างรูป…'); pageToCanvas(p).then(canvasBlob).then(function(b){ dlBlob(b, 'ป้ายกรุณาลงนาม.png'); toast('บันทึกรูปแล้ว'); }).catch(function(){ toast('สร้างรูปไม่สำเร็จ — ใช้พิมพ์แทน'); }); }
 };
 var STAG_CH = {
+  accPos: function(t){ var o = stagOpt(); o.acc = o.acc || {}; o.acc[t.dataset.v] = t.value; stagRe(); },
   hiSel: function(t){ UI.hiId = t.value; UI.archId = t.value || null; render(); },
   archSel: function(t){ UI.archId = t.value || null; render(); toast(t.value ? 'แสดงข้อมูลย้อนหลังจากคลังฉบับ — เดือนปัจจุบันไม่ถูกแตะ' : 'กลับมาใช้เดือนปัจจุบัน'); },
   stTxt: function(t){ stagOpt().txt = t.value; stagRe(); }, stCus: function(t){ stagOpt().custom = t.value; stagRe(); }, stKind: function(t){ stagOpt().kind = t.value; stagRe(); },
